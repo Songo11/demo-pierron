@@ -11,6 +11,8 @@ export const PENDING_WALLET_BROWSE_KEY = 'pierron-pending-wallet-browse';
 export const RESUME_WALLET_NAME_KEY = 'pierron-resume-wallet-name';
 /** Set when the user explicitly disconnects — blocks autoConnect / resume for this tab. */
 export const WALLET_USER_DISCONNECTED_KEY = 'pierron-wallet-user-disconnected';
+/** Dispatched when user taps connect — resets MobileWalletResume tried flag. */
+export const RESUME_RETRY_EVENT = 'pierron-wallet-resume-retry';
 
 export function markWalletUserDisconnected(): void {
   if (typeof window === 'undefined') return;

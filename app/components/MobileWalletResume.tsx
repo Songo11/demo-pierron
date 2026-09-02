@@ -5,6 +5,7 @@ import type { WalletName } from '@solana/wallet-adapter-base';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 import {
+  RESUME_RETRY_EVENT,
   RESUME_WALLET_NAME_KEY,
   isWalletUserDisconnected,
 } from '../lib/openInMobileWalletBrowser';
@@ -19,6 +20,14 @@ export default function MobileWalletResume() {
   const triedRef = useRef(false);
 
   useEffect(() => {
+    const onRetry = () => {
+      triedRef.current = false;
+    };
+    window.addEventListener(RESUME_RETRY_EVENT, onRetry);
+    return () => window.removeEventListener(RESUME_RETRY_EVENT, onRetry);
+  }, []);
+
+  useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const resume = async () => {
@@ -31,7 +40,6 @@ export default function MobileWalletResume() {
       } catch {
         /* ignore */
       }
-      // Only an explicit handoff flag — not "wallet extension is installed".
       if (!name) return;
 
       triedRef.current = true;
