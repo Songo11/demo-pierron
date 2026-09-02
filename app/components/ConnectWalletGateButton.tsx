@@ -4,19 +4,22 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { WalletName } from '@solana/wallet-adapter-base';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 
 import { useTranslations } from '../context/LocaleContext';
 import {
+  RESUME_WALLET_NAME_KEY,
+  connectInjectedProviderDirect,
   detectInjectedWalletBrowser,
   isAndroidUserAgent,
+  isMwaWalletNotFoundMessage,
   openCurrentPageInPhantom,
   openCurrentPageInSolflare,
 } from '../lib/openInMobileWalletBrowser';
 
 /**
- * Mobile (Vanadium/GrapheneOS): do NOT rely on MWA round-trip — it returns to the
- * browser still disconnected. Primary path = open this page inside Solflare/Phantom
- * browse, then auto-connect with the injected provider.
+ * Mobile (Vanadium/GrapheneOS): prefer opening the page inside Solflare/Phantom.
+ * Also resume MWA after authorize→return (autoConnect + pageshow).
  */
 export default function ConnectWalletGateButton() {
   const t = useTranslations();
@@ -35,6 +38,11 @@ export default function ConnectWalletGateButton() {
       setError(null);
       setBusy(false);
       autoTriedRef.current = false;
+      try {
+        sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
+      } catch {
+        /* ignore */
+      }
     }
   }, [connected]);
 
@@ -60,10 +68,16 @@ export default function ConnectWalletGateButton() {
     setBusy(true);
     setError(null);
     try {
+      // Prefer native provider connect first (avoids adapter select race).
+      const directOk = await connectInjectedProviderDirect(kind);
       const name = (kind === 'solflare' ? 'Solflare' : 'Phantom') as WalletName;
+      try {
+        sessionStorage.setItem(RESUME_WALLET_NAME_KEY, name);
+      } catch {
+        /* ignore */
+      }
       select(name);
-      // Let WalletProvider wire the adapter before connect().
-      await new Promise((r) => window.setTimeout(r, 120));
+      await new Promise((r) => window.setTimeout(r, directOk ? 80 : 200));
       await connect();
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -79,11 +93,42 @@ export default function ConnectWalletGateButton() {
     }
   }, [connect, select, t.dapp.connectNeedWalletBrowser, t.dapp.connectRejectedHint]);
 
+  const resumeMobile = useCallback(async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      if (detectInjectedWalletBrowser()) {
+        await connectInjected();
+        return;
+      }
+      const stored =
+        (typeof sessionStorage !== 'undefined'
+          ? sessionStorage.getItem(RESUME_WALLET_NAME_KEY)
+          : null) || SolanaMobileWalletAdapterWalletName;
+      select(stored as WalletName);
+      await new Promise((r) => window.setTimeout(r, 150));
+      await connect();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (isMwaWalletNotFoundMessage(msg)) {
+        openCurrentPageInSolflare();
+        setError(
+          t.dapp.connectAndroidStayHint ??
+            'Otwórz dappkę w Solflare i zostań w tej aplikacji.'
+        );
+      } else {
+        setError(msg);
+      }
+    } finally {
+      setBusy(false);
+    }
+  }, [connect, connectInjected, select, t.dapp.connectAndroidStayHint]);
+
   // Inside wallet in-app browser: auto-connect so user lands in the dapp menu.
   useEffect(() => {
     if (!inWalletBrowser || connected || autoTriedRef.current) return;
     autoTriedRef.current = true;
-    const timers = [200, 600, 1200, 2000].map((ms) =>
+    const timers = [200, 600, 1200, 2000, 3500].map((ms) =>
       window.setTimeout(() => {
         if (!connected) void connectInjected();
       }, ms)
@@ -108,7 +153,11 @@ export default function ConnectWalletGateButton() {
       return;
     }
     if (android) {
-      // Vanadium: stay inside Solflare — do not use MWA handoff.
+      try {
+        sessionStorage.setItem(RESUME_WALLET_NAME_KEY, 'Solflare');
+      } catch {
+        /* ignore */
+      }
       openCurrentPageInSolflare();
       return;
     }
@@ -159,6 +208,14 @@ export default function ConnectWalletGateButton() {
               {t.dapp.openInPhantom ?? 'Otwórz w Phantom'}
             </button>
           </div>
+          <button
+            type="button"
+            className="pierron-connect-browse-btn"
+            style={{ width: '100%', marginTop: 8 }}
+            onClick={() => void resumeMobile()}
+          >
+            {t.connect?.openPierron ?? 'Dokończ połączenie (wróciłem z portfela)'}
+          </button>
         </div>
       ) : null}
 

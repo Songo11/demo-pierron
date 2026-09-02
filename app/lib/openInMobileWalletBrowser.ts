@@ -7,6 +7,9 @@
  * is injected and connect works.
  */
 
+export const PENDING_WALLET_BROWSE_KEY = 'pierron-pending-wallet-browse';
+export const RESUME_WALLET_NAME_KEY = 'pierron-resume-wallet-name';
+
 export function isAndroidUserAgent(
   ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
 ): boolean {
@@ -19,10 +22,10 @@ export type InjectedWalletKind = 'phantom' | 'solflare' | null;
 export function detectInjectedWalletBrowser(): InjectedWalletKind {
   if (typeof window === 'undefined') return null;
   const w = window as Window & {
-    phantom?: { solana?: { isPhantom?: boolean } };
-    solflare?: { isSolflare?: boolean };
+    phantom?: { solana?: { isPhantom?: boolean; connect?: () => Promise<unknown> } };
+    solflare?: { isSolflare?: boolean; connect?: () => Promise<unknown> };
     SolflareApp?: unknown;
-    solana?: { isPhantom?: boolean; isSolflare?: boolean };
+    solana?: { isPhantom?: boolean; isSolflare?: boolean; connect?: () => Promise<unknown> };
   };
   if (w.solflare?.isSolflare || w.SolflareApp || w.solana?.isSolflare) return 'solflare';
   if (w.phantom?.solana?.isPhantom || w.solana?.isPhantom) return 'phantom';
@@ -32,51 +35,106 @@ export function detectInjectedWalletBrowser(): InjectedWalletKind {
   return null;
 }
 
+/** Directly connect injected provider (bypasses adapter race). */
+export async function connectInjectedProviderDirect(
+  kind: Exclude<InjectedWalletKind, null>
+): Promise<boolean> {
+  if (typeof window === 'undefined') return false;
+  const w = window as Window & {
+    phantom?: { solana?: { connect?: (opts?: { onlyIfTrusted?: boolean }) => Promise<unknown> } };
+    solflare?: { connect?: (opts?: { onlyIfTrusted?: boolean }) => Promise<unknown> };
+    solana?: { connect?: (opts?: { onlyIfTrusted?: boolean }) => Promise<unknown> };
+  };
+  try {
+    if (kind === 'solflare') {
+      const p = w.solflare ?? (w.solana?.connect ? w.solana : null);
+      if (!p?.connect) return false;
+      await p.connect();
+      return true;
+    }
+    const p = w.phantom?.solana ?? (w.solana?.connect ? w.solana : null);
+    if (!p?.connect) return false;
+    await p.connect();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function encodeBrowseTarget(url: string): string {
   return encodeURIComponent(url);
 }
 
-/** Phantom browse — Android intent:// so hardened browsers hand off to the app. */
-export function buildPhantomBrowseUrl(pageUrl: string, refUrl: string): string {
-  const path = `ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
-  if (isAndroidUserAgent()) {
-    const fallback = encodeURIComponent(
-      'https://play.google.com/store/apps/details?id=app.phantom'
-    );
-    return `intent://${path}#Intent;scheme=https;host=phantom.app;package=app.phantom;S.browser_fallback_url=${fallback};end`;
+function markPendingBrowse(kind: 'phantom' | 'solflare'): void {
+  try {
+    sessionStorage.setItem(PENDING_WALLET_BROWSE_KEY, kind);
+    sessionStorage.setItem(RESUME_WALLET_NAME_KEY, kind === 'solflare' ? 'Solflare' : 'Phantom');
+  } catch {
+    /* ignore */
   }
-  return `https://phantom.app/${path}`;
 }
 
-/** Solflare browse (+ Android intent). */
-export function buildSolflareBrowseUrl(pageUrl: string, refUrl: string): string {
-  // Solflare accepts both /ul/v1/browse/<url> and query form; path form matches Phantom UX.
+/** Phantom browse — custom scheme + https + Android intent fallbacks. */
+export function buildPhantomBrowseUrls(pageUrl: string, refUrl: string): string[] {
+  const path = `ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
+  const httpsUrl = `https://phantom.app/${path}`;
+  const schemeUrl = `phantom://${path}`;
+  if (!isAndroidUserAgent()) return [httpsUrl];
+  const fallback = encodeURIComponent(
+    'https://play.google.com/store/apps/details?id=app.phantom'
+  );
+  const intentUrl = `intent://${path}#Intent;scheme=https;host=phantom.app;package=app.phantom;S.browser_fallback_url=${fallback};end`;
+  return [schemeUrl, httpsUrl, intentUrl];
+}
+
+/** Solflare browse — custom scheme (sample app) + https + intent. */
+export function buildSolflareBrowseUrls(pageUrl: string, refUrl: string): string[] {
   const path = `ul/v1/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
-  if (isAndroidUserAgent()) {
-    const fallback = encodeURIComponent(
-      'https://play.google.com/store/apps/details?id=com.solflare.mobile'
-    );
-    return `intent://${path}#Intent;scheme=https;host=solflare.com;package=com.solflare.mobile;S.browser_fallback_url=${fallback};end`;
-  }
-  return `https://solflare.com/${path}`;
+  const httpsUrl = `https://solflare.com/${path}`;
+  const schemeUrl = `solflare://${path}`;
+  if (!isAndroidUserAgent()) return [httpsUrl];
+  const fallback = encodeURIComponent(
+    'https://play.google.com/store/apps/details?id=com.solflare.mobile'
+  );
+  const intentUrl = `intent://${path}#Intent;scheme=https;host=solflare.com;package=com.solflare.mobile;S.browser_fallback_url=${fallback};end`;
+  return [schemeUrl, httpsUrl, intentUrl];
 }
 
 export function openUrl(url: string): void {
   if (typeof window === 'undefined') return;
-  // Prefer assign so Solflare/Phantom replace this tab when possible.
   window.location.assign(url);
+}
+
+/**
+ * Try custom-scheme first (GrapheneOS), then https App Link if still visible.
+ */
+function openBrowseCascade(urls: string[]): void {
+  if (typeof window === 'undefined' || urls.length === 0) return;
+  const [first, ...rest] = urls;
+  openUrl(first!);
+  if (rest.length === 0) return;
+  let idx = 0;
+  const tryNext = () => {
+    if (document.visibilityState !== 'visible') return;
+    if (idx >= rest.length) return;
+    openUrl(rest[idx++]!);
+    window.setTimeout(tryNext, 900);
+  };
+  window.setTimeout(tryNext, 900);
 }
 
 export function openCurrentPageInPhantom(): void {
   const page = window.location.href.split('#')[0]!;
   const ref = window.location.origin;
-  openUrl(buildPhantomBrowseUrl(page, ref));
+  markPendingBrowse('phantom');
+  openBrowseCascade(buildPhantomBrowseUrls(page, ref));
 }
 
 export function openCurrentPageInSolflare(): void {
   const page = window.location.href.split('#')[0]!;
   const ref = window.location.origin;
-  openUrl(buildSolflareBrowseUrl(page, ref));
+  markPendingBrowse('solflare');
+  openBrowseCascade(buildSolflareBrowseUrls(page, ref));
 }
 
 export function isMwaWalletNotFoundMessage(msg: string): boolean {

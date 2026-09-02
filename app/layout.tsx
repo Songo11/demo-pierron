@@ -6,16 +6,17 @@ import './lib/bufferBigIntPolyfill';
 import { WalletAdapterNetwork, type WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { useCallback, useMemo } from 'react';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 import { fetchWithRpcRetry } from '../shared/solana/resilientConnection.ts';
+import { createAndroidAwareWalletAdapters } from './lib/androidBrowseWalletAdapters';
 import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
 
 import ServerLayout from './layout-server';
 
+import MobileWalletResume from './components/MobileWalletResume';
 import { LayoutModeProvider } from './context/LayoutModeContext';
 import { LocaleProvider } from './context/LocaleContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -39,13 +40,10 @@ export default function RootLayout({
     []
   );
 
-  // Phantom/Solflare for desktop + wallet in-app browsers.
-  // Android Vanadium: do not rely on MWA round-trip — UI opens browse deeplinks instead.
+  // Phantom/Solflare: on Android Loadable → browse into wallet WebView (not return-to-Vanadium).
+  // autoConnect=true is required so MWA can resume after authorize → return.
   const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
-      new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
-    ],
+    () => createAndroidAwareWalletAdapters(WalletAdapterNetwork.Devnet),
     []
   );
 
@@ -63,8 +61,11 @@ export default function RootLayout({
         <LocaleProvider>
           <LayoutModeProvider>
             <ConnectionProvider endpoint={endpoint} config={connectionConfig}>
-              <WalletProvider wallets={wallets} autoConnect={false} onError={onWalletError}>
-                <WalletModalProvider>{children}</WalletModalProvider>
+              <WalletProvider wallets={wallets} autoConnect onError={onWalletError}>
+                <WalletModalProvider>
+                  <MobileWalletResume />
+                  {children}
+                </WalletModalProvider>
               </WalletProvider>
             </ConnectionProvider>
           </LayoutModeProvider>
