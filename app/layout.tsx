@@ -3,11 +3,11 @@
 
 import './lib/bufferBigIntPolyfill';
 
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { WalletAdapterNetwork, type WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
@@ -25,7 +25,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Browser: same-origin /api/solana-rpc (avoids Worker CORS on solana-client).
+  // Browser: same-origin /api/solana-rpc?cluster=devnet (avoids Worker CORS; cluster hint for wallets).
   // SSR fallback: direct Worker URL.
   const endpoint = useMemo(() => resolveBrowserSolanaRpcEndpoint(), []);
 
@@ -40,6 +40,8 @@ export default function RootLayout({
     []
   );
 
+  // Keep legacy adapters as fallback when Wallet Standard is not injected yet
+  // (install links). Standard wallets auto-register and replace duplicates.
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
@@ -48,13 +50,20 @@ export default function RootLayout({
     []
   );
 
+  const onWalletError = useCallback((error: WalletError) => {
+    console.error('[pierron wallet]', error);
+    if (typeof window !== 'undefined' && error?.message) {
+      window.alert(`Wallet: ${error.message}`);
+    }
+  }, []);
+
   return (
     <ServerLayout>
       <ThemeProvider>
         <LocaleProvider>
           <LayoutModeProvider>
             <ConnectionProvider endpoint={endpoint} config={connectionConfig}>
-              <WalletProvider wallets={wallets} autoConnect>
+              <WalletProvider wallets={wallets} autoConnect onError={onWalletError}>
                 <WalletModalProvider>{children}</WalletModalProvider>
               </WalletProvider>
             </ConnectionProvider>

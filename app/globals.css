@@ -395,17 +395,40 @@ body {
   color: #000 !important;
 }
 
+/* Modal must sit above the connect gate (z-index 100). */
+.wallet-adapter-modal {
+  z-index: 2000 !important;
+}
+
 .wallet-adapter-modal-wrapper {
-  background: rgba(0, 0, 0, 0.75) !important;
+  background: var(--pierron-surface) !important;
+  z-index: 2001 !important;
 }
 
 .wallet-adapter-modal-container {
-  background: var(--pierron-surface) !important;
-  border: 1px solid var(--pierron-border) !important;
+  background: transparent !important;
+  border: none !important;
 }
 
 .wallet-adapter-modal-title {
   color: var(--pierron-text) !important;
+}
+
+.pierron-connect-wallet-wrap {
+  width: 100%;
+}
+
+.pierron-connect-wallet-btn {
+  width: 100%;
+  cursor: pointer;
+}
+
+.pierron-connect-wallet-error {
+  margin: 10px 0 0;
+  color: #ff6b6b;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.4;
 }
 
 /* Light theme */

@@ -8,7 +8,10 @@ import { pierronDevnet } from './pierronDevnet';
  */
 export function resolveBrowserSolanaRpcEndpoint(): string {
   if (typeof window !== 'undefined' && window.location?.origin) {
-    return `${window.location.origin}/api/solana-rpc`;
+    // Include "devnet" in the URL so wallet-adapter
+    // getInferredClusterFromEndpoint() returns 'devnet' (not mainnet-beta).
+    // Mobile Wallet Adapter / Phantom authorize against that cluster.
+    return `${window.location.origin}/api/solana-rpc?cluster=devnet`;
   }
   return pierronDevnet.rpcUrl;
 }

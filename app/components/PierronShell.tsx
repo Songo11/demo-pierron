@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
@@ -15,13 +14,9 @@ import {
 
 import LayoutModePicker from './LayoutModePicker';
 import ConnectLanguageButton from './ConnectLanguageButton';
+import ConnectWalletGateButton from './ConnectWalletGateButton';
 import { useLayoutMode } from '../context/LayoutModeContext';
 import { useTranslations } from '../context/LocaleContext';
-
-const WalletMultiButton = dynamic(
-  () => import('@solana/wallet-adapter-react-ui').then((m) => m.WalletMultiButton),
-  { ssr: false }
-);
 
 const TAB_ICONS = {
   swap: FaExchangeAlt,
@@ -35,12 +30,18 @@ export default function PierronShell({ children }: { children: React.ReactNode }
   const pathname = usePathname();
   const router = useRouter();
   const { connected, connecting } = useWallet();
-  const { layoutMode, layoutReady } = useLayoutMode();
+  const { layoutMode, layoutReady, setLayoutMode } = useLayoutMode();
   const t = useTranslations();
   const wasConnectedRef = useRef(false);
 
   const showGate = !connected;
   const needsLayoutChoice = layoutReady && layoutMode == null;
+
+  // Don't trap connected users on the layout picker — default to phone layout.
+  useEffect(() => {
+    if (!connected || !layoutReady || layoutMode != null) return;
+    setLayoutMode('phone');
+  }, [connected, layoutMode, layoutReady, setLayoutMode]);
 
   // After wallet connect (manual or autoConnect), always land on Pierron Swap first.
   useEffect(() => {
@@ -109,7 +110,7 @@ export default function PierronShell({ children }: { children: React.ReactNode }
                   : t.dapp.connectHint}
             </p>
             <div className="pierron-connect-cta-row">
-              <WalletMultiButton>{t.wallet.polaczPortfel}</WalletMultiButton>
+              <ConnectWalletGateButton />
               <ConnectLanguageButton />
             </div>
           </div>
