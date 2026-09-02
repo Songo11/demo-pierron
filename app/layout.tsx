@@ -3,17 +3,11 @@
 
 import './lib/bufferBigIntPolyfill';
 
-import { WalletAdapterNetwork, type Adapter, type WalletError } from '@solana/wallet-adapter-base';
+import { WalletAdapterNetwork, type WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
-import {
-  createDefaultAddressSelector,
-  createDefaultAuthorizationResultCache,
-  SolanaMobileWalletAdapter,
-  SolanaMobileWalletAdapterWalletName,
-} from '@solana-mobile/wallet-adapter-mobile';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
@@ -25,28 +19,6 @@ import ServerLayout from './layout-server';
 import { LayoutModeProvider } from './context/LayoutModeContext';
 import { LocaleProvider } from './context/LocaleContext';
 import { ThemeProvider } from './context/ThemeContext';
-
-function isAndroidMobileWeb(): boolean {
-  if (typeof navigator === 'undefined') return false;
-  const ua = navigator.userAgent || '';
-  return /android/i.test(ua) && !/(WebView|; wv\))/i.test(ua);
-}
-
-function createDesktopWallets() {
-  return [
-    new PhantomWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
-    new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
-  ];
-}
-
-/** Tiny gold square — MWA appIdentity.icon must be a data URI. */
-function pierronMwaIcon(): `data:image/svg+xml;base64,${string}` {
-  const svg =
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#d4a017"/><text x="32" y="42" text-anchor="middle" font-size="28" font-family="sans-serif" font-weight="700" fill="#000">P</text></svg>';
-  const b64 =
-    typeof btoa === 'function' ? btoa(svg) : Buffer.from(svg).toString('base64');
-  return `data:image/svg+xml;base64,${b64}`;
-}
 
 export default function RootLayout({
   children,
@@ -62,37 +34,20 @@ export default function RootLayout({
       commitment: 'confirmed' as const,
       fetch: fetchWithRpcRetry as typeof fetch,
       disableRetryOnRateLimit: true,
-      // Worker HTTP nie obsługuje WSS — subskrypcje idą na publiczny devnet WS (bez ws error w konsoli).
       wsEndpoint: 'wss://api.devnet.solana.com',
     }),
     []
   );
 
-  // Start with desktop adapters (SSR-safe). Inject MWA after mount on Android web.
-  const [wallets, setWallets] = useState<Adapter[]>(() => createDesktopWallets());
-
-  useEffect(() => {
-    if (!isAndroidMobileWeb()) return;
-    const origin = window.location.origin;
-    setWallets([
-      new SolanaMobileWalletAdapter({
-        addressSelector: createDefaultAddressSelector(),
-        appIdentity: {
-          name: 'Pierron',
-          uri: origin,
-          icon: pierronMwaIcon(),
-        },
-        authorizationResultCache: createDefaultAuthorizationResultCache(),
-        cluster: WalletAdapterNetwork.Devnet,
-        onWalletNotFound: async () => {
-          if (typeof window !== 'undefined') {
-            window.dispatchEvent(new Event('pierron-mwa-not-found'));
-          }
-        },
-      }),
-      ...createDesktopWallets(),
-    ]);
-  }, []);
+  // Phantom/Solflare for desktop + wallet in-app browsers.
+  // Android Vanadium: do not rely on MWA round-trip — UI opens browse deeplinks instead.
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
+      new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
+    ],
+    []
+  );
 
   const onWalletError = useCallback((error: WalletError) => {
     console.error('[pierron wallet]', error);
@@ -102,18 +57,13 @@ export default function RootLayout({
     );
   }, []);
 
-  // Resume MWA after returning from the installed wallet app; skip desktop autoConnect noise.
-  const autoConnect = useCallback(async (adapter: Adapter) => {
-    return adapter.name === SolanaMobileWalletAdapterWalletName;
-  }, []);
-
   return (
     <ServerLayout>
       <ThemeProvider>
         <LocaleProvider>
           <LayoutModeProvider>
             <ConnectionProvider endpoint={endpoint} config={connectionConfig}>
-              <WalletProvider wallets={wallets} autoConnect={autoConnect} onError={onWalletError}>
+              <WalletProvider wallets={wallets} autoConnect={false} onError={onWalletError}>
                 <WalletModalProvider>{children}</WalletModalProvider>
               </WalletProvider>
             </ConnectionProvider>

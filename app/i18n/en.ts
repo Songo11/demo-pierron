@@ -206,7 +206,10 @@ export const en: Translations = {
     "openInPhantom": "Open in Phantom",
     "openInSolflare": "Open in Solflare",
     "connectResumeCta": "Finish connecting",
-    "connectResumeHint": "If you just returned from Solflare/Phantom — tap Finish connecting to enter the dapp."
+    "connectResumeHint": "If you just returned from Solflare/Phantom — tap Finish connecting to enter the dapp.",
+    "connectNeedWalletBrowser": "Open this page in Solflare or Phantom (buttons below), then connect the wallet.",
+    "connectAndroidStayHint": "On phone (Vanadium/GrapheneOS): open the dapp in Solflare or Phantom and STAY in that app — do not return to Vanadium. The wallet will connect automatically.",
+    "connectInWalletBrowserHint": "You are in the wallet browser — approve the connect prompt when Solflare/Phantom asks."
   },
   "settings": {
     "title": "Settings",

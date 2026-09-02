@@ -1,338 +1,119 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
+import type { WalletName } from '@solana/wallet-adapter-base';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
 import { useTranslations } from '../context/LocaleContext';
 import {
+  detectInjectedWalletBrowser,
   isAndroidUserAgent,
-  isMwaWalletNotFoundMessage,
   openCurrentPageInPhantom,
   openCurrentPageInSolflare,
 } from '../lib/openInMobileWalletBrowser';
 
-const MWA_PENDING_KEY = 'pierron_mwa_connect_pending';
-
-function markMwaPending(): void {
-  try {
-    sessionStorage.setItem(MWA_PENDING_KEY, '1');
-  } catch {
-    // ignore
-  }
-}
-
-function clearMwaPending(): void {
-  try {
-    sessionStorage.removeItem(MWA_PENDING_KEY);
-  } catch {
-    // ignore
-  }
-}
-
-function isMwaPending(): boolean {
-  try {
-    return sessionStorage.getItem(MWA_PENDING_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
 /**
- * Gate CTA with Android support.
- *
- * After Solflare/Phantom MWA authorize, the browser often resumes with a hung
- * connect() promise. We must reset in-flight state and call autoConnect() to
- * pick up the cached authorization and unlock the gate.
+ * Mobile (Vanadium/GrapheneOS): do NOT rely on MWA round-trip — it returns to the
+ * browser still disconnected. Primary path = open this page inside Solflare/Phantom
+ * browse, then auto-connect with the injected provider.
  */
 export default function ConnectWalletGateButton() {
   const t = useTranslations();
-  const { connected, connecting, wallet, wallets, publicKey, connect, select } =
-    useWallet();
+  const { connected, connecting, wallet, publicKey, connect, select } = useWallet();
   const { setVisible } = useWalletModal();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [showBrowseFallback, setShowBrowseFallback] = useState(false);
-  const [showResumeCta, setShowResumeCta] = useState(false);
-  const inFlightRef = useRef(false);
+  const [injected, setInjected] = useState(() => detectInjectedWalletBrowser());
+  const autoTriedRef = useRef(false);
 
   const android = typeof navigator !== 'undefined' && isAndroidUserAgent();
-  const mobileWallet = wallets.find(
-    (w) => w.adapter.name === SolanaMobileWalletAdapterWalletName
-  );
-  const isMwaSelected =
-    wallet?.adapter.name === SolanaMobileWalletAdapterWalletName;
-  const inWalletBrowser =
-    typeof window !== 'undefined' &&
-    Boolean(
-      (window as Window & { phantom?: { solana?: unknown }; solflare?: unknown })
-        .phantom?.solana ||
-        (window as Window & { solflare?: unknown }).solflare ||
-        (window as Window & { solana?: { isPhantom?: boolean } }).solana?.isPhantom
-    );
+  const inWalletBrowser = injected != null;
 
   useEffect(() => {
     if (connected) {
       setError(null);
       setBusy(false);
-      setShowBrowseFallback(false);
-      setShowResumeCta(false);
-      inFlightRef.current = false;
-      clearMwaPending();
+      autoTriedRef.current = false;
     }
   }, [connected]);
 
+  // Providers can appear a moment after load inside Solflare/Phantom browser.
   useEffect(() => {
-    if (android && !inWalletBrowser && !connected) {
-      setShowBrowseFallback(true);
-    }
-  }, [android, inWalletBrowser, connected]);
+    if (!android && !inWalletBrowser) return;
+    const id = window.setInterval(() => {
+      const kind = detectInjectedWalletBrowser();
+      if (kind) setInjected(kind);
+    }, 400);
+    return () => window.clearInterval(id);
+  }, [android, inWalletBrowser]);
 
-  useEffect(() => {
-    const onWalletErr = (ev: Event) => {
-      const msg = (ev as CustomEvent<{ message?: string }>).detail?.message;
-      if (!msg) return;
-      if (isMwaWalletNotFoundMessage(msg)) {
-        setShowBrowseFallback(true);
-        setError(
-          t.dapp.connectMwaNotFound ??
-            'Ta przeglądarka nie widzi portfela przez Mobile Wallet Adapter (częste na GrapheneOS/Vanadium). Otwórz dappkę w Phantom lub Solflare.'
-        );
-        setBusy(false);
-        inFlightRef.current = false;
-        clearMwaPending();
-        return;
-      }
+  const connectInjected = useCallback(async () => {
+    const kind = detectInjectedWalletBrowser();
+    if (!kind) {
+      setError(
+        t.dapp.connectNeedWalletBrowser ??
+          'Otwórz tę stronę w Solflare lub Phantom (przyciski poniżej), potem połącz portfel.'
+      );
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      const name = (kind === 'solflare' ? 'Solflare' : 'Phantom') as WalletName;
+      select(name);
+      // Let WalletProvider wire the adapter before connect().
+      await new Promise((r) => window.setTimeout(r, 120));
+      await connect();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
       const rejected = /reject|denied|cancel/i.test(msg);
       setError(
         rejected
           ? (t.dapp.connectRejectedHint ??
-            'Odrzucono w portfelu. Kliknij ponownie i zatwierdź połączenie.')
+            'Odrzucono w portfelu. Spróbuj ponownie i zatwierdź.')
           : msg
       );
-      setBusy(false);
-      inFlightRef.current = false;
-      if (isMwaSelected) setShowResumeCta(true);
-    };
-    const onMwaMissing = () => {
-      setShowBrowseFallback(true);
-      setError(
-        t.dapp.connectMwaNotFound ??
-          'Ta przeglądarka nie widzi portfela przez Mobile Wallet Adapter. Otwórz dappkę w Phantom lub Solflare.'
-      );
-      setBusy(false);
-      inFlightRef.current = false;
-      clearMwaPending();
-    };
-    window.addEventListener('pierron-wallet-error', onWalletErr);
-    window.addEventListener('pierron-mwa-not-found', onMwaMissing);
-    return () => {
-      window.removeEventListener('pierron-wallet-error', onWalletErr);
-      window.removeEventListener('pierron-mwa-not-found', onMwaMissing);
-    };
-  }, [isMwaSelected, t.dapp.connectMwaNotFound, t.dapp.connectRejectedHint]);
-
-  /** Complete MWA after returning from Solflare/Phantom (use autoConnect for cached auth). */
-  const resumeMwaSession = useCallback(async () => {
-    if (connected) return;
-    // Always clear hung first attempt — otherwise resume is a no-op.
-    inFlightRef.current = false;
-    setBusy(true);
-    setError(null);
-    setShowResumeCta(true);
-
-    if (!isMwaSelected && mobileWallet) {
-      select(SolanaMobileWalletAdapterWalletName);
-      await new Promise((r) => window.setTimeout(r, 50));
-    }
-
-    try {
-      const adapter = wallet?.adapter;
-      if (
-        adapter &&
-        adapter.name === SolanaMobileWalletAdapterWalletName &&
-        typeof (adapter as { autoConnect?: () => Promise<void> }).autoConnect ===
-          'function'
-      ) {
-        await (adapter as { autoConnect: () => Promise<void> }).autoConnect();
-      } else {
-        await connect();
-      }
-      clearMwaPending();
-    } catch (e) {
-      // Second chance: plain connect() after autoConnect failed.
-      try {
-        inFlightRef.current = false;
-        await connect();
-        clearMwaPending();
-      } catch (e2) {
-        const msg = e2 instanceof Error ? e2.message : String(e2);
-        if (isMwaWalletNotFoundMessage(msg)) {
-          setShowBrowseFallback(true);
-          setError(
-            t.dapp.connectMwaNotFound ??
-              'Ta przeglądarka nie widzi portfela przez Mobile Wallet Adapter. Otwórz dappkę w Phantom lub Solflare.'
-          );
-          clearMwaPending();
-        } else {
-          setError(
-            t.dapp.connectResumeHint ??
-              'Wróciłeś z portfela — kliknij „Dokończ połączenie”, żeby wejść do dappki.'
-          );
-        }
-      }
     } finally {
       setBusy(false);
-      inFlightRef.current = false;
     }
-  }, [
-    connect,
-    connected,
-    isMwaSelected,
-    mobileWallet,
-    select,
-    t.dapp.connectMwaNotFound,
-    t.dapp.connectResumeHint,
-    wallet?.adapter,
-  ]);
+  }, [connect, select, t.dapp.connectNeedWalletBrowser, t.dapp.connectRejectedHint]);
 
-  const runConnect = useCallback(async () => {
-    if (connected) return;
-    if (inFlightRef.current) return;
-    inFlightRef.current = true;
-    setBusy(true);
-    setError(null);
-    if (isMwaSelected || mobileWallet) markMwaPending();
-    try {
-      await connect();
-      clearMwaPending();
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      if (isMwaWalletNotFoundMessage(msg)) {
-        setShowBrowseFallback(true);
-        setError(
-          t.dapp.connectMwaNotFound ??
-            'Ta przeglądarka nie widzi portfela przez Mobile Wallet Adapter. Otwórz dappkę w Phantom lub Solflare.'
-        );
-        clearMwaPending();
-      } else {
-        const rejected = /reject|denied|cancel/i.test(msg);
-        setError(
-          rejected
-            ? (t.dapp.connectRejectedHint ??
-              'Odrzucono w portfelu. Kliknij ponownie i zatwierdź połączenie.')
-            : msg
-        );
-        if (isMwaSelected || isMwaPending()) setShowResumeCta(true);
-      }
-    } finally {
-      setBusy(false);
-      inFlightRef.current = false;
-    }
-  }, [
-    connect,
-    connected,
-    isMwaSelected,
-    mobileWallet,
-    t.dapp.connectMwaNotFound,
-    t.dapp.connectRejectedHint,
-  ]);
-
-  // Non-MWA (injected provider): connect after select.
+  // Inside wallet in-app browser: auto-connect so user lands in the dapp menu.
   useEffect(() => {
-    if (!wallet || connected || connecting || isMwaSelected) return;
-    void runConnect();
-  }, [wallet, connected, connecting, isMwaSelected, runConnect]);
+    if (!inWalletBrowser || connected || autoTriedRef.current) return;
+    autoTriedRef.current = true;
+    const timers = [200, 600, 1200, 2000].map((ms) =>
+      window.setTimeout(() => {
+        if (!connected) void connectInjected();
+      }, ms)
+    );
+    return () => timers.forEach((id) => window.clearTimeout(id));
+  }, [inWalletBrowser, connected, connectInjected]);
 
-  // Returning from Solflare/Phantom — finish authorization.
+  // After modal select of Phantom/Solflare (desktop or wallet browser).
   useEffect(() => {
-    if (connected || inWalletBrowser) return;
-    const onResume = () => {
-      if (document.visibilityState !== 'visible') return;
-      if (isMwaSelected || isMwaPending()) {
-        void resumeMwaSession();
-      }
-    };
-    document.addEventListener('visibilitychange', onResume);
-    window.addEventListener('focus', onResume);
-    window.addEventListener('pageshow', onResume);
-    // If we already returned and page is visible with pending flag.
-    if (isMwaPending() || isMwaSelected) {
-      const t = window.setTimeout(onResume, 300);
-      return () => {
-        window.clearTimeout(t);
-        document.removeEventListener('visibilitychange', onResume);
-        window.removeEventListener('focus', onResume);
-        window.removeEventListener('pageshow', onResume);
-      };
-    }
-    return () => {
-      document.removeEventListener('visibilitychange', onResume);
-      window.removeEventListener('focus', onResume);
-      window.removeEventListener('pageshow', onResume);
-    };
-  }, [connected, inWalletBrowser, isMwaSelected, resumeMwaSession]);
+    if (!wallet || connected || connecting || !inWalletBrowser) return;
+    void connectInjected();
+  }, [wallet, connected, connecting, inWalletBrowser, connectInjected]);
 
-  const onClick = useCallback(() => {
+  const onPrimaryClick = useCallback(() => {
     setError(null);
     if (connected) {
       setVisible(true);
       return;
     }
-
-    if (showResumeCta || isMwaPending()) {
-      void resumeMwaSession();
-      return;
-    }
-
     if (inWalletBrowser) {
-      if (!wallet) {
-        setVisible(true);
-        return;
-      }
-      void runConnect();
+      void connectInjected();
       return;
     }
-
-    if (connecting || busy) {
-      void resumeMwaSession();
+    if (android) {
+      // Vanadium: stay inside Solflare — do not use MWA handoff.
+      openCurrentPageInSolflare();
       return;
     }
-
-    if (isMwaSelected) {
-      markMwaPending();
-      void runConnect();
-      return;
-    }
-    if (mobileWallet) {
-      markMwaPending();
-      select(SolanaMobileWalletAdapterWalletName);
-      window.setTimeout(() => {
-        void runConnect();
-      }, 0);
-      return;
-    }
-
-    if (!wallet) {
-      setVisible(true);
-      return;
-    }
-    void runConnect();
-  }, [
-    busy,
-    connected,
-    connecting,
-    inWalletBrowser,
-    isMwaSelected,
-    mobileWallet,
-    resumeMwaSession,
-    runConnect,
-    select,
-    setVisible,
-    showResumeCta,
-    wallet,
-  ]);
+    setVisible(true);
+  }, [android, connected, connectInjected, inWalletBrowser, setVisible]);
 
   const label = connected
     ? publicKey
@@ -340,38 +121,29 @@ export default function ConnectWalletGateButton() {
       : t.wallet.portfelPodlaczony
     : busy || connecting
       ? t.dapp.connectHintConnecting
-      : showResumeCta || isMwaPending()
-        ? (t.dapp.connectResumeCta ?? 'Dokończ połączenie')
-        : inWalletBrowser
-          ? t.wallet.polaczPortfel
-          : mobileWallet
-            ? (t.dapp.connectMobileWallet ?? t.wallet.polaczPortfel)
-            : t.wallet.polaczPortfel;
+      : inWalletBrowser
+        ? t.wallet.polaczPortfel
+        : android
+          ? (t.dapp.openInSolflare ?? 'Otwórz w Solflare')
+          : t.wallet.polaczPortfel;
 
   return (
     <div className="pierron-connect-wallet-wrap">
       <button
         type="button"
         className="wallet-adapter-button wallet-adapter-button-trigger pierron-connect-wallet-btn"
-        onClick={onClick}
+        onClick={onPrimaryClick}
       >
         {label}
       </button>
 
-      {showBrowseFallback && !connected && !inWalletBrowser ? (
+      {android && !inWalletBrowser && !connected ? (
         <div className="pierron-connect-browse-fallback">
           <p className="pierron-connect-wallet-mwa-hint">
-            {t.dapp.connectBrowseHint ??
-              'Najpewniejsza ścieżka na telefonie: otwórz tę stronę w przeglądarce wbudowanej w portfel.'}
+            {t.dapp.connectAndroidStayHint ??
+              'Na telefonie (Vanadium/GrapheneOS): otwórz dappkę w Solflare lub Phantom i ZOSTAŃ w tej aplikacji — nie wracaj do przeglądarki. Potem portfel połączy się sam.'}
           </p>
           <div className="pierron-connect-browse-row">
-            <button
-              type="button"
-              className="pierron-connect-browse-btn"
-              onClick={() => openCurrentPageInPhantom()}
-            >
-              {t.dapp.openInPhantom ?? 'Otwórz w Phantom'}
-            </button>
             <button
               type="button"
               className="pierron-connect-browse-btn"
@@ -379,18 +151,25 @@ export default function ConnectWalletGateButton() {
             >
               {t.dapp.openInSolflare ?? 'Otwórz w Solflare'}
             </button>
+            <button
+              type="button"
+              className="pierron-connect-browse-btn"
+              onClick={() => openCurrentPageInPhantom()}
+            >
+              {t.dapp.openInPhantom ?? 'Otwórz w Phantom'}
+            </button>
           </div>
         </div>
       ) : null}
 
-      {error ? <p className="pierron-connect-wallet-error">{error}</p> : null}
-
-      {(showResumeCta || isMwaPending()) && !connected ? (
+      {inWalletBrowser && !connected ? (
         <p className="pierron-connect-wallet-mwa-hint">
-          {t.dapp.connectResumeHint ??
-            'Jeśli wróciłeś z Solflare/Phantom — kliknij „Dokończ połączenie”, żeby wejść do menu.'}
+          {t.dapp.connectInWalletBrowserHint ??
+            'Jesteś w przeglądarce portfela — zatwierdź połączenie, gdy Solflare/Phantom o to poprosi.'}
         </p>
       ) : null}
+
+      {error ? <p className="pierron-connect-wallet-error">{error}</p> : null}
     </div>
   );
 }

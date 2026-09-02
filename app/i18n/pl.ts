@@ -205,7 +205,10 @@ export const pl = {
     "openInPhantom": "Otwórz w Phantom",
     "openInSolflare": "Otwórz w Solflare",
     "connectResumeCta": "Dokończ połączenie",
-    "connectResumeHint": "Jeśli wróciłeś z Solflare/Phantom — kliknij „Dokończ połączenie”, żeby wejść do menu dappki."
+    "connectResumeHint": "Jeśli wróciłeś z Solflare/Phantom — kliknij „Dokończ połączenie”, żeby wejść do menu dappki.",
+    "connectNeedWalletBrowser": "Otwórz tę stronę w Solflare lub Phantom (przyciski poniżej), potem połącz portfel.",
+    "connectAndroidStayHint": "Na telefonie (Vanadium/GrapheneOS): otwórz dappkę w Solflare lub Phantom i ZOSTAŃ w tej aplikacji — nie wracaj do Vanadium. Portfel połączy się sam.",
+    "connectInWalletBrowserHint": "Jesteś w przeglądarce portfela — zatwierdź połączenie, gdy Solflare/Phantom o to poprosi."
   },
   "settings": {
     "title": "Ustawienia",
