@@ -39,9 +39,12 @@ const nextConfig: NextConfig = {
       path: false,
       crypto: false,
     };
+    // Prefer dapp/node_modules so shared/* imports resolve on Vercel
+    // (repo root often has no node_modules when Root is the monorepo).
     config.resolve.modules = [
-      ...(config.resolve.modules ?? ['node_modules']),
+      path.join(__dirname, 'node_modules'),
       path.join(repoRoot, 'node_modules'),
+      ...(config.resolve.modules ?? ['node_modules']),
     ];
     // Lower peak RAM during ecosystem/swap compiles (avoids silent Node exit).
     config.parallelism = 1;
