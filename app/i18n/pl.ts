@@ -197,7 +197,9 @@ export const pl = {
     "connectTagline": "Devnet · Web",
     "connectHint": "Podłącz Phantom lub Solflare (Devnet), żeby korzystać ze swapu, ekosystemu i Safe Send.",
     "connectHintConnecting": "Łączenie z portfelem…",
-    "connectRejectedHint": "Odrzucono w portfelu. Kliknij ponownie „Połącz portfel”, wybierz Solflare lub Phantom (Devnet) i zatwierdź połączenie."
+    "connectRejectedHint": "Odrzucono w portfelu. Kliknij ponownie „Połącz portfel”, wybierz Solflare lub Phantom (Devnet) i zatwierdź połączenie.",
+    "connectMobileWallet": "Użyj portfela z telefonu",
+    "connectMobileHint": "Na Androidzie przycisk otworzy zainstalowaną aplikację portfela (Phantom / Solflare) przez Mobile Wallet Adapter."
   },
   "settings": {
     "title": "Ustawienia",

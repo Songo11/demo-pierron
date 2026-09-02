@@ -434,6 +434,14 @@ body {
   line-height: 1.4;
 }
 
+.pierron-connect-wallet-mwa-hint {
+  margin: 10px 0 0;
+  color: var(--pierron-text-muted);
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.4;
+}
+
 /* Light theme */
 html[data-pierron-theme='light'] {
   --pierron-bg: #ffffff;

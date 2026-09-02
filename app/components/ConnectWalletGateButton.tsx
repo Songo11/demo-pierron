@@ -1,28 +1,39 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
 import { useTranslations } from '../context/LocaleContext';
 
 /**
- * Gate CTA. Wallet modal only `select()`s — we must `connect()` afterwards
- * (same as WalletMultiButton's has-wallet → onConnect path).
+ * Gate CTA with Android Mobile Wallet Adapter support.
+ *
+ * MWA quirk: selecting it in the modal often does nothing if it is already
+ * the selected wallet — we must call connect() explicitly (Solana Mobile UX).
+ * Leaving to the wallet app and returning also needs a reconnect attempt.
  */
 export default function ConnectWalletGateButton() {
   const t = useTranslations();
-  const { connected, connecting, wallet, publicKey, connect } = useWallet();
+  const { connected, connecting, wallet, wallets, publicKey, connect, select } =
+    useWallet();
   const { setVisible } = useWalletModal();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const connectAttemptRef = useRef<string | null>(null);
+  const inFlightRef = useRef(false);
+
+  const mobileWallet = wallets.find(
+    (w) => w.adapter.name === SolanaMobileWalletAdapterWalletName
+  );
+  const isMwaSelected =
+    wallet?.adapter.name === SolanaMobileWalletAdapterWalletName;
 
   useEffect(() => {
     if (connected) {
       setError(null);
       setBusy(false);
-      connectAttemptRef.current = null;
+      inFlightRef.current = false;
     }
   }, [connected]);
 
@@ -38,45 +49,56 @@ export default function ConnectWalletGateButton() {
           : msg
       );
       setBusy(false);
-      connectAttemptRef.current = null;
+      inFlightRef.current = false;
     };
     window.addEventListener('pierron-wallet-error', onWalletErr);
     return () => window.removeEventListener('pierron-wallet-error', onWalletErr);
   }, [t.dapp.connectRejectedHint]);
 
-  // After modal select(walletName), adapter is set but not connected — connect now.
-  useEffect(() => {
-    if (!wallet || connected || connecting) return;
-    const name = wallet.adapter.name;
-    if (connectAttemptRef.current === name) return;
-    connectAttemptRef.current = name;
-
-    let cancelled = false;
+  const runConnect = useCallback(async () => {
+    if (inFlightRef.current || connected) return;
+    inFlightRef.current = true;
     setBusy(true);
     setError(null);
-    void (async () => {
-      try {
-        await connect();
-      } catch (e) {
-        if (cancelled) return;
-        const msg = e instanceof Error ? e.message : String(e);
-        const rejected = /reject|denied|cancel/i.test(msg);
-        setError(
-          rejected
-            ? (t.dapp.connectRejectedHint ??
-              'Odrzucono w portfelu. Kliknij ponownie i zatwierdź połączenie.')
-            : msg
-        );
-        connectAttemptRef.current = null;
-      } finally {
-        if (!cancelled) setBusy(false);
-      }
-    })();
+    try {
+      await connect();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const rejected = /reject|denied|cancel/i.test(msg);
+      setError(
+        rejected
+          ? (t.dapp.connectRejectedHint ??
+            'Odrzucono w portfelu. Kliknij ponownie i zatwierdź połączenie.')
+          : msg
+      );
+    } finally {
+      setBusy(false);
+      inFlightRef.current = false;
+    }
+  }, [connect, connected, t.dapp.connectRejectedHint]);
 
-    return () => {
-      cancelled = true;
+  // After modal select() of a non-MWA wallet, connect automatically.
+  // For MWA we connect from onClick / visibility resume (select often no-ops).
+  useEffect(() => {
+    if (!wallet || connected || connecting || isMwaSelected) return;
+    void runConnect();
+  }, [wallet, connected, connecting, isMwaSelected, runConnect]);
+
+  // Returning from Phantom/Solflare app after MWA authorize.
+  useEffect(() => {
+    if (!isMwaSelected || connected) return;
+    const resume = () => {
+      if (document.visibilityState === 'visible') {
+        void runConnect();
+      }
     };
-  }, [wallet, connected, connecting, connect, t.dapp.connectRejectedHint]);
+    document.addEventListener('visibilitychange', resume);
+    window.addEventListener('focus', resume);
+    return () => {
+      document.removeEventListener('visibilitychange', resume);
+      window.removeEventListener('focus', resume);
+    };
+  }, [isMwaSelected, connected, runConnect]);
 
   const onClick = useCallback(() => {
     setError(null);
@@ -84,26 +106,43 @@ export default function ConnectWalletGateButton() {
       setVisible(true);
       return;
     }
+    if (connecting || busy) {
+      // Allow retry if stuck.
+      void runConnect();
+      return;
+    }
+
+    // Android: prefer Mobile Wallet Adapter ("Use installed wallet").
+    if (isMwaSelected) {
+      void runConnect();
+      return;
+    }
+    if (mobileWallet) {
+      select(SolanaMobileWalletAdapterWalletName);
+      // select may be sync; connect on next tick so adapter is wired.
+      window.setTimeout(() => {
+        void runConnect();
+      }, 0);
+      return;
+    }
+
+    // Desktop / no MWA: open wallet picker (Phantom / Solflare).
     if (!wallet) {
       setVisible(true);
       return;
     }
-    // Selected but not connected (e.g. previous reject) — retry connect.
-    connectAttemptRef.current = null;
-    setBusy(true);
-    void connect()
-      .catch((e: unknown) => {
-        const msg = e instanceof Error ? e.message : String(e);
-        const rejected = /reject|denied|cancel/i.test(msg);
-        setError(
-          rejected
-            ? (t.dapp.connectRejectedHint ??
-              'Odrzucono w portfelu. Kliknij ponownie i zatwierdź połączenie.')
-            : msg
-        );
-      })
-      .finally(() => setBusy(false));
-  }, [connected, connect, setVisible, t.dapp.connectRejectedHint, wallet]);
+    void runConnect();
+  }, [
+    busy,
+    connected,
+    connecting,
+    isMwaSelected,
+    mobileWallet,
+    runConnect,
+    select,
+    setVisible,
+    wallet,
+  ]);
 
   const label = connected
     ? publicKey
@@ -111,8 +150,8 @@ export default function ConnectWalletGateButton() {
       : t.wallet.portfelPodlaczony
     : busy || connecting
       ? t.dapp.connectHintConnecting
-      : wallet
-        ? t.wallet.polaczPortfel
+      : mobileWallet && !wallet
+        ? (t.dapp.connectMobileWallet ?? t.wallet.polaczPortfel)
         : t.wallet.polaczPortfel;
 
   return (
@@ -125,6 +164,12 @@ export default function ConnectWalletGateButton() {
         {label}
       </button>
       {error ? <p className="pierron-connect-wallet-error">{error}</p> : null}
+      {mobileWallet && !connected ? (
+        <p className="pierron-connect-wallet-mwa-hint">
+          {t.dapp.connectMobileHint ??
+            'Na Androidzie: Połącz portfel otworzy zainstalowaną aplikację portfela (Phantom / Solflare).'}
+        </p>
+      ) : null}
     </div>
   );
 }
