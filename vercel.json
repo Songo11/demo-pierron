@@ -1,8 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null,
-  "installCommand": "cd dapp && npm install",
-  "buildCommand": "cd dapp && npm run build",
-  "outputDirectory": "dapp/.next",
+  "framework": "nextjs",
   "regions": ["fra1"]
 }
