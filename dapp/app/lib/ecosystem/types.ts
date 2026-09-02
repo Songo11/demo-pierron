@@ -1,0 +1,222 @@
+export type EcosystemSnapshot = {
+  displayEpoch: number;
+  currentEpoch: number;
+  effectiveEpoch: number;
+  genesisEpochTimestamp: number;
+  epochStartTime: number;
+  epochSyncLag: number;
+  transactionsThisEpoch: number;
+  epochVolume: number;
+  epochTimeLeft: string;
+
+  redistributionCycleLength: number;
+  redistributionCycleStartEpoch: number;
+  completedEpochsInRedistributionCycle: number;
+  activeEpochsInRedistributionCycle: number;
+  minActiveEpochsRequired: number;
+  redistributionEligible: boolean;
+  redistributionStatusText: string;
+  redistributionSettlementIn: string;
+  activityBitmap: number;
+  effectiveActivityCycleEpoch: number;
+  participantInCurrentCycle: boolean;
+  redistributionPastCycleClaimWindow: boolean;
+  claimCycleActiveEpochs: number;
+  redistributionMarkerEpochInCycle: number;
+  redistributionMarkerInCycle: boolean;
+  cycleCompleteOnChain: boolean;
+  showClaimButton: boolean;
+  canExecuteClaim: boolean;
+  claimBlockReason?: string;
+  /** Lag-aware seconds until TooEarly clears (post-rollover delay). */
+  claimOpensInSecs: number;
+  /** Epochs until redistribution claim forfeits (28-epoch window after cycle end). */
+  claimExpiresInEpochs: number;
+  estimatedNetPayoutUi: string;
+  hasPendingVoucher: boolean;
+  /** Live settle-only voucher (when present, claim must not go through Light prepare). */
+  pendingRedistributionVoucher: {
+    address: string;
+    amount: string;
+    cycleStartEpoch: number;
+    preparedAt: number;
+    consumed: boolean;
+  } | null;
+  secondsIntoEpoch: number;
+
+  loyaltyCycleLength: number;
+  lotteryTicketCycleStart: number;
+  completedEpochsInLoyaltyCycle: number;
+  ticketsCurrentCycle: number;
+  loyaltyActive: boolean;
+  loyaltyStatusText: string;
+  loyaltyDrawIn: string;
+  lotteryDrawOverdue: boolean;
+  lotteryDrawn: boolean;
+  lotteryPaid: boolean;
+  globalTotalTickets: number;
+  onChainGlobalTotalTickets: number;
+  lotteryTicketsInPool: number;
+  lotteryTicketsFromVolume: number;
+  lotteryPoolDesync: boolean;
+  lotteryCycleVolumeUi: string;
+  lotteryVolumeToNextTicketUi: string;
+  lotteryStaleTickets: number;
+  lotteryStaleCycleStart: number;
+  showLotteryClaimButton: boolean;
+  canExecuteLotteryClaim: boolean;
+  /** User genuinely holds a claimable position in this draw (winning ticket / voucher). */
+  lotteryUserHasStake: boolean;
+  lotteryClaimBlockReason?: string;
+  lotteryClaimedByConsumedVoucher: boolean;
+  lotteryPrizeUi: string;
+  hasPendingLotteryVoucher: boolean;
+  lotteryPayoutDelayRemainingSecs: number;
+  lotteryDrawPendingPayout: boolean;
+  lotteryClaimUiPriority: boolean;
+  lotteryClaimLatchActive: boolean;
+  lotteryStaleDrawPayoutPending: boolean;
+  loyaltyCycleWindowCompleted: boolean;
+  lotteryAwaitingDrawMarker: boolean;
+  lotteryScheduledDrawMarkerInCycle: number;
+  lotteryDrawEpoch: number;
+  lotteryDrawMarkerEpochInCycle: number;
+  lotteryDrawPoolWindowStart: number;
+  /** Claim panel: participant's winning ticket window when it lags on-chain draw marker. */
+  lotteryClaimMarkerEpochInCycle: number;
+  lotteryClaimPoolWindowStart: number;
+  lotteryClaimEpochReached: boolean;
+  lotteryAwaitingClaimMarker: boolean;
+  lotteryAwaitingKeeperDraw: boolean;
+  lotteryAwaitingKeeperCommits: boolean;
+  /** Global: draw/skip pending for ended ticket window (same on all devices). */
+  lotteryProtocolKeeperPending: boolean;
+  participantLoadFailed: boolean;
+  lotteryCommitCount: number;
+  lotteryMinCommits: number;
+  lotteryInsufficientTickets: boolean;
+  minTicketsForDraw: number;
+  lotteryEpochsOverdue: number;
+  lotteryPendingWindowStart: number;
+  lotteryPendingWindowEnd: number;
+  lotteryPendingDrawMarkerInCycle: number;
+  lotteryKeeperBacklog: boolean;
+
+  redistributionClaimsCount: number;
+  lastClaimText: string;
+  lastActiveEpoch: number;
+};
+
+export const EMPTY_ECOSYSTEM_SNAPSHOT: EcosystemSnapshot = {
+  displayEpoch: 0,
+  currentEpoch: 0,
+  effectiveEpoch: 0,
+  genesisEpochTimestamp: 0,
+  epochStartTime: 0,
+  epochSyncLag: 0,
+  transactionsThisEpoch: 0,
+  epochVolume: 0,
+  epochTimeLeft: '—',
+  redistributionCycleLength: 28,
+  redistributionCycleStartEpoch: 0,
+  completedEpochsInRedistributionCycle: 0,
+  activeEpochsInRedistributionCycle: 0,
+  minActiveEpochsRequired: 9,
+  redistributionEligible: false,
+  redistributionStatusText: '',
+  redistributionSettlementIn: '—',
+  activityBitmap: 0,
+  effectiveActivityCycleEpoch: -1,
+  participantInCurrentCycle: false,
+  redistributionPastCycleClaimWindow: false,
+  claimCycleActiveEpochs: 0,
+  redistributionMarkerEpochInCycle: 0,
+  redistributionMarkerInCycle: false,
+  cycleCompleteOnChain: false,
+  showClaimButton: false,
+  canExecuteClaim: false,
+  claimOpensInSecs: 0,
+  claimExpiresInEpochs: 0,
+  estimatedNetPayoutUi: '—',
+  hasPendingVoucher: false,
+  pendingRedistributionVoucher: null,
+  secondsIntoEpoch: 0,
+  loyaltyCycleLength: 7,
+  lotteryTicketCycleStart: -1,
+  completedEpochsInLoyaltyCycle: 0,
+  ticketsCurrentCycle: 0,
+  loyaltyActive: false,
+  loyaltyStatusText: '',
+  loyaltyDrawIn: '—',
+  lotteryDrawOverdue: false,
+  lotteryDrawn: false,
+  lotteryPaid: false,
+  globalTotalTickets: 0,
+  onChainGlobalTotalTickets: 0,
+  lotteryTicketsInPool: 0,
+  lotteryTicketsFromVolume: 0,
+  lotteryPoolDesync: false,
+  lotteryCycleVolumeUi: '—',
+  lotteryVolumeToNextTicketUi: '—',
+  lotteryStaleTickets: 0,
+  lotteryStaleCycleStart: -1,
+  showLotteryClaimButton: false,
+  canExecuteLotteryClaim: false,
+  lotteryUserHasStake: false,
+  lotteryClaimedByConsumedVoucher: false,
+  lotteryPrizeUi: '—',
+  hasPendingLotteryVoucher: false,
+  lotteryPayoutDelayRemainingSecs: 0,
+  lotteryDrawPendingPayout: false,
+  lotteryClaimUiPriority: false,
+  lotteryClaimLatchActive: false,
+  lotteryStaleDrawPayoutPending: false,
+  loyaltyCycleWindowCompleted: false,
+  lotteryAwaitingDrawMarker: false,
+  lotteryScheduledDrawMarkerInCycle: -1,
+  lotteryDrawEpoch: -1,
+  lotteryDrawMarkerEpochInCycle: -1,
+  lotteryDrawPoolWindowStart: -1,
+  lotteryClaimMarkerEpochInCycle: -1,
+  lotteryClaimPoolWindowStart: -1,
+  lotteryClaimEpochReached: false,
+  lotteryAwaitingClaimMarker: false,
+  lotteryAwaitingKeeperDraw: false,
+  lotteryAwaitingKeeperCommits: false,
+  lotteryProtocolKeeperPending: false,
+  participantLoadFailed: false,
+  lotteryCommitCount: 0,
+  lotteryMinCommits: 20,
+  lotteryInsufficientTickets: false,
+  minTicketsForDraw: 2,
+  lotteryEpochsOverdue: 0,
+  lotteryPendingWindowStart: -1,
+  lotteryPendingWindowEnd: -1,
+  lotteryPendingDrawMarkerInCycle: -1,
+  lotteryKeeperBacklog: false,
+  redistributionClaimsCount: 0,
+  lastClaimText: '',
+  lastActiveEpoch: 0,
+};
+
+export type DeflationSnapshot = {
+  loaded: boolean;
+  burnAllocationUi: string;
+  burnVaultBalanceUi: string;
+  totalBurnedUi: string;
+  remainingCapUi: string;
+  burnPending: boolean;
+  lastBurnEpoch: number;
+  progressPercent: number;
+};
+
+export const EMPTY_DEFLATION_SNAPSHOT: DeflationSnapshot = {
+  loaded: false,
+  burnAllocationUi: '—',
+  burnVaultBalanceUi: '—',
+  totalBurnedUi: '—',
+  remainingCapUi: '—',
+  burnPending: false,
+  lastBurnEpoch: -1,
+  progressPercent: 0,
+};

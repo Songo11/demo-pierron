@@ -1,0 +1,1315 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Pierron Mobile dark theme (appTheme.ts) */
+:root {
+  --pierron-bg: #121212;
+  --pierron-surface: #1b1b1b;
+  --pierron-surface-alt: #141414;
+  --pierron-surface-elevated: #1f1f1f;
+  --pierron-border: #2a2a2a;
+  --pierron-border-strong: #333333;
+  --pierron-text: #ffffff;
+  --pierron-text-secondary: #bdbdbd;
+  --pierron-text-muted: #9ca3af;
+  --pierron-accent: #ffd700;
+  --pierron-accent-on: #121212;
+  --pierron-accent-soft: #333333;
+  --pierron-success: #4ade80;
+  --pierron-warning: #ffb74d;
+  --pierron-error: #fca5a5;
+  --pierron-link: #7dd3fc;
+  --pierron-input-bg: #121212;
+  --pierron-input-border: #333333;
+  --pierron-tab-inactive: #888888;
+  --pierron-tab-bar: #121212;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--pierron-bg);
+  color: var(--pierron-text);
+}
+
+body {
+  font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
+}
+
+.pierron-app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--pierron-bg);
+}
+
+.pierron-main {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 88px;
+}
+
+.pierron-screen {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 40px 24px 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pierron-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--pierron-text);
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.pierron-subtitle {
+  font-size: 14px;
+  color: var(--pierron-text-secondary);
+  margin: 0 0 28px;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.pierron-card {
+  width: 100%;
+  background: var(--pierron-surface);
+  border: 1px solid var(--pierron-border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+.pierron-card-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--pierron-text);
+  margin: 0 0 12px;
+}
+
+.pierron-address {
+  font-family: ui-monospace, 'Geist Mono', monospace;
+  font-size: 14px;
+  color: var(--pierron-accent);
+  text-align: center;
+  word-break: break-all;
+}
+
+.pierron-info-table {
+  border: 1px solid var(--pierron-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--pierron-surface-alt);
+  margin-bottom: 12px;
+}
+
+.pierron-info-table .pierron-info-row {
+  margin-bottom: 0;
+}
+
+.pierron-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--pierron-border);
+  font-size: 13px;
+}
+
+.pierron-info-row:last-child {
+  border-bottom: none;
+}
+
+.pierron-info-label {
+  color: var(--pierron-text-secondary);
+  flex: 1 1 45%;
+  min-width: 0;
+}
+
+.pierron-info-value {
+  color: var(--pierron-text);
+  font-weight: 600;
+  text-align: right;
+  flex: 0 0 auto;
+  max-width: 55%;
+  word-break: break-word;
+}
+
+.pierron-info-value-muted {
+  color: var(--pierron-text-muted);
+  text-align: right;
+}
+
+.pierron-helper {
+  font-size: 13px;
+  color: var(--pierron-text-secondary);
+  line-height: 1.45;
+  margin: 0 0 12px;
+}
+
+.pierron-field-label {
+  display: block;
+  font-size: 13px;
+  color: var(--pierron-text-secondary);
+  margin-bottom: 6px;
+}
+
+.pierron-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--pierron-input-border);
+  background: var(--pierron-input-bg);
+  color: var(--pierron-text);
+}
+
+.pierron-input:focus {
+  outline: 2px solid var(--pierron-accent);
+  outline-offset: 1px;
+}
+
+.pierron-segment-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.pierron-segment {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--pierron-border-strong);
+  background: var(--pierron-surface-elevated);
+  color: var(--pierron-text-secondary);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pierron-segment-active {
+  border-color: var(--pierron-accent);
+  background: var(--pierron-accent-soft);
+  color: var(--pierron-accent);
+}
+
+.pierron-btn-primary {
+  display: block;
+  width: 100%;
+  padding: 15px 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--pierron-accent);
+  color: #000;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 215, 0, 0.35);
+}
+
+.pierron-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pierron-btn-secondary {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #555555;
+  background: var(--pierron-surface-elevated);
+  color: var(--pierron-text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pierron-btn-secondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pierron-link {
+  color: var(--pierron-link);
+  font-size: 14px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pierron-link:hover {
+  text-decoration: underline;
+}
+
+.pierron-wallet-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--pierron-accent);
+  margin-bottom: 16px;
+  text-align: center;
+  width: 100%;
+}
+
+.pierron-status {
+  font-size: 14px;
+  color: var(--pierron-accent);
+  margin: 8px 0 12px;
+}
+
+.pierron-progress-track {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--pierron-surface-alt);
+  border: 1px solid var(--pierron-border);
+  overflow: hidden;
+  margin: 8px 0 12px;
+}
+
+.pierron-progress-fill {
+  height: 100%;
+  background: var(--pierron-accent);
+  border-radius: 999px;
+}
+
+/* Bottom tab bar — mobile _layout.tsx */
+.pierron-tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  height: 72px;
+  padding: 8px 4px 12px;
+  background: var(--pierron-tab-bar);
+  border-top: 1px solid var(--pierron-border);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.pierron-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--pierron-tab-inactive);
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 0;
+  padding: 4px 2px;
+}
+
+.pierron-tab svg {
+  font-size: 22px;
+}
+
+.pierron-tab-active {
+  color: var(--pierron-accent);
+}
+
+.pierron-tab-label {
+  text-align: center;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Connect splash — mobile ConnectSplash */
+.pierron-connect-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 28px 32px;
+  background: var(--pierron-bg);
+}
+
+.pierron-connect-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pierron-connect-brand {
+  font-size: clamp(40px, 10vw, 56px);
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  color: var(--pierron-accent);
+  margin: 0;
+}
+
+.pierron-connect-tagline {
+  margin-top: 16px;
+  color: var(--pierron-text-muted);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pierron-connect-hint {
+  font-size: 14px;
+  color: var(--pierron-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Wallet adapter — gold primary like mobile */
+.wallet-adapter-button {
+  background-color: var(--pierron-accent) !important;
+  color: #000 !important;
+  border-radius: 14px !important;
+  font-weight: 700 !important;
+  width: 100% !important;
+  justify-content: center !important;
+  height: auto !important;
+  padding: 16px !important;
+  line-height: 1.3 !important;
+}
+
+.wallet-adapter-button-trigger {
+  background-color: var(--pierron-accent) !important;
+  color: #000 !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  background: rgba(0, 0, 0, 0.75) !important;
+}
+
+.wallet-adapter-modal-container {
+  background: var(--pierron-surface) !important;
+  border: 1px solid var(--pierron-border) !important;
+}
+
+.wallet-adapter-modal-title {
+  color: var(--pierron-text) !important;
+}
+
+/* Light theme */
+html[data-pierron-theme='light'] {
+  --pierron-bg: #ffffff;
+  --pierron-surface: #ffffff;
+  --pierron-surface-alt: #fff8f8;
+  --pierron-surface-elevated: #fff5f5;
+  --pierron-border: #e0b8c2;
+  --pierron-border-strong: #cf9daa;
+  --pierron-text: #1a1a1a;
+  --pierron-text-secondary: #5c5c5c;
+  --pierron-text-muted: #757575;
+  --pierron-accent: #dc143c;
+  --pierron-accent-on: #ffffff;
+  --pierron-accent-soft: #ffe8ec;
+  --pierron-success: #15803d;
+  --pierron-warning: #c2410c;
+  --pierron-error: #b91032;
+  --pierron-link: #dc143c;
+  --pierron-input-bg: #ffffff;
+  --pierron-input-border: #cf9daa;
+  --pierron-tab-inactive: #888888;
+  --pierron-tab-bar: #ffffff;
+}
+
+html[data-pierron-theme='light'] .pierron-btn-primary {
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(220, 20, 60, 0.25);
+}
+
+html[data-pierron-theme='light'] .wallet-adapter-button,
+html[data-pierron-theme='light'] .wallet-adapter-button-trigger {
+  color: #fff !important;
+}
+
+/* Layout shell */
+.pierron-shell-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pierron-layout-phone .pierron-screen {
+  max-width: 480px;
+}
+
+.pierron-layout-pc {
+  align-items: stretch;
+}
+
+.pierron-layout-pc .pierron-shell-body {
+  flex-direction: row;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  align-items: stretch;
+}
+
+.pierron-layout-pc .pierron-tabbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 184px;
+  height: 100dvh;
+  padding: 10px 6px;
+  border-top: none;
+  border-right: 1px solid var(--pierron-border);
+  box-shadow: none;
+  justify-content: flex-start;
+  gap: 6px;
+  background: var(--pierron-bg);
+}
+
+.pierron-layout-pc .pierron-tab {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  border: 1px solid var(--pierron-border-strong);
+  background: var(--pierron-surface);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.pierron-layout-pc .pierron-tab:hover {
+  border-color: var(--pierron-accent);
+  background: var(--pierron-surface-elevated);
+}
+
+.pierron-layout-pc .pierron-tab svg {
+  font-size: 16px;
+}
+
+.pierron-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pierron-layout-pc .pierron-tab-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--pierron-border);
+  background: var(--pierron-surface-alt);
+}
+
+.pierron-layout-pc .pierron-tab-active {
+  border-color: var(--pierron-accent);
+  background: var(--pierron-accent-soft);
+  box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.35);
+}
+
+.pierron-layout-pc .pierron-tab-active .pierron-tab-icon {
+  border-color: var(--pierron-accent);
+  background: var(--pierron-bg);
+  color: var(--pierron-accent);
+}
+
+.pierron-layout-pc .pierron-tab-label {
+  line-height: 1.25;
+  text-align: left;
+}
+
+.pierron-layout-pc .pierron-main {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 16px;
+  max-width: none;
+}
+
+.pierron-layout-pc .pierron-screen {
+  max-width: none;
+  margin: 0;
+  padding: 16px 16px 20px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pierron-layout-pc .pierron-title,
+.pierron-layout-pc .pierron-subtitle {
+  text-align: left;
+}
+
+.pierron-layout-pc .pierron-title {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.pierron-layout-pc .pierron-subtitle {
+  margin-bottom: 16px;
+}
+
+.pierron-layout-pc .pierron-wallet-badge {
+  text-align: left;
+}
+
+.pierron-layout-pc .pierron-btn-secondary,
+.pierron-layout-pc .pierron-btn-primary {
+  max-width: 360px;
+}
+
+/* Start screen layout picker */
+.pierron-connect-actions {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.pierron-connect-cta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+@media (min-width: 420px) {
+  .pierron-connect-cta-row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .pierron-connect-cta-row .wallet-adapter-button,
+  .pierron-connect-cta-row .pierron-connect-lang-btn {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.pierron-connect-lang-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--pierron-border-strong);
+  background: var(--pierron-surface-elevated);
+  color: var(--pierron-text);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1.3;
+}
+
+.pierron-connect-lang-btn:hover {
+  border-color: var(--pierron-accent);
+}
+
+.pierron-connect-lang-btn-flag {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.pierron-locale-flag {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 2px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.pierron-locale-inline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pierron-locale-option {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.pierron-connect-lang-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.pierron-connect-lang-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.pierron-connect-lang-modal-panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 420px);
+  max-height: min(78vh, 640px);
+  margin: 0 12px 12px;
+  padding: 16px 14px 12px;
+  border-radius: 18px 18px 14px 14px;
+  background: var(--pierron-surface);
+  border: 1px solid var(--pierron-border);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.pierron-connect-lang-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pierron-connect-lang-modal-title {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--pierron-text);
+}
+
+.pierron-connect-lang-modal-close {
+  border: none;
+  background: transparent;
+  color: var(--pierron-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+.pierron-connect-lang-modal-list {
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.pierron-layout-picker {
+  margin-bottom: 24px;
+}
+
+.pierron-layout-picker-label {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 8px;
+  color: var(--pierron-text);
+}
+
+.pierron-layout-picker-hint {
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--pierron-text-secondary);
+  margin: 0 0 14px;
+}
+
+.pierron-layout-picker-row {
+  display: flex;
+  gap: 10px;
+}
+
+.pierron-layout-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--pierron-border-strong);
+  background: var(--pierron-surface);
+  color: var(--pierron-text);
+  cursor: pointer;
+}
+
+.pierron-layout-option-active {
+  border-color: var(--pierron-accent);
+  background: var(--pierron-accent-soft);
+  box-shadow: 0 0 0 1px var(--pierron-accent);
+}
+
+.pierron-layout-option-icon {
+  font-size: 24px;
+}
+
+.pierron-layout-option-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.pierron-layout-option-subtitle {
+  font-size: 11px;
+  color: var(--pierron-text-muted);
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Collapsible sections */
+.pierron-collapsible {
+  width: 100%;
+  background: var(--pierron-surface);
+  border: 1px solid var(--pierron-border);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.pierron-collapsible-light {
+  background: var(--pierron-accent);
+  border-color: var(--pierron-accent);
+}
+
+.pierron-collapsible-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  background: var(--pierron-surface-elevated);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.pierron-collapsible-light .pierron-collapsible-header {
+  background: var(--pierron-accent);
+}
+
+.pierron-collapsible-header-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pierron-collapsible-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pierron-text);
+}
+
+.pierron-collapsible-light .pierron-collapsible-title {
+  color: var(--pierron-accent-on);
+}
+
+.pierron-collapsible-title-highlight {
+  color: var(--pierron-accent);
+}
+
+.pierron-collapsible-subtitle {
+  font-size: 12px;
+  color: var(--pierron-text-secondary);
+  line-height: 1.4;
+}
+
+.pierron-collapsible-light .pierron-collapsible-subtitle {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.pierron-collapsible-chevron {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--pierron-accent);
+  width: 26px;
+  text-align: center;
+}
+
+.pierron-collapsible-body {
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--pierron-border);
+  background: var(--pierron-surface-alt);
+}
+
+.pierron-collapsible-light .pierron-collapsible-body {
+  background: var(--pierron-bg);
+  border-top-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Ecosystem portfolio layout */
+.pierron-top-stats {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.pierron-top-stat {
+  flex: 1;
+  background: var(--pierron-surface);
+  border: 1px solid var(--pierron-border-strong);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+}
+
+.pierron-top-stat-label {
+  font-size: 12px;
+  color: var(--pierron-text-secondary);
+  margin-bottom: 6px;
+}
+
+.pierron-top-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--pierron-accent);
+}
+
+.pierron-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--pierron-text);
+  margin: 0 0 14px;
+}
+
+.pierron-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.pierron-ecosystem-grid .pierron-info-row,
+.pierron-card > .pierron-info-row {
+  margin-bottom: 12px;
+}
+
+.pierron-info-row-label {
+  color: var(--pierron-text-secondary);
+  max-width: 42%;
+  flex-shrink: 0;
+}
+
+.pierron-info-row-value {
+  color: var(--pierron-text);
+  font-weight: 700;
+  text-align: right;
+  flex: 1;
+}
+
+.pierron-status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border: 1px solid var(--pierron-border-strong);
+}
+
+.pierron-status-badge-active {
+  color: var(--pierron-success);
+  border-color: var(--pierron-success);
+  background: rgba(74, 222, 128, 0.08);
+}
+
+.pierron-status-badge-inactive {
+  color: var(--pierron-text-muted);
+}
+
+.pierron-section-label {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 4px 0 6px;
+  color: var(--pierron-text);
+}
+
+.pierron-claim-card {
+  background: var(--pierron-surface-elevated);
+  border: 2px solid var(--pierron-accent);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.pierron-claim-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--pierron-accent);
+  margin: 0 0 10px;
+}
+
+.pierron-claim-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.pierron-claim-btn-ready {
+  background: var(--pierron-accent);
+  color: #000;
+}
+
+html[data-pierron-theme='light'] .pierron-claim-btn-ready {
+  color: #fff;
+}
+
+.pierron-claim-btn-locked {
+  background: var(--pierron-surface);
+  color: var(--pierron-text-muted);
+  border: 1px solid var(--pierron-border-strong);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.pierron-lottery-keeper-box {
+  background: var(--pierron-surface-elevated);
+  border: 1px solid var(--pierron-border-strong);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.pierron-lottery-keeper-title {
+  color: var(--pierron-accent);
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.pierron-accent-hint {
+  color: var(--pierron-accent);
+}
+
+/* Activity marker grid */
+.pierron-marker-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+
+.pierron-marker-grid-mini {
+  gap: 6px;
+}
+
+.pierron-marker-grid-loading {
+  opacity: 0.75;
+}
+
+.pierron-marker-grid-panel {
+  margin-top: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--pierron-border-strong);
+  background: var(--pierron-surface-alt);
+}
+
+.pierron-marker-grid-panel-mini {
+  margin: 8px 0;
+  padding: 10px 12px;
+}
+
+.pierron-marker-grid-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.pierron-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid var(--pierron-border-strong);
+  background: var(--pierron-input-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.pierron-marker-future {
+  border-color: var(--pierron-border-strong);
+  background: var(--pierron-input-bg);
+}
+
+.pierron-marker-mini {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.pierron-marker-active {
+  border-color: var(--pierron-success);
+  background: var(--pierron-accent-soft);
+}
+
+.pierron-marker-active-light {
+  background: var(--pierron-success);
+  border-color: var(--pierron-success);
+}
+
+.pierron-marker-inactive {
+  border-color: var(--pierron-error);
+  background: var(--pierron-surface-elevated);
+}
+
+.pierron-marker-inactive-light {
+  background: var(--pierron-error);
+  border-color: var(--pierron-error);
+}
+
+.pierron-marker-current {
+  border-width: 2px;
+  border-color: var(--pierron-accent);
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.3);
+}
+
+.pierron-marker-lottery-draw {
+  border-width: 2px;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35);
+}
+
+.pierron-marker-glyph {
+  display: block;
+  font-family: "Segoe UI Symbol", "Segoe UI", "Apple Symbols", "Noto Sans Symbols 2",
+    "Noto Sans Symbols", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  speak: never;
+  -webkit-font-smoothing: antialiased;
+}
+
+.pierron-marker-glyph-svg {
+  display: block;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.pierron-marker-mini .pierron-marker-glyph {
+  font-size: 10px;
+}
+
+.pierron-marker-active-light .pierron-marker-glyph,
+.pierron-marker-inactive-light .pierron-marker-glyph {
+  color: #fff;
+}
+
+.pierron-marker-active .pierron-marker-glyph {
+  color: var(--pierron-success);
+}
+
+.pierron-marker-inactive .pierron-marker-glyph {
+  color: var(--pierron-error);
+}
+
+/* Settings menu */
+.pierron-menu-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pierron-menu-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--pierron-border);
+  background: var(--pierron-surface);
+  color: inherit;
+  cursor: pointer;
+}
+
+.pierron-menu-button-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pierron-text);
+  margin-bottom: 4px;
+}
+
+.pierron-menu-button-subtitle {
+  display: block;
+  font-size: 13px;
+  color: var(--pierron-text-secondary);
+}
+
+.pierron-appearance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--pierron-border);
+  background: var(--pierron-surface);
+  margin-bottom: 10px;
+}
+
+.pierron-back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--pierron-link);
+  font-size: 14px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.pierron-or-label {
+  text-align: center;
+  color: var(--pierron-text-muted);
+  font-size: 13px;
+  margin: 12px 0 8px;
+}
+
+.pierron-preview-card {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--pierron-border);
+  background: var(--pierron-input-bg);
+}
+
+.pierron-preview-amount {
+  color: var(--pierron-accent);
+  font-size: 28px;
+  font-weight: 800;
+  margin: 8px 0;
+}
+
+.pierron-loading {
+  color: var(--pierron-accent);
+  text-align: center;
+  padding: 12px;
+}
+
+.pierron-error-inline {
+  color: var(--pierron-error);
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+/* PC — Ekosystem: równe kolumny, mniej scrolla */
+.pierron-layout-pc .pierron-ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.pierron-layout-pc .pierron-ecosystem-grid > .pierron-card,
+.pierron-layout-pc .pierron-ecosystem-grid > .pierron-claim-card,
+.pierron-layout-pc .pierron-ecosystem-grid > .pierron-collapsible {
+  margin-bottom: 0;
+}
+
+.pierron-layout-pc .pierron-ecosystem-span-2 {
+  grid-column: 1 / -1;
+}
+
+.pierron-layout-pc .pierron-ecosystem-grid .pierron-card {
+  padding: 14px;
+}
+
+.pierron-layout-pc .pierron-ecosystem-grid .pierron-card-title {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.pierron-layout-pc .pierron-ecosystem-grid .pierron-helper {
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.pierron-layout-pc .pierron-ecosystem-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pierron-layout-pc .pierron-ecosystem-header-row .pierron-title {
+  margin-bottom: 0;
+}
+
+.pierron-layout-pc .pierron-ecosystem-header-row .pierron-subtitle {
+  flex: 1 1 100%;
+  margin-bottom: 0;
+}
+
+.pierron-layout-pc .pierron-ecosystem-grid .pierron-top-stats {
+  margin-bottom: 0;
+}
+
+@media (max-width: 720px) {
+  .pierron-layout-pc .pierron-shell-body {
+    flex-direction: column;
+  }
+
+  .pierron-layout-pc .pierron-tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 72px;
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid var(--pierron-border);
+    padding: 8px 4px 12px;
+  }
+
+  .pierron-layout-pc .pierron-tab {
+    flex-direction: column;
+    justify-content: center;
+    padding: 4px 2px;
+  }
+}

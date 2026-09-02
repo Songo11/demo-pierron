@@ -1,0 +1,42 @@
+{
+  "name": "dapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "NODE_OPTIONS='--max-old-space-size=16384' next dev --turbopack",
+    "dev:webpack": "NODE_OPTIONS='--max-old-space-size=16384' next dev --webpack",
+    "build": "NODE_OPTIONS='--max-old-space-size=16384' next build --webpack",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
+    "@meteora-ag/dlmm": "1.9.9",
+    "@lightprotocol/stateless.js": "^0.22.0",
+    "@solana/spl-token": "^0.4.14",
+    "@solana/wallet-adapter-base": "^0.9.27",
+    "@solana/wallet-adapter-react": "^0.15.39",
+    "@solana/wallet-adapter-react-ui": "^0.9.39",
+    "@solana/wallet-adapter-wallets": "^0.19.37",
+    "@solana/web3.js": "^1.98.4",
+    "bn.js": "^5.2.3",
+    "jsqr": "^1.4.0",
+    "next": "16.1.6",
+    "next-intl": "^4.8.3",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.6.0",
+    "tweetnacl": "1.0.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^20",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9",
+    "tailwindcss": "^4.0.0-alpha.20",
+    "typescript": "^5"
+  }
+}

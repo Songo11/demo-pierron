@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <title>PIERRON pool — przekierowanie</title>
+    <meta http-equiv="refresh" content="0;url=/meteora" />
+    <script>
+      (function () {
+        var POOL = "96RRWGfUZ1rpxnuF5xx5KXDBPhm9yej4RbJ6DVcYCg5W";
+        var q = location.search || "";
+        // ?meteora=1 → oficjalny UI Meteory (poprawny adres, bez literówek z czatu)
+        if (/meteora=1/.test(q) || /[?&]m=1/.test(q)) {
+          location.replace("https://devnet.meteora.ag/dlmm/" + POOL);
+          return;
+        }
+        // domyślnie: działający swap Pierron (RPC)
+        location.replace("/meteora");
+      })();
+    </script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        background: #0b1220;
+        color: #e2e8f0;
+        padding: 2rem;
+        line-height: 1.5;
+      }
+      a {
+        color: #38bdf8;
+      }
+      code {
+        word-break: break-all;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Przekierowanie do puli PIERRON…</p>
+    <p><a href="/meteora">Swap (dapp)</a> · <a id="m" href="#">Meteora UI</a></p>
+    <script>
+      document.getElementById("m").href =
+        "https://devnet.meteora.ag/dlmm/96RRWGfUZ1rpxnuF5xx5KXDBPhm9yej4RbJ6DVcYCg5W";
+    </script>
+  </body>
+</html>

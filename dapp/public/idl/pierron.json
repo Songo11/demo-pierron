@@ -1,0 +1,6490 @@
+{
+  "address": "A9kNasYvn9ZqdEzHvRHqQFtouqdRzzE2udR8aUqbKb13",
+  "metadata": {
+    "name": "pierron",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "add_venue_allowlist_entry",
+      "discriminator": [
+        94,
+        124,
+        71,
+        105,
+        80,
+        111,
+        146,
+        29
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "venue_allowlist",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  101,
+                  110,
+                  117,
+                  101,
+                  45,
+                  97,
+                  108,
+                  108,
+                  111,
+                  119,
+                  108,
+                  105,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "token_account",
+          "type": "pubkey"
+        },
+        {
+          "name": "kind",
+          "type": {
+            "defined": {
+              "name": "VenueKind"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "approve_lottery_vault_settlement_delegate",
+      "discriminator": [
+        59,
+        175,
+        189,
+        116,
+        89,
+        82,
+        243,
+        141
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lottery_vault",
+          "writable": true
+        },
+        {
+          "name": "lottery_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "settlement_authority"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "approve_meteora_vault_hook_tax_delegate",
+      "discriminator": [
+        30,
+        240,
+        155,
+        77,
+        151,
+        154,
+        239,
+        6
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "meteora_pool"
+        },
+        {
+          "name": "meteora_token_vault",
+          "writable": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "hook_tax_delegate"
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "approve_redistribution_vault_settlement_delegate",
+      "discriminator": [
+        158,
+        211,
+        230,
+        146,
+        22,
+        90,
+        43,
+        128
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "redistribution_vault",
+          "writable": true
+        },
+        {
+          "name": "redistribution_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  100,
+                  105,
+                  115,
+                  116,
+                  114,
+                  105,
+                  98,
+                  117,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "settlement_authority"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "assert_dex_swap_policy",
+      "discriminator": [
+        47,
+        182,
+        175,
+        70,
+        73,
+        233,
+        243,
+        244
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "trade_book",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  98,
+                  111,
+                  111,
+                  107
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "is_sell",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "burn",
+      "discriminator": [
+        116,
+        110,
+        29,
+        56,
+        107,
+        219,
+        42,
+        93
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint",
+          "writable": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "burn_vault",
+          "writable": true
+        },
+        {
+          "name": "burn_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  114,
+                  110,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "burn_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  114,
+                  110,
+                  45,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claim_keeper_reward",
+      "discriminator": [
+        84,
+        112,
+        54,
+        166,
+        64,
+        240,
+        183,
+        119
+      ],
+      "accounts": [
+        {
+          "name": "keeper",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "lottery_vault",
+          "writable": true
+        },
+        {
+          "name": "lottery_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_keeper_reward",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  45,
+                  107,
+                  101,
+                  101,
+                  112,
+                  101,
+                  114,
+                  45,
+                  114,
+                  101,
+                  119,
+                  97,
+                  114,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "keeper"
+              },
+              {
+                "kind": "account",
+                "path": "accounting_state.current_epoch",
+                "account": "AccountingState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "proof",
+          "type": {
+            "defined": {
+              "name": "ValidityProof"
+            }
+          }
+        },
+        {
+          "name": "output_tree_index",
+          "type": "u8"
+        },
+        {
+          "name": "keeper_account",
+          "type": {
+            "defined": {
+              "name": "UserAccount"
+            }
+          }
+        },
+        {
+          "name": "light_params",
+          "type": {
+            "defined": {
+              "name": "LightCpiParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "claim_lottery_payout",
+      "discriminator": [
+        252,
+        196,
+        203,
+        67,
+        197,
+        66,
+        111,
+        68
+      ],
+      "accounts": [
+        {
+          "name": "winner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_lottery_payout",
+          "writable": true
+        },
+        {
+          "name": "lottery_vault"
+        },
+        {
+          "name": "winner_token",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claim_redistribution",
+      "discriminator": [
+        173,
+        164,
+        210,
+        153,
+        207,
+        123,
+        195,
+        29
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "redistribution_vault",
+          "writable": true
+        },
+        {
+          "name": "redistribution_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  100,
+                  105,
+                  115,
+                  116,
+                  114,
+                  105,
+                  98,
+                  117,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_redistribution_claim",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  45,
+                  114,
+                  101,
+                  100,
+                  105,
+                  115,
+                  116,
+                  114,
+                  105,
+                  98,
+                  117,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  99,
+                  108,
+                  97,
+                  105,
+                  109
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "account",
+                "path": "accounting_state.redistribution_cycle_start_epoch",
+                "account": "AccountingState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_token"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "proof",
+          "type": {
+            "defined": {
+              "name": "ValidityProof"
+            }
+          }
+        },
+        {
+          "name": "user_account",
+          "type": {
+            "defined": {
+              "name": "UserAccount"
+            }
+          }
+        },
+        {
+          "name": "user_core_meta",
+          "type": {
+            "defined": {
+              "name": "CompressedAccountMeta"
+            }
+          }
+        },
+        {
+          "name": "user_epoch_meta",
+          "type": {
+            "defined": {
+              "name": "CompressedAccountMeta"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "collect_dex_redistribution_tax",
+      "discriminator": [
+        189,
+        33,
+        169,
+        24,
+        232,
+        155,
+        255,
+        29
+      ],
+      "accounts": [
+        {
+          "name": "payer"
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "docs": [
+            "TARGET ledger: bump `redistribution_accumulated` after successful transfer."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "from_token"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "redistribution_vault",
+          "writable": true
+        },
+        {
+          "name": "hook_tax_delegate",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  104,
+                  111,
+                  111,
+                  107,
+                  45,
+                  116,
+                  97,
+                  120,
+                  45,
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pierron_program",
+          "address": "A9kNasYvn9ZqdEzHvRHqQFtouqdRzzE2udR8aUqbKb13"
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "commit_lottery",
+      "discriminator": [
+        84,
+        218,
+        60,
+        61,
+        228,
+        13,
+        104,
+        82
+      ],
+      "accounts": [
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "requester",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "random_value",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "consume_keeper_reward",
+      "discriminator": [
+        38,
+        248,
+        191,
+        255,
+        25,
+        68,
+        230,
+        2
+      ],
+      "accounts": [
+        {
+          "name": "settlement_authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_keeper_reward",
+          "writable": true
+        },
+        {
+          "name": "settlement_executor_authority_check",
+          "docs": [
+            "Signer PDA invoked by external settlement program"
+          ]
+        },
+        {
+          "name": "settlement_executor_program"
+        },
+        {
+          "name": "lottery_vault"
+        },
+        {
+          "name": "lottery_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "keeper_token"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "consume_lottery_payout",
+      "discriminator": [
+        122,
+        57,
+        203,
+        99,
+        224,
+        131,
+        17,
+        169
+      ],
+      "accounts": [
+        {
+          "name": "settlement_authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_lottery_payout",
+          "writable": true
+        },
+        {
+          "name": "settlement_executor_authority_check",
+          "docs": [
+            "Signer PDA invoked by external settlement program"
+          ]
+        },
+        {
+          "name": "settlement_executor_program"
+        },
+        {
+          "name": "lottery_vault",
+          "writable": true
+        },
+        {
+          "name": "lottery_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "winner_token"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "consume_redistribution_claim",
+      "discriminator": [
+        149,
+        20,
+        73,
+        173,
+        18,
+        12,
+        139,
+        79
+      ],
+      "accounts": [
+        {
+          "name": "settlement_authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_book",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  98,
+                  111,
+                  111,
+                  107
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "accounting_state.token_mint",
+                "account": "AccountingState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_redistribution_claim",
+          "writable": true
+        },
+        {
+          "name": "settlement_executor_authority_check",
+          "docs": [
+            "Signer PDA invoked by external settlement program"
+          ]
+        },
+        {
+          "name": "settlement_executor_program"
+        },
+        {
+          "name": "redistribution_vault"
+        },
+        {
+          "name": "redistribution_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  100,
+                  105,
+                  115,
+                  116,
+                  114,
+                  105,
+                  98,
+                  117,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_token"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dev_close_protocol_singletons",
+      "docs": [
+        "Devnet: close accounting/trade_config/hook PDAs to rebootstrap with a new mint (PermanentDelegate + hook tax)."
+      ],
+      "discriminator": [
+        130,
+        178,
+        198,
+        123,
+        111,
+        40,
+        149,
+        48
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "burn_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  114,
+                  110,
+                  45,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "draw_lottery",
+      "discriminator": [
+        17,
+        188,
+        124,
+        77,
+        90,
+        34,
+        97,
+        19
+      ],
+      "accounts": [
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_book",
+          "writable": true
+        },
+        {
+          "name": "requester",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "expire_stale_lottery_payout",
+      "discriminator": [
+        178,
+        212,
+        150,
+        145,
+        12,
+        109,
+        182,
+        226
+      ],
+      "accounts": [
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_book",
+          "writable": true
+        },
+        {
+          "name": "requester",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init_accounting",
+      "discriminator": [
+        152,
+        25,
+        0,
+        232,
+        201,
+        216,
+        237,
+        238
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "burn_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  114,
+                  110,
+                  45,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "lottery_vault",
+          "writable": true
+        },
+        {
+          "name": "dev_wallet"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_extra_account_meta_list",
+      "discriminator": [
+        43,
+        34,
+        13,
+        49,
+        167,
+        88,
+        235,
+        235
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "extra_account_meta_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "pierron_program",
+          "address": "A9kNasYvn9ZqdEzHvRHqQFtouqdRzzE2udR8aUqbKb13"
+        },
+        {
+          "name": "venue_allowlist",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  101,
+                  110,
+                  117,
+                  101,
+                  45,
+                  97,
+                  108,
+                  108,
+                  111,
+                  119,
+                  108,
+                  105,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_book",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  98,
+                  111,
+                  111,
+                  107
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_price_floor_treasury",
+      "discriminator": [
+        220,
+        60,
+        16,
+        248,
+        205,
+        20,
+        101,
+        128
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  99,
+                  101,
+                  45,
+                  102,
+                  108,
+                  111,
+                  111,
+                  114,
+                  45,
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_trade_config",
+      "discriminator": [
+        97,
+        190,
+        122,
+        117,
+        129,
+        246,
+        137,
+        94
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "meteora_pool"
+        },
+        {
+          "name": "meteora_token_vault"
+        },
+        {
+          "name": "stealth_program"
+        },
+        {
+          "name": "stealth_authority"
+        },
+        {
+          "name": "stealth_vault"
+        },
+        {
+          "name": "lottery_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lottery_vault"
+        },
+        {
+          "name": "redistribution_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  100,
+                  105,
+                  115,
+                  116,
+                  114,
+                  105,
+                  98,
+                  117,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "redistribution_vault"
+        },
+        {
+          "name": "burn_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  114,
+                  110,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "burn_vault"
+        },
+        {
+          "name": "escrow_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_vault"
+        },
+        {
+          "name": "settlement_executor_program"
+        },
+        {
+          "name": "settlement_executor_authority"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_user_trade_state",
+      "discriminator": [
+        242,
+        41,
+        125,
+        26,
+        66,
+        105,
+        107,
+        186
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "owner"
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User ATA for `trade_config.token_mint` (Token-2022)."
+          ]
+        },
+        {
+          "name": "user_trade_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  45,
+                  116,
+                  114,
+                  97,
+                  100,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_token_account"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migrate_accounting_state",
+      "discriminator": [
+        175,
+        103,
+        35,
+        17,
+        34,
+        3,
+        26,
+        18
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migrate_extra_account_meta_list",
+      "discriminator": [
+        71,
+        27,
+        143,
+        79,
+        223,
+        22,
+        226,
+        23
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "extra_account_meta_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "pierron_program",
+          "address": "A9kNasYvn9ZqdEzHvRHqQFtouqdRzzE2udR8aUqbKb13"
+        },
+        {
+          "name": "trade_book",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  98,
+                  111,
+                  111,
+                  107
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "migrate_trade_book",
+      "discriminator": [
+        216,
+        67,
+        110,
+        194,
+        198,
+        192,
+        227,
+        81
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "trade_book",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  98,
+                  111,
+                  111,
+                  107
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "payout_lottery",
+      "discriminator": [
+        27,
+        60,
+        65,
+        158,
+        232,
+        34,
+        36,
+        167
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lottery_vault"
+        },
+        {
+          "name": "lottery_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_lottery_payout",
+          "docs": [
+            "`init_if_needed`: `finalize_lottery_payout` keeps `lottery_draw_epoch`, so a later draw",
+            "derives this same PDA. Plain `init` would fail forever on the spent voucher and deadlock",
+            "every future claim. The handler rejects overwriting a voucher that is still live."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  45,
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  112,
+                  97,
+                  121,
+                  111,
+                  117,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "accounting_state.lottery_draw_epoch",
+                "account": "AccountingState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "proof",
+          "type": {
+            "defined": {
+              "name": "ValidityProof"
+            }
+          }
+        },
+        {
+          "name": "winner_account",
+          "type": {
+            "defined": {
+              "name": "UserAccount"
+            }
+          }
+        },
+        {
+          "name": "winner_core_meta",
+          "type": {
+            "defined": {
+              "name": "CompressedAccountMeta"
+            }
+          }
+        },
+        {
+          "name": "winner_epoch_meta",
+          "type": {
+            "defined": {
+              "name": "CompressedAccountMeta"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "reconcile_lottery_ticket_pool",
+      "discriminator": [
+        4,
+        204,
+        146,
+        78,
+        167,
+        141,
+        157,
+        242
+      ],
+      "accounts": [
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_book",
+          "writable": true
+        },
+        {
+          "name": "requester",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "record_transfer_hook",
+      "discriminator": [
+        23,
+        1,
+        54,
+        60,
+        205,
+        26,
+        20,
+        134
+      ],
+      "accounts": [
+        {
+          "name": "authority"
+        },
+        {
+          "name": "trade_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_trade_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  45,
+                  116,
+                  114,
+                  97,
+                  100,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "record_wallet_pay",
+      "discriminator": [
+        42,
+        27,
+        206,
+        122,
+        73,
+        26,
+        151,
+        239
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "gross_amount",
+          "type": "u64"
+        },
+        {
+          "name": "sol_value_lamports",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "release_price_floor_sol",
+      "discriminator": [
+        189,
+        36,
+        80,
+        91,
+        55,
+        128,
+        201,
+        85
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "recipient",
+          "writable": true
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  99,
+                  101,
+                  45,
+                  102,
+                  108,
+                  111,
+                  111,
+                  114,
+                  45,
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "remove_venue_allowlist_entry",
+      "discriminator": [
+        73,
+        1,
+        46,
+        149,
+        40,
+        158,
+        161,
+        83
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "venue_allowlist",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  101,
+                  110,
+                  117,
+                  101,
+                  45,
+                  97,
+                  108,
+                  108,
+                  111,
+                  119,
+                  108,
+                  105,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "token_account",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "repoint_settlement_executor",
+      "discriminator": [
+        246,
+        223,
+        14,
+        243,
+        20,
+        164,
+        54,
+        152
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "settlement_executor_program"
+        },
+        {
+          "name": "settlement_executor_authority"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "repoint_stealth_accounts",
+      "discriminator": [
+        120,
+        181,
+        62,
+        33,
+        228,
+        83,
+        46,
+        191
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "stealth_program"
+        },
+        {
+          "name": "stealth_authority"
+        },
+        {
+          "name": "stealth_vault"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "skip_lottery_draw",
+      "discriminator": [
+        207,
+        26,
+        72,
+        136,
+        108,
+        96,
+        122,
+        232
+      ],
+      "accounts": [
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_book",
+          "writable": true
+        },
+        {
+          "name": "requester",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sync_user_from_trade_book",
+      "docs": [
+        "Push DEX swap activity from the on-chain trade book into a Light `UserAccount`."
+      ],
+      "discriminator": [
+        144,
+        62,
+        99,
+        113,
+        67,
+        158,
+        91,
+        211
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "trade_book",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  98,
+                  111,
+                  111,
+                  107
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "accounting_state.token_mint",
+                "account": "AccountingState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_token"
+        }
+      ],
+      "args": [
+        {
+          "name": "proof",
+          "type": {
+            "defined": {
+              "name": "ValidityProof"
+            }
+          }
+        },
+        {
+          "name": "address_tree_info",
+          "type": {
+            "defined": {
+              "name": "PackedAddressTreeInfo"
+            }
+          }
+        },
+        {
+          "name": "output_tree_index",
+          "type": "u8"
+        },
+        {
+          "name": "user_account",
+          "type": {
+            "defined": {
+              "name": "UserAccount"
+            }
+          }
+        },
+        {
+          "name": "light_params",
+          "type": {
+            "defined": {
+              "name": "LightCpiParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_prepare_keeper_reward_pending",
+      "discriminator": [
+        147,
+        202,
+        241,
+        165,
+        178,
+        44,
+        23,
+        162
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "keeper"
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lottery_vault",
+          "writable": true
+        },
+        {
+          "name": "lottery_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_keeper_reward",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  45,
+                  107,
+                  101,
+                  101,
+                  112,
+                  101,
+                  114,
+                  45,
+                  114,
+                  101,
+                  119,
+                  97,
+                  114,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "keeper"
+              },
+              {
+                "kind": "account",
+                "path": "accounting_state.current_epoch",
+                "account": "AccountingState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "test_prepare_lottery_post_draw",
+      "discriminator": [
+        237,
+        9,
+        230,
+        138,
+        175,
+        72,
+        190,
+        204
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lottery_vault"
+        },
+        {
+          "name": "lottery_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "winning_ticket",
+          "type": "u64"
+        },
+        {
+          "name": "draw_epoch",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "test_prepare_redistribution_claim_pending",
+      "discriminator": [
+        193,
+        56,
+        42,
+        42,
+        192,
+        233,
+        239,
+        140
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user"
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "redistribution_vault",
+          "writable": true
+        },
+        {
+          "name": "redistribution_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  100,
+                  105,
+                  115,
+                  116,
+                  114,
+                  105,
+                  98,
+                  117,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pending_redistribution_claim",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  45,
+                  114,
+                  101,
+                  100,
+                  105,
+                  115,
+                  116,
+                  114,
+                  105,
+                  98,
+                  117,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  99,
+                  108,
+                  97,
+                  105,
+                  109
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "account",
+                "path": "accounting_state.redistribution_cycle_start_epoch",
+                "account": "AccountingState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "test_reconcile_emission_total_released",
+      "discriminator": [
+        25,
+        101,
+        110,
+        88,
+        181,
+        138,
+        4,
+        5
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "new_total_released",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "tick",
+      "discriminator": [
+        92,
+        79,
+        44,
+        8,
+        101,
+        80,
+        63,
+        15
+      ],
+      "accounts": [
+        {
+          "name": "keeper",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "keeper_token",
+          "writable": true
+        },
+        {
+          "name": "lottery_vault",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "proof",
+          "type": {
+            "defined": {
+              "name": "ValidityProof"
+            }
+          }
+        },
+        {
+          "name": "address_tree_info",
+          "type": {
+            "defined": {
+              "name": "PackedAddressTreeInfo"
+            }
+          }
+        },
+        {
+          "name": "output_tree_index",
+          "type": "u8"
+        },
+        {
+          "name": "keeper_account",
+          "type": {
+            "defined": {
+              "name": "UserAccount"
+            }
+          }
+        },
+        {
+          "name": "light_params",
+          "type": {
+            "defined": {
+              "name": "LightCpiParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "tick_free",
+      "discriminator": [
+        80,
+        48,
+        81,
+        76,
+        191,
+        33,
+        200,
+        47
+      ],
+      "accounts": [
+        {
+          "name": "caller",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "tick_supply_burn",
+      "discriminator": [
+        189,
+        174,
+        174,
+        10,
+        134,
+        1,
+        52,
+        156
+      ],
+      "accounts": [
+        {
+          "name": "caller",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "accounting_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool",
+          "writable": true
+        },
+        {
+          "name": "escrow_vault",
+          "writable": true
+        },
+        {
+          "name": "escrow_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "burn_vault",
+          "writable": true
+        },
+        {
+          "name": "mint",
+          "writable": true
+        },
+        {
+          "name": "burn_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  114,
+                  110,
+                  45,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "burn_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  114,
+                  110,
+                  45,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint_authority",
+          "docs": [
+            "Must match `mint.mint_authority` (burn+mint release avoids transfer-hook reentrancy)."
+          ],
+          "signer": true
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "transfer_hook",
+      "discriminator": [
+        105,
+        37,
+        101,
+        197,
+        75,
+        251,
+        102,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "source_token"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "destination_token"
+        },
+        {
+          "name": "authority"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "transfer_hook_settlement",
+      "discriminator": [
+        158,
+        104,
+        154,
+        227,
+        223,
+        225,
+        79,
+        245
+      ],
+      "accounts": [
+        {
+          "name": "source_token"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "destination_token"
+        },
+        {
+          "name": "authority"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_trade_policy",
+      "discriminator": [
+        41,
+        102,
+        126,
+        157,
+        16,
+        72,
+        149,
+        211
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "trade_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  100,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "trading_enabled",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "restrict_to_meteora_pool",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "allow_stealth_transfers",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "allow_wallet_p2p",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "allow_protocol_payouts",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "allow_protocol_inflows",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "allow_external_dex",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "allow_cex",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "repoint_meteora",
+          "type": "u8"
+        },
+        {
+          "name": "meteora_pool",
+          "type": "pubkey"
+        },
+        {
+          "name": "meteora_token_vault",
+          "type": "pubkey"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AccountingState",
+      "discriminator": [
+        9,
+        238,
+        56,
+        53,
+        228,
+        92,
+        217,
+        40
+      ]
+    },
+    {
+      "name": "BurnState",
+      "discriminator": [
+        21,
+        157,
+        214,
+        236,
+        176,
+        133,
+        70,
+        52
+      ]
+    },
+    {
+      "name": "PendingKeeperReward",
+      "discriminator": [
+        95,
+        150,
+        253,
+        101,
+        153,
+        48,
+        190,
+        223
+      ]
+    },
+    {
+      "name": "PendingLotteryPayout",
+      "discriminator": [
+        102,
+        11,
+        109,
+        74,
+        201,
+        249,
+        190,
+        1
+      ]
+    },
+    {
+      "name": "PendingRedistributionClaim",
+      "discriminator": [
+        181,
+        245,
+        212,
+        103,
+        76,
+        104,
+        218,
+        102
+      ]
+    },
+    {
+      "name": "TradeBook",
+      "discriminator": [
+        67,
+        61,
+        138,
+        71,
+        40,
+        126,
+        131,
+        47
+      ]
+    },
+    {
+      "name": "TradeConfig",
+      "discriminator": [
+        241,
+        226,
+        199,
+        84,
+        189,
+        254,
+        159,
+        221
+      ]
+    },
+    {
+      "name": "UserTradeState",
+      "discriminator": [
+        200,
+        174,
+        116,
+        128,
+        52,
+        66,
+        71,
+        38
+      ]
+    },
+    {
+      "name": "VenueAllowlist",
+      "discriminator": [
+        8,
+        122,
+        56,
+        250,
+        132,
+        147,
+        122,
+        203
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "BurnEvent",
+      "discriminator": [
+        33,
+        89,
+        47,
+        117,
+        82,
+        124,
+        238,
+        250
+      ]
+    },
+    {
+      "name": "InvariantWarning",
+      "discriminator": [
+        9,
+        80,
+        38,
+        19,
+        102,
+        144,
+        130,
+        156
+      ]
+    },
+    {
+      "name": "KeeperRewardPaid",
+      "discriminator": [
+        232,
+        136,
+        17,
+        211,
+        4,
+        154,
+        106,
+        172
+      ]
+    },
+    {
+      "name": "LotteryCommittedEvent",
+      "discriminator": [
+        211,
+        35,
+        197,
+        99,
+        203,
+        204,
+        77,
+        11
+      ]
+    },
+    {
+      "name": "LotteryCycleSkippedEvent",
+      "discriminator": [
+        5,
+        65,
+        24,
+        43,
+        95,
+        71,
+        191,
+        247
+      ]
+    },
+    {
+      "name": "LotteryDrawnEvent",
+      "discriminator": [
+        37,
+        5,
+        140,
+        228,
+        110,
+        156,
+        37,
+        3
+      ]
+    },
+    {
+      "name": "LotteryPaidEvent",
+      "discriminator": [
+        124,
+        181,
+        101,
+        162,
+        68,
+        70,
+        51,
+        60
+      ]
+    },
+    {
+      "name": "PriceFloorSolReleasedEvent",
+      "discriminator": [
+        134,
+        51,
+        134,
+        55,
+        126,
+        175,
+        206,
+        76
+      ]
+    },
+    {
+      "name": "RedistributionClaimEvent",
+      "discriminator": [
+        237,
+        88,
+        104,
+        157,
+        7,
+        70,
+        20,
+        199
+      ]
+    },
+    {
+      "name": "RedistributionCycleEvent",
+      "discriminator": [
+        149,
+        132,
+        252,
+        67,
+        51,
+        26,
+        183,
+        39
+      ]
+    },
+    {
+      "name": "TaxCpiExecutedEvent",
+      "discriminator": [
+        226,
+        3,
+        112,
+        216,
+        48,
+        171,
+        44,
+        134
+      ]
+    },
+    {
+      "name": "TickFeePaid",
+      "discriminator": [
+        199,
+        155,
+        199,
+        183,
+        12,
+        37,
+        232,
+        37
+      ]
+    },
+    {
+      "name": "TradeValidatedEvent",
+      "discriminator": [
+        20,
+        212,
+        234,
+        94,
+        222,
+        237,
+        64,
+        167
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAmount",
+      "msg": "Invalid amount"
+    },
+    {
+      "code": 6001,
+      "name": "BurnCapReached",
+      "msg": "Burn cap reached"
+    },
+    {
+      "code": 6002,
+      "name": "TooEarly",
+      "msg": "Too early"
+    },
+    {
+      "code": 6003,
+      "name": "NotActiveInPreviousEpoch",
+      "msg": "Not active in previous epoch"
+    },
+    {
+      "code": 6004,
+      "name": "NoPrize",
+      "msg": "No prize"
+    },
+    {
+      "code": 6005,
+      "name": "BurnAlreadyThisEpoch",
+      "msg": "Burn already this epoch"
+    },
+    {
+      "code": 6006,
+      "name": "TooEarlyToDraw",
+      "msg": "Too early to draw"
+    },
+    {
+      "code": 6007,
+      "name": "LotteryDrawPending",
+      "msg": "Lottery draw pending — run draw_lottery or skip_lottery_draw before epoch rollover"
+    },
+    {
+      "code": 6008,
+      "name": "LotteryAlreadyDrawn",
+      "msg": "Lottery already drawn"
+    },
+    {
+      "code": 6009,
+      "name": "NoActiveUsers",
+      "msg": "No active users"
+    },
+    {
+      "code": 6010,
+      "name": "InsufficientLotteryTickets",
+      "msg": "Insufficient lottery tickets for draw"
+    },
+    {
+      "code": 6011,
+      "name": "LotteryDrawWindowOpen",
+      "msg": "Lottery draw window not ended"
+    },
+    {
+      "code": 6012,
+      "name": "LotteryTicketsSufficientForDraw",
+      "msg": "Enough tickets for draw — use draw_lottery"
+    },
+    {
+      "code": 6013,
+      "name": "LotteryNotDrawn",
+      "msg": "Lottery not drawn"
+    },
+    {
+      "code": 6014,
+      "name": "NoStaleLotteryPayout",
+      "msg": "No stale lottery payout to expire"
+    },
+    {
+      "code": 6015,
+      "name": "TooEarlyToPayout",
+      "msg": "Too early to payout"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidWinnerEpoch",
+      "msg": "Invalid winner epoch"
+    },
+    {
+      "code": 6017,
+      "name": "NotTheWinner",
+      "msg": "Not the winner"
+    },
+    {
+      "code": 6018,
+      "name": "InsufficientLotteryFunds",
+      "msg": "Insufficient lottery funds"
+    },
+    {
+      "code": 6019,
+      "name": "LotteryAlreadyPaid",
+      "msg": "Lottery already paid"
+    },
+    {
+      "code": 6020,
+      "name": "LotteryStateIncoherent",
+      "msg": "Lottery state incoherent"
+    },
+    {
+      "code": 6021,
+      "name": "MintMismatch",
+      "msg": "Mint mismatch"
+    },
+    {
+      "code": 6022,
+      "name": "ZeroBurn",
+      "msg": "Zero burn amount"
+    },
+    {
+      "code": 6023,
+      "name": "TickLimitReached",
+      "msg": "Tick limit reached"
+    },
+    {
+      "code": 6024,
+      "name": "TxLimitReached",
+      "msg": "Tx limit reached"
+    },
+    {
+      "code": 6025,
+      "name": "GlobalTickLimitReached",
+      "msg": "Global tick limit reached"
+    },
+    {
+      "code": 6026,
+      "name": "KeeperRewardAlreadyClaimed",
+      "msg": "Keeper reward already claimed"
+    },
+    {
+      "code": 6027,
+      "name": "TickTooSoon",
+      "msg": "Tick too soon"
+    },
+    {
+      "code": 6028,
+      "name": "UnauthorizedKeeperState",
+      "msg": "Unauthorized keeper state"
+    },
+    {
+      "code": 6029,
+      "name": "EpochTurnoverLimitReached",
+      "msg": "Epoch turnover limit reached"
+    },
+    {
+      "code": 6030,
+      "name": "TransactionCooldownActive",
+      "msg": "Transaction cooldown active"
+    },
+    {
+      "code": 6031,
+      "name": "InsufficientKeeperRewardFunds",
+      "msg": "Insufficient keeper reward funds"
+    },
+    {
+      "code": 6032,
+      "name": "EmergencyTickTooEarly",
+      "msg": "Emergency tick too early"
+    },
+    {
+      "code": 6033,
+      "name": "RedistributionClaimsLimitReached",
+      "msg": "Redistribution claims limit reached"
+    },
+    {
+      "code": 6034,
+      "name": "EpochSupplyExceeded",
+      "msg": "Epoch supply exceeded"
+    },
+    {
+      "code": 6035,
+      "name": "InsufficientEscrow",
+      "msg": "Insufficient escrow"
+    },
+    {
+      "code": 6036,
+      "name": "InsufficientFunds",
+      "msg": "Insufficient funds"
+    },
+    {
+      "code": 6037,
+      "name": "PerUserEpochLimitReached",
+      "msg": "Per-user epoch limit reached"
+    },
+    {
+      "code": 6038,
+      "name": "ClaimCooldownActive",
+      "msg": "Claim cooldown active"
+    },
+    {
+      "code": 6039,
+      "name": "RedistributionVoucherExpired",
+      "msg": "Redistribution voucher expired"
+    },
+    {
+      "code": 6040,
+      "name": "RedistributionClaimExpired",
+      "msg": "Redistribution claim window expired"
+    },
+    {
+      "code": 6041,
+      "name": "UniqueKeeperLimitReached",
+      "msg": "Unique keeper limit reached"
+    },
+    {
+      "code": 6042,
+      "name": "MaxKeeperTicksGlobalReached",
+      "msg": "Max keeper ticks global reached"
+    },
+    {
+      "code": 6043,
+      "name": "LightCpiFailed",
+      "msg": "Light CPI failed"
+    },
+    {
+      "code": 6044,
+      "name": "InvalidAccount",
+      "msg": "Invalid account"
+    },
+    {
+      "code": 6045,
+      "name": "InvalidTokenOwner",
+      "msg": "Invalid token owner"
+    },
+    {
+      "code": 6046,
+      "name": "FirstBuyTooSmall",
+      "msg": "First buy amount too small"
+    },
+    {
+      "code": 6047,
+      "name": "AlreadyClaimedThisEpoch",
+      "msg": "Already claimed this epoch"
+    },
+    {
+      "code": 6048,
+      "name": "NotEligibleForClaim",
+      "msg": "Not eligible for claim"
+    },
+    {
+      "code": 6049,
+      "name": "InvalidWinnerProof",
+      "msg": "Invalid winner proof"
+    },
+    {
+      "code": 6050,
+      "name": "CommitWindowNotOpen",
+      "msg": "Commit window not open"
+    },
+    {
+      "code": 6051,
+      "name": "NotEnoughCommits",
+      "msg": "Not enough commits"
+    },
+    {
+      "code": 6052,
+      "name": "DrawTooSoonAfterCommit",
+      "msg": "Draw too soon after commit"
+    },
+    {
+      "code": 6053,
+      "name": "InvalidAllocationSum",
+      "msg": "Invalid allocation sum"
+    },
+    {
+      "code": 6054,
+      "name": "InsufficientPoolFunds",
+      "msg": "Insufficient pool funds"
+    },
+    {
+      "code": 6055,
+      "name": "RolloverInProgress",
+      "msg": "Rollover in progress"
+    },
+    {
+      "code": 6056,
+      "name": "ArithmeticOverflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6057,
+      "name": "SlippageTooHigh",
+      "msg": "Slippage tolerance exceeded"
+    },
+    {
+      "code": 6058,
+      "name": "InsufficientActivity",
+      "msg": "Insufficient activity"
+    },
+    {
+      "code": 6059,
+      "name": "WrongCycle",
+      "msg": "Wrong cycle"
+    },
+    {
+      "code": 6060,
+      "name": "LotteryPoolDepleted",
+      "msg": "Lottery pool depleted"
+    },
+    {
+      "code": 6061,
+      "name": "CycleNotComplete",
+      "msg": "Cycle not complete"
+    },
+    {
+      "code": 6062,
+      "name": "UnauthorizedOwner",
+      "msg": "Unauthorized: owner mismatch"
+    },
+    {
+      "code": 6063,
+      "name": "InvalidMintDecimals",
+      "msg": "Mint must have 6 decimals"
+    },
+    {
+      "code": 6064,
+      "name": "NotSigner",
+      "msg": "Not a signer"
+    },
+    {
+      "code": 6065,
+      "name": "InvalidIndex",
+      "msg": "Invalid index"
+    },
+    {
+      "code": 6066,
+      "name": "InsufficientBurnFunds",
+      "msg": "Insufficient burn funds"
+    },
+    {
+      "code": 6067,
+      "name": "MissingLightAccounts",
+      "msg": "Missing Light accounts"
+    },
+    {
+      "code": 6068,
+      "name": "InvalidLightProof",
+      "msg": "Invalid Light proof"
+    },
+    {
+      "code": 6069,
+      "name": "InvalidCompressedMeta",
+      "msg": "Invalid compressed account meta"
+    },
+    {
+      "code": 6070,
+      "name": "ConflictingLightMode",
+      "msg": "Conflicting Light mode parameters"
+    },
+    {
+      "code": 6071,
+      "name": "InvalidPoolVaultOwner",
+      "msg": "Invalid pool vault owner"
+    },
+    {
+      "code": 6072,
+      "name": "InvalidLotteryVaultOwner",
+      "msg": "Invalid lottery vault owner"
+    },
+    {
+      "code": 6073,
+      "name": "InvalidRedistributionVaultOwner",
+      "msg": "Invalid redistribution vault owner"
+    },
+    {
+      "code": 6074,
+      "name": "InvalidEscrowVaultOwner",
+      "msg": "Invalid escrow vault owner"
+    },
+    {
+      "code": 6075,
+      "name": "LegacyTradingDisabled",
+      "msg": "Trading is disabled in this legacy instruction"
+    },
+    {
+      "code": 6076,
+      "name": "TradeConfigAlreadyInitialized",
+      "msg": "Trade config already initialized"
+    },
+    {
+      "code": 6077,
+      "name": "TransferDirectionNotAllowed",
+      "msg": "Transfer direction not allowed"
+    },
+    {
+      "code": 6078,
+      "name": "HookValidationFailed",
+      "msg": "Hook validation failed"
+    },
+    {
+      "code": 6079,
+      "name": "UserTradeStateOwnerMismatch",
+      "msg": "User trade state owner mismatch"
+    },
+    {
+      "code": 6080,
+      "name": "HookMissingSigner",
+      "msg": "Transfer hook requires a signer authority"
+    },
+    {
+      "code": 6081,
+      "name": "ExtraAccountMetaListAlreadyInitialized",
+      "msg": "Extra account meta list already initialized"
+    },
+    {
+      "code": 6082,
+      "name": "ExtraAccountMetaListWriteFailed",
+      "msg": "Failed to write extra account meta list"
+    },
+    {
+      "code": 6083,
+      "name": "ExtraAccountMetaListReallocFailed",
+      "msg": "Failed to reallocate extra account meta list account"
+    },
+    {
+      "code": 6084,
+      "name": "TradeBookFull",
+      "msg": "Trade book has no free slots for new traders"
+    },
+    {
+      "code": 6085,
+      "name": "InvalidTokenProgram",
+      "msg": "Invalid token program"
+    },
+    {
+      "code": 6086,
+      "name": "InvalidFallbackInstruction",
+      "msg": "Fallback instruction not recognized"
+    },
+    {
+      "code": 6087,
+      "name": "WalletTransfersDisabled",
+      "msg": "Wallet transfers are disabled"
+    },
+    {
+      "code": 6088,
+      "name": "StealthTransfersDisabled",
+      "msg": "Stealth transfers are disabled"
+    },
+    {
+      "code": 6089,
+      "name": "UnauthorizedTradeAuthority",
+      "msg": "Unauthorized trade config authority"
+    },
+    {
+      "code": 6090,
+      "name": "VenueAllowlistFull",
+      "msg": "Venue allowlist is full"
+    },
+    {
+      "code": 6091,
+      "name": "VenueEntryDuplicate",
+      "msg": "Venue entry already exists"
+    },
+    {
+      "code": 6092,
+      "name": "VenueEntryNotFound",
+      "msg": "Venue entry not found"
+    },
+    {
+      "code": 6093,
+      "name": "VenueTransferNotAllowed",
+      "msg": "Transfer does not involve an allowlisted DEX or CEX token account"
+    },
+    {
+      "code": 6094,
+      "name": "ExternalDexTransfersDisabled",
+      "msg": "External DEX transfers are disabled"
+    },
+    {
+      "code": 6095,
+      "name": "CexTransfersDisabled",
+      "msg": "CEX routing transfers are disabled"
+    },
+    {
+      "code": 6096,
+      "name": "TradePolicyUpdateEmpty",
+      "msg": "At least one trade policy field must be provided"
+    },
+    {
+      "code": 6097,
+      "name": "HookTaxDelegateNotApproved",
+      "msg": "Token ATA must approve hook-tax-delegate before swapping (run approve once)"
+    },
+    {
+      "code": 6098,
+      "name": "TransferHookCpiFailed",
+      "msg": "Failed to attach transfer-hook accounts for Token-2022 CPI"
+    },
+    {
+      "code": 6099,
+      "name": "PriceFloorSolFeeInsufficient",
+      "msg": "Price floor SOL fee missing or too low for this transaction"
+    },
+    {
+      "code": 6100,
+      "name": "PriceFloorInsufficientTreasury",
+      "msg": "Price floor treasury has insufficient SOL for release"
+    },
+    {
+      "code": 6101,
+      "name": "PriceFloorReleaseTooSmall",
+      "msg": "Price floor release amount below minimum"
+    },
+    {
+      "code": 6102,
+      "name": "DexLedgerRequiresSwapInSameTx",
+      "msg": "DEX ledger requires a Meteora swap in the same transaction"
+    },
+    {
+      "code": 6103,
+      "name": "LotteryVoucherStillLive",
+      "msg": "Pending lottery payout voucher is still live — cannot overwrite"
+    },
+    {
+      "code": 6104,
+      "name": "OfficialDexTaxRequiresCpi",
+      "msg": "Official DEX tax requires settlement CPI (TARGET fail-closed)"
+    },
+    {
+      "code": 6105,
+      "name": "TransferHookSettlementDisabled",
+      "msg": "transfer_hook_settlement is disabled until the hook executor can CPI"
+    },
+    {
+      "code": 6106,
+      "name": "PendingDexTaxExceeded",
+      "msg": "collect_dex amount exceeds pending official DEX tax"
+    }
+  ],
+  "types": [
+    {
+      "name": "AccountingState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "current_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "epoch_start_time",
+            "type": "i64"
+          },
+          {
+            "name": "active_users_redistribution",
+            "type": "u64"
+          },
+          {
+            "name": "active_users_previous",
+            "type": "u64"
+          },
+          {
+            "name": "active_users_snapshot",
+            "type": "u64"
+          },
+          {
+            "name": "redistribution_pool_current",
+            "type": "u64"
+          },
+          {
+            "name": "redistribution_pool_previous",
+            "type": "u64"
+          },
+          {
+            "name": "redistribution_share",
+            "type": "u64"
+          },
+          {
+            "name": "total_tickets",
+            "type": "u64"
+          },
+          {
+            "name": "winning_ticket",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_drawn",
+            "type": "bool"
+          },
+          {
+            "name": "lottery_draw_time",
+            "type": "i64"
+          },
+          {
+            "name": "lottery_paid",
+            "type": "bool"
+          },
+          {
+            "name": "tax_remainder",
+            "type": "u64"
+          },
+          {
+            "name": "keeper_reward_claimed",
+            "type": "bool"
+          },
+          {
+            "name": "total_ticks_this_epoch",
+            "type": "u64"
+          },
+          {
+            "name": "epoch_volume_current",
+            "type": "u64"
+          },
+          {
+            "name": "epoch_sell_volume_current",
+            "docs": [
+              "Primary-market sell `amount` only; used with `epoch_turnover_limit` (buy and transfer-hook do not count)."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "epoch_volume_previous",
+            "type": "u64"
+          },
+          {
+            "name": "total_redistribution_claims",
+            "type": "u64"
+          },
+          {
+            "name": "redistribution_claimed_from_previous",
+            "type": "u64"
+          },
+          {
+            "name": "redistribution_claims_this_epoch",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_draw_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "lottery_winner",
+            "docs": [
+              "Set when a pending winner first swaps after draw; claim/payout may use this instead of live tickets."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "entropy_commit",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "entropy_commit_slot",
+            "type": "u64"
+          },
+          {
+            "name": "entropy_draw_counter",
+            "type": "u64"
+          },
+          {
+            "name": "unique_keepers_this_epoch",
+            "type": "u64"
+          },
+          {
+            "name": "epoch_supply_quota",
+            "type": "u64"
+          },
+          {
+            "name": "epoch_sold",
+            "type": "u64"
+          },
+          {
+            "name": "total_released",
+            "type": "u64"
+          },
+          {
+            "name": "total_cap",
+            "type": "u64"
+          },
+          {
+            "name": "genesis_done",
+            "type": "bool"
+          },
+          {
+            "name": "supply_released_for_epoch",
+            "type": "bool"
+          },
+          {
+            "name": "burn_pending",
+            "type": "bool"
+          },
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lottery_commit_count",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_last_commit_slot",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_tx_count",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_volume_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "lottery_participants_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "total_supply",
+            "type": "u64"
+          },
+          {
+            "name": "market_pool_allocation",
+            "type": "u64"
+          },
+          {
+            "name": "dev_wallet_allocation",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_allocation",
+            "type": "u64"
+          },
+          {
+            "name": "burn_allocation",
+            "type": "u64"
+          },
+          {
+            "name": "treasury_allocation",
+            "type": "u64"
+          },
+          {
+            "name": "allocations_initialized",
+            "type": "bool"
+          },
+          {
+            "name": "rollover_lock",
+            "type": "u8"
+          },
+          {
+            "name": "redistribution_cycle_start_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "redistribution_accumulated",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_draws_count",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_pool_remaining",
+            "type": "u64"
+          },
+          {
+            "name": "eligible_users_this_cycle",
+            "type": "u64"
+          },
+          {
+            "name": "eligible_users_previous_cycle",
+            "type": "u64"
+          },
+          {
+            "name": "genesis_epoch_timestamp",
+            "docs": [
+              "Unix time when protocol **epoch 0** starts. `current_epoch = (now - genesis) / SECONDS_PER_EPOCH`."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "lottery_ticket_cycle_start",
+            "docs": [
+              "First epoch of the current 7-epoch lottery ticket window (aligned to redistribution cycle)."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "price_floor_accumulated",
+            "docs": [
+              "Lamports contributed via price-floor SOL fees (direct wSOL → Meteora reserve)."
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BurnEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "epoch",
+            "type": "i64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "total_burned",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BurnState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "total_burned",
+            "type": "u64"
+          },
+          {
+            "name": "last_burn_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "total_epochs",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CompressedAccountMeta",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tree_info",
+            "docs": [
+              "Merkle tree context."
+            ],
+            "type": {
+              "defined": {
+                "name": "PackedStateTreeInfo"
+              }
+            }
+          },
+          {
+            "name": "address",
+            "docs": [
+              "Address."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "output_state_tree_index",
+            "docs": [
+              "Output merkle tree index."
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CompressedProof",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "a",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "b",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          },
+          {
+            "name": "c",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "InvariantWarning",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "message",
+            "type": "string"
+          },
+          {
+            "name": "expected",
+            "type": "u64"
+          },
+          {
+            "name": "actual",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "KeeperRewardPaid",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "keeper",
+            "type": "pubkey"
+          },
+          {
+            "name": "reward",
+            "type": "u64"
+          },
+          {
+            "name": "epoch",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LightCpiParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "core_meta",
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "CompressedAccountMeta"
+                }
+              }
+            }
+          },
+          {
+            "name": "epoch_meta",
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "CompressedAccountMeta"
+                }
+              }
+            }
+          },
+          {
+            "name": "new_core_address",
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "NewAddressParamsAssignedPacked"
+                }
+              }
+            }
+          },
+          {
+            "name": "new_epoch_address",
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "NewAddressParamsAssignedPacked"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LotteryCommittedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "epoch",
+            "type": "i64"
+          },
+          {
+            "name": "slot",
+            "type": "u64"
+          },
+          {
+            "name": "requester",
+            "type": "pubkey"
+          },
+          {
+            "name": "commit_count",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LotteryCycleSkippedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "epoch",
+            "type": "i64"
+          },
+          {
+            "name": "total_tickets",
+            "type": "u64"
+          },
+          {
+            "name": "min_tickets_required",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LotteryDrawnEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "epoch",
+            "type": "i64"
+          },
+          {
+            "name": "winning_ticket",
+            "type": "u64"
+          },
+          {
+            "name": "entropy_used",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "tx_count",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LotteryPaidEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "epoch",
+            "type": "i64"
+          },
+          {
+            "name": "winner_ticket",
+            "type": "u64"
+          },
+          {
+            "name": "prize_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NewAddressParamsAssignedPacked",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seed",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "address_queue_account_index",
+            "type": "u8"
+          },
+          {
+            "name": "address_merkle_tree_account_index",
+            "type": "u8"
+          },
+          {
+            "name": "address_merkle_tree_root_index",
+            "type": "u16"
+          },
+          {
+            "name": "assigned_to_account",
+            "type": "bool"
+          },
+          {
+            "name": "assigned_account_index",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PackedAddressTreeInfo",
+      "docs": [
+        "Packed address tree info for instruction data.",
+        "Contains indices to address tree accounts and root index."
+      ],
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address_merkle_tree_pubkey_index",
+            "type": "u8"
+          },
+          {
+            "name": "address_queue_pubkey_index",
+            "type": "u8"
+          },
+          {
+            "name": "root_index",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PackedStateTreeInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "root_index",
+            "type": "u16"
+          },
+          {
+            "name": "prove_by_index",
+            "type": "bool"
+          },
+          {
+            "name": "merkle_tree_pubkey_index",
+            "type": "u8"
+          },
+          {
+            "name": "queue_pubkey_index",
+            "type": "u8"
+          },
+          {
+            "name": "leaf_index",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PendingKeeperReward",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "source_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "keeper",
+            "type": "pubkey"
+          },
+          {
+            "name": "epoch",
+            "type": "i64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "prepared_at",
+            "type": "i64"
+          },
+          {
+            "name": "consumed",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PendingLotteryPayout",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "source_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "winner",
+            "type": "pubkey"
+          },
+          {
+            "name": "draw_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "winning_ticket",
+            "type": "u64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "prepared_at",
+            "type": "i64"
+          },
+          {
+            "name": "consumed",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PendingRedistributionClaim",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "source_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "cycle_start_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "prepared_at",
+            "type": "i64"
+          },
+          {
+            "name": "consumed",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceFloorSolReleasedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "treasury_remaining",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RedistributionClaimEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "cycle",
+            "type": "i64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RedistributionCycleEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "cycle",
+            "type": "i64"
+          },
+          {
+            "name": "pool_amount",
+            "type": "u64"
+          },
+          {
+            "name": "eligible_users",
+            "type": "u64"
+          },
+          {
+            "name": "share_per_user",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TaxCpiExecutedEvent",
+      "docs": [
+        "Emitted when redistribution tax CPI succeeds (on-chain vault credit)."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "transfer_kind",
+            "type": "u8"
+          },
+          {
+            "name": "tax_amount",
+            "type": "u64"
+          },
+          {
+            "name": "from_token",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TickFeePaid",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "keeper",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeBook",
+      "docs": [
+        "Per-mint trade limits keyed by wallet owner. Static TLV address so Meteora UI preload matches CPI."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "entries",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "TradeBookEntry"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeBookEntry",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "last_trade_time",
+            "type": "i64"
+          },
+          {
+            "name": "last_activity",
+            "type": "u64"
+          },
+          {
+            "name": "txs_this_epoch",
+            "type": "u16"
+          },
+          {
+            "name": "txs_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "epoch_volume",
+            "type": "u64"
+          },
+          {
+            "name": "epoch_volume_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "initialized_at",
+            "type": "i64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "last_active_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "ticket_start",
+            "type": "u64"
+          },
+          {
+            "name": "ticket_count",
+            "type": "u64"
+          },
+          {
+            "name": "ticket_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "redistribution_claim_count",
+            "type": "u64"
+          },
+          {
+            "name": "eligible_for_redistribution",
+            "type": "bool"
+          },
+          {
+            "name": "activity_bitmap",
+            "type": "u32"
+          },
+          {
+            "name": "activity_cycle_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "active_epochs_count",
+            "type": "u8"
+          },
+          {
+            "name": "last_claimed_cycle",
+            "type": "i64"
+          },
+          {
+            "name": "last_claim_time",
+            "type": "i64"
+          },
+          {
+            "name": "lottery_cycle_volume",
+            "type": "u64"
+          },
+          {
+            "name": "lottery_cycle_start",
+            "type": "i64"
+          },
+          {
+            "name": "unclaimed_redistribution_cycle_start",
+            "type": "i64"
+          },
+          {
+            "name": "unclaimed_active_epochs",
+            "type": "u8"
+          },
+          {
+            "name": "unclaimed_activity_bitmap",
+            "docs": [
+              "Frozen 28-epoch activity bitmap for a prior-cycle redistribution claim."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "pending_dex_tax",
+            "docs": [
+              "Official DEX tax not yet pulled by `collect_dex_redistribution_tax` (PermanentDelegate)."
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "meteora_pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "meteora_token_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "stealth_program",
+            "type": "pubkey"
+          },
+          {
+            "name": "stealth_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "stealth_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "lottery_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "lottery_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "redistribution_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "redistribution_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "burn_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "burn_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "escrow_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "settlement_executor_program",
+            "type": "pubkey"
+          },
+          {
+            "name": "settlement_executor_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "trading_enabled",
+            "type": "bool"
+          },
+          {
+            "name": "restrict_to_meteora_pool",
+            "type": "bool"
+          },
+          {
+            "name": "allow_stealth_transfers",
+            "type": "bool"
+          },
+          {
+            "name": "allow_wallet_p2p",
+            "type": "bool"
+          },
+          {
+            "name": "allow_protocol_payouts",
+            "type": "bool"
+          },
+          {
+            "name": "allow_protocol_inflows",
+            "type": "bool"
+          },
+          {
+            "name": "allow_external_dex",
+            "type": "bool"
+          },
+          {
+            "name": "allow_cex",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeValidatedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "epoch",
+            "type": "i64"
+          },
+          {
+            "name": "is_sell",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "nonce",
+            "type": "u64"
+          },
+          {
+            "name": "last_activity",
+            "type": "u64"
+          },
+          {
+            "name": "last_active_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "last_claimed_redistribution_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "last_claim_time",
+            "type": "i64"
+          },
+          {
+            "name": "ticket_start",
+            "type": "u64"
+          },
+          {
+            "name": "ticket_count",
+            "type": "u64"
+          },
+          {
+            "name": "ticket_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "redistribution_claim_count",
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "eligible_for_redistribution",
+            "type": "bool"
+          },
+          {
+            "name": "ticks_this_epoch",
+            "type": "u16"
+          },
+          {
+            "name": "ticks_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "last_tick_time",
+            "type": "i64"
+          },
+          {
+            "name": "txs_this_epoch",
+            "type": "u16"
+          },
+          {
+            "name": "txs_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "epoch_volume",
+            "type": "u64"
+          },
+          {
+            "name": "epoch_volume_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "activity_bitmap",
+            "type": "u32"
+          },
+          {
+            "name": "activity_cycle_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "active_epochs_count",
+            "type": "u8"
+          },
+          {
+            "name": "last_claimed_cycle",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserTradeState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "last_trade_time",
+            "type": "i64"
+          },
+          {
+            "name": "txs_this_epoch",
+            "type": "u16"
+          },
+          {
+            "name": "txs_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "epoch_volume",
+            "type": "u64"
+          },
+          {
+            "name": "epoch_volume_epoch",
+            "type": "i64"
+          },
+          {
+            "name": "initialized_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ValidityProof",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "option": {
+              "defined": {
+                "name": "CompressedProof"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "VenueAllowlist",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "entries",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "VenueEntry"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "VenueEntry",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "kind",
+            "type": {
+              "defined": {
+                "name": "VenueKind"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "VenueKind",
+      "docs": [
+        "Tag for an allowlisted SPL token account (vault/ATA).",
+        "- `PrimaryPool`: Meteora-compatible **pool token account** for this mint — hook treats it like",
+        "`trade_config.meteora_token_vault` (OfficialBuy / OfficialSell, same limits and accounting).",
+        "- `Dex` / `Cex`: optional venues when P2P is off (lighter hook path; not “official” pool)."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "PrimaryPool"
+          },
+          {
+            "name": "Dex"
+          },
+          {
+            "name": "Cex"
+          }
+        ]
+      }
+    }
+  ]
+}
