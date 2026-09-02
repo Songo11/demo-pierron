@@ -12,7 +12,7 @@ import {
   formatPayRecipientShort,
   parsePierronPayLink,
   type PierronPayRequest,
-} from '../../../../shared/pierron/pierronPayFlow.ts';
+} from '../../../shared/pierron/pierronPayFlow.ts';
 import { mapPierronPayError, signAndSubmitPierronPay } from '../../lib/pierronPayWeb';
 
 export default function PayPage() {
