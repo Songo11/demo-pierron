@@ -204,7 +204,9 @@ export const en: Translations = {
     "connectMwaNotFound": "This browser cannot see wallets via Mobile Wallet Adapter (common on GrapheneOS / Vanadium). Open the dapp in Phantom or Solflare — connect works there like in the app.",
     "connectBrowseHint": "Most reliable on phone: open this page in your wallet’s built-in browser, then Connect wallet.",
     "openInPhantom": "Open in Phantom",
-    "openInSolflare": "Open in Solflare"
+    "openInSolflare": "Open in Solflare",
+    "connectResumeCta": "Finish connecting",
+    "connectResumeHint": "If you just returned from Solflare/Phantom — tap Finish connecting to enter the dapp."
   },
   "settings": {
     "title": "Settings",

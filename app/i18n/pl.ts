@@ -203,7 +203,9 @@ export const pl = {
     "connectMwaNotFound": "Ta przeglądarka nie widzi portfela przez Mobile Wallet Adapter (częste na GrapheneOS / Vanadium). Otwórz dappkę w Phantom lub Solflare — tam połączenie działa jak w aplikacji.",
     "connectBrowseHint": "Najpewniejsza ścieżka na telefonie: otwórz tę stronę w przeglądarce wbudowanej w portfel, potem Połącz portfel.",
     "openInPhantom": "Otwórz w Phantom",
-    "openInSolflare": "Otwórz w Solflare"
+    "openInSolflare": "Otwórz w Solflare",
+    "connectResumeCta": "Dokończ połączenie",
+    "connectResumeHint": "Jeśli wróciłeś z Solflare/Phantom — kliknij „Dokończ połączenie”, żeby wejść do menu dappki."
   },
   "settings": {
     "title": "Ustawienia",
