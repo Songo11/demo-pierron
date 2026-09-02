@@ -1,39 +1,30 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
 import { useTranslations } from '../context/LocaleContext';
 
 /**
- * Gate CTA: always recoverable after reject / hung connect.
- * Never stays disabled on "Łączenie…" — clears selection and reopens the modal.
+ * Gate CTA. Wallet modal only `select()`s — we must `connect()` afterwards
+ * (same as WalletMultiButton's has-wallet → onConnect path).
  */
 export default function ConnectWalletGateButton() {
   const t = useTranslations();
-  const { connected, connecting, wallet, publicKey, select, disconnect } = useWallet();
+  const { connected, connecting, wallet, publicKey, connect } = useWallet();
   const { setVisible } = useWalletModal();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const connectAttemptRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (connected) {
       setError(null);
       setBusy(false);
+      connectAttemptRef.current = null;
     }
   }, [connected]);
-
-  // If adapter reports connecting for too long after a reject, unlock the CTA.
-  useEffect(() => {
-    if (!connecting) {
-      setBusy(false);
-      return;
-    }
-    setBusy(true);
-    const id = window.setTimeout(() => setBusy(false), 2500);
-    return () => window.clearTimeout(id);
-  }, [connecting]);
 
   useEffect(() => {
     const onWalletErr = (ev: Event) => {
@@ -47,35 +38,72 @@ export default function ConnectWalletGateButton() {
           : msg
       );
       setBusy(false);
+      connectAttemptRef.current = null;
     };
     window.addEventListener('pierron-wallet-error', onWalletErr);
     return () => window.removeEventListener('pierron-wallet-error', onWalletErr);
   }, [t.dapp.connectRejectedHint]);
 
-  const onClick = useCallback(async () => {
+  // After modal select(walletName), adapter is set but not connected — connect now.
+  useEffect(() => {
+    if (!wallet || connected || connecting) return;
+    const name = wallet.adapter.name;
+    if (connectAttemptRef.current === name) return;
+    connectAttemptRef.current = name;
+
+    let cancelled = false;
+    setBusy(true);
+    setError(null);
+    void (async () => {
+      try {
+        await connect();
+      } catch (e) {
+        if (cancelled) return;
+        const msg = e instanceof Error ? e.message : String(e);
+        const rejected = /reject|denied|cancel/i.test(msg);
+        setError(
+          rejected
+            ? (t.dapp.connectRejectedHint ??
+              'Odrzucono w portfelu. Kliknij ponownie i zatwierdź połączenie.')
+            : msg
+        );
+        connectAttemptRef.current = null;
+      } finally {
+        if (!cancelled) setBusy(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [wallet, connected, connecting, connect, t.dapp.connectRejectedHint]);
+
+  const onClick = useCallback(() => {
     setError(null);
     if (connected) {
       setVisible(true);
       return;
     }
-
-    // Clear hung / rejected selection so the next attempt is clean.
-    try {
-      if (wallet) {
-        await disconnect().catch(() => undefined);
-      }
-    } catch {
-      // ignore
+    if (!wallet) {
+      setVisible(true);
+      return;
     }
-    try {
-      select(null);
-    } catch {
-      // ignore
-    }
-
-    setBusy(false);
-    setVisible(true);
-  }, [connected, disconnect, select, setVisible, wallet]);
+    // Selected but not connected (e.g. previous reject) — retry connect.
+    connectAttemptRef.current = null;
+    setBusy(true);
+    void connect()
+      .catch((e: unknown) => {
+        const msg = e instanceof Error ? e.message : String(e);
+        const rejected = /reject|denied|cancel/i.test(msg);
+        setError(
+          rejected
+            ? (t.dapp.connectRejectedHint ??
+              'Odrzucono w portfelu. Kliknij ponownie i zatwierdź połączenie.')
+            : msg
+        );
+      })
+      .finally(() => setBusy(false));
+  }, [connected, connect, setVisible, t.dapp.connectRejectedHint, wallet]);
 
   const label = connected
     ? publicKey
@@ -83,16 +111,16 @@ export default function ConnectWalletGateButton() {
       : t.wallet.portfelPodlaczony
     : busy || connecting
       ? t.dapp.connectHintConnecting
-      : t.wallet.polaczPortfel;
+      : wallet
+        ? t.wallet.polaczPortfel
+        : t.wallet.polaczPortfel;
 
   return (
     <div className="pierron-connect-wallet-wrap">
       <button
         type="button"
         className="wallet-adapter-button wallet-adapter-button-trigger pierron-connect-wallet-btn"
-        onClick={() => {
-          void onClick();
-        }}
+        onClick={onClick}
       >
         {label}
       </button>
