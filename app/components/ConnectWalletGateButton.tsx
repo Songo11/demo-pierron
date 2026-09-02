@@ -5,7 +5,10 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
 import { useTranslations } from '../context/LocaleContext';
-import { RESUME_WALLET_NAME_KEY } from '../lib/openInMobileWalletBrowser';
+import {
+  clearWalletUserDisconnected,
+  markWalletResumePending,
+} from '../lib/openInMobileWalletBrowser';
 
 /**
  * One button → always opens the wallet modal. After the user picks a wallet,
@@ -24,11 +27,6 @@ export default function ConnectWalletGateButton() {
     setError(null);
     setBusy(false);
     pendingConnectRef.current = false;
-    try {
-      sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
-    } catch {
-      /* ignore */
-    }
   }, [connected]);
 
   // User just picked a wallet in the modal → connect (MWA / Phantom / Solflare).
@@ -41,11 +39,7 @@ export default function ConnectWalletGateButton() {
       setBusy(true);
       setError(null);
       try {
-        try {
-          sessionStorage.setItem(RESUME_WALLET_NAME_KEY, wallet.adapter.name);
-        } catch {
-          /* ignore */
-        }
+        markWalletResumePending(wallet.adapter.name);
         await connect();
       } catch (e) {
         if (cancelled) return;
@@ -73,7 +67,7 @@ export default function ConnectWalletGateButton() {
 
   const onPrimaryClick = useCallback(() => {
     setError(null);
-    // Always open the picker — never silently hang on a stale adapter connect().
+    clearWalletUserDisconnected();
     pendingConnectRef.current = true;
     setVisible(true);
   }, [setVisible]);

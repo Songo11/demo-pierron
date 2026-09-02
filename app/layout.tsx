@@ -3,7 +3,7 @@
 
 import './lib/bufferBigIntPolyfill';
 
-import { WalletAdapterNetwork, type WalletAdapter, type WalletError } from '@solana/wallet-adapter-base';
+import { WalletAdapterNetwork, type Adapter, type WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
@@ -15,12 +15,13 @@ import { fetchWithRpcRetry } from '../shared/solana/resilientConnection.ts';
 import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
 import {
   RESUME_WALLET_NAME_KEY,
-  detectInjectedWalletBrowser,
+  isWalletUserDisconnected,
 } from './lib/openInMobileWalletBrowser';
 
 import ServerLayout from './layout-server';
 
 import MobileWalletResume from './components/MobileWalletResume';
+import WalletDisconnectGuard from './components/WalletDisconnectGuard';
 import { LayoutModeProvider } from './context/LayoutModeContext';
 import { LocaleProvider } from './context/LocaleContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -44,11 +45,11 @@ export default function RootLayout({
     []
   );
 
-  // Only autoConnect after an explicit handoff (or inside wallet browser).
-  // Unconditional autoConnect + stale walletName hangs on "Łączenie…" / dead button.
-  const shouldAutoConnect = useCallback(async (_adapter: WalletAdapter) => {
+  // AutoConnect only for pending mobile handoff — never because an extension is injected
+  // (that instantly re-connects after the user disconnects).
+  const shouldAutoConnect = useCallback(async (_adapter: Adapter) => {
     if (typeof window === 'undefined') return false;
-    if (detectInjectedWalletBrowser()) return true;
+    if (isWalletUserDisconnected()) return false;
     try {
       return Boolean(sessionStorage.getItem(RESUME_WALLET_NAME_KEY));
     } catch {
@@ -80,6 +81,7 @@ export default function RootLayout({
             <ConnectionProvider endpoint={endpoint} config={connectionConfig}>
               <WalletProvider wallets={wallets} autoConnect={shouldAutoConnect} onError={onWalletError}>
                 <WalletModalProvider>
+                  <WalletDisconnectGuard />
                   <MobileWalletResume />
                   {children}
                 </WalletModalProvider>

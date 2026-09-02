@@ -9,6 +9,47 @@
 
 export const PENDING_WALLET_BROWSE_KEY = 'pierron-pending-wallet-browse';
 export const RESUME_WALLET_NAME_KEY = 'pierron-resume-wallet-name';
+/** Set when the user explicitly disconnects — blocks autoConnect / resume for this tab. */
+export const WALLET_USER_DISCONNECTED_KEY = 'pierron-wallet-user-disconnected';
+
+export function markWalletUserDisconnected(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    sessionStorage.setItem(WALLET_USER_DISCONNECTED_KEY, '1');
+    sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
+    sessionStorage.removeItem(PENDING_WALLET_BROWSE_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+export function clearWalletUserDisconnected(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    sessionStorage.removeItem(WALLET_USER_DISCONNECTED_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+export function isWalletUserDisconnected(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return sessionStorage.getItem(WALLET_USER_DISCONNECTED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function markWalletResumePending(walletName: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    clearWalletUserDisconnected();
+    sessionStorage.setItem(RESUME_WALLET_NAME_KEY, walletName);
+  } catch {
+    /* ignore */
+  }
+}
 
 export function isAndroidUserAgent(
   ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
@@ -66,9 +107,9 @@ function encodeBrowseTarget(url: string): string {
 }
 
 function markPendingBrowse(kind: 'phantom' | 'solflare'): void {
+  markWalletResumePending(kind === 'solflare' ? 'Solflare' : 'Phantom');
   try {
     sessionStorage.setItem(PENDING_WALLET_BROWSE_KEY, kind);
-    sessionStorage.setItem(RESUME_WALLET_NAME_KEY, kind === 'solflare' ? 'Solflare' : 'Phantom');
   } catch {
     /* ignore */
   }

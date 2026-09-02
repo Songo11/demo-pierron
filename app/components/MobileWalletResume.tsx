@@ -6,12 +6,12 @@ import { useWallet } from '@solana/wallet-adapter-react';
 
 import {
   RESUME_WALLET_NAME_KEY,
-  detectInjectedWalletBrowser,
+  isWalletUserDisconnected,
 } from '../lib/openInMobileWalletBrowser';
 
 /**
- * After Solflare/MWA returns to the browser, finish connect only when we
- * explicitly marked a handoff (sessionStorage). Never auto-spam connect on load.
+ * After MWA/Solflare app-switch returns, finish connect only when a handoff
+ * flag is set. Never reconnect after an explicit user disconnect.
  */
 export default function MobileWalletResume() {
   const { connected, connecting, connect, select } = useWallet();
@@ -23,6 +23,7 @@ export default function MobileWalletResume() {
 
     const resume = async () => {
       if (connected || connecting || busyRef.current || triedRef.current) return;
+      if (isWalletUserDisconnected()) return;
 
       let name: string | null = null;
       try {
@@ -30,11 +31,7 @@ export default function MobileWalletResume() {
       } catch {
         /* ignore */
       }
-
-      const injected = detectInjectedWalletBrowser();
-      if (!name && injected) {
-        name = injected === 'solflare' ? 'Solflare' : 'Phantom';
-      }
+      // Only an explicit handoff flag — not "wallet extension is installed".
       if (!name) return;
 
       triedRef.current = true;

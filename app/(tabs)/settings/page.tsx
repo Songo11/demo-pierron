@@ -9,6 +9,7 @@ import { useLocale, useTranslations } from '../../context/LocaleContext';
 import { useAppTheme } from '../../context/ThemeContext';
 import { clearHistory, loadHistory, type HistoryItem } from '../../lib/historyWeb';
 import { pierronDevnet } from '../../lib/pierronDevnet';
+import { markWalletUserDisconnected } from '../../lib/openInMobileWalletBrowser';
 import { LOCALE_OPTIONS } from '../../i18n/helpers';
 import { pierronMeteoraAgUrl } from '../../../shared/meteora/pierronPoolExplorer.ts';
 import { PIERRON_DEVNET_METEORA_POOL } from '../../../shared/meteora/pierronPoolCanonical.ts';
@@ -227,6 +228,7 @@ export default function SettingsPage() {
                 style={{ marginTop: 12, color: 'var(--pierron-error)' }}
                 onClick={() =>
                   void (async () => {
+                    markWalletUserDisconnected();
                     await disconnect();
                     alert(`${t.common.sukces}\n${t.wallet.portfelOdlaczony}`);
                   })()
