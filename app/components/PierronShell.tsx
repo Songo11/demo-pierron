@@ -101,22 +101,17 @@ export default function PierronShell({ children }: { children: React.ReactNode }
           <div className="pierron-connect-actions">
             <LayoutModePicker />
 
-            {!needsLayoutChoice ? (
-              <>
-                <p className="pierron-connect-hint">
-                  {connecting ? t.dapp.connectHintConnecting : t.dapp.connectHint}
-                </p>
-                <div className="pierron-connect-cta-row">
-                  <WalletMultiButton>{t.wallet.polaczPortfel}</WalletMultiButton>
-                  <ConnectLanguageButton />
-                </div>
-              </>
-            ) : (
-              <>
-                <p className="pierron-connect-hint">{t.dapp.layoutPickerHint}</p>
-                <ConnectLanguageButton />
-              </>
-            )}
+            <p className="pierron-connect-hint">
+              {needsLayoutChoice
+                ? t.dapp.layoutPickerHint
+                : connecting
+                  ? t.dapp.connectHintConnecting
+                  : t.dapp.connectHint}
+            </p>
+            <div className="pierron-connect-cta-row">
+              <WalletMultiButton>{t.wallet.polaczPortfel}</WalletMultiButton>
+              <ConnectLanguageButton />
+            </div>
           </div>
         </div>
       ) : null}
