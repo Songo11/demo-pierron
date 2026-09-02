@@ -199,7 +199,11 @@ export const pl = {
     "connectHintConnecting": "Łączenie z portfelem…",
     "connectRejectedHint": "Odrzucono w portfelu. Kliknij ponownie „Połącz portfel”, wybierz Solflare lub Phantom (Devnet) i zatwierdź połączenie.",
     "connectMobileWallet": "Użyj portfela z telefonu",
-    "connectMobileHint": "Na Androidzie przycisk otworzy zainstalowaną aplikację portfela (Phantom / Solflare) przez Mobile Wallet Adapter."
+    "connectMobileHint": "Na Androidzie przycisk otworzy zainstalowaną aplikację portfela (Phantom / Solflare) przez Mobile Wallet Adapter.",
+    "connectMwaNotFound": "Ta przeglądarka nie widzi portfela przez Mobile Wallet Adapter (częste na GrapheneOS / Vanadium). Otwórz dappkę w Phantom lub Solflare — tam połączenie działa jak w aplikacji.",
+    "connectBrowseHint": "Najpewniejsza ścieżka na telefonie: otwórz tę stronę w przeglądarce wbudowanej w portfel, potem Połącz portfel.",
+    "openInPhantom": "Otwórz w Phantom",
+    "openInSolflare": "Otwórz w Solflare"
   },
   "settings": {
     "title": "Ustawienia",

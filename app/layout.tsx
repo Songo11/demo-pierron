@@ -10,7 +10,6 @@ import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adap
 import {
   createDefaultAddressSelector,
   createDefaultAuthorizationResultCache,
-  createDefaultWalletNotFoundHandler,
   SolanaMobileWalletAdapter,
   SolanaMobileWalletAdapterWalletName,
 } from '@solana-mobile/wallet-adapter-mobile';
@@ -85,7 +84,11 @@ export default function RootLayout({
         },
         authorizationResultCache: createDefaultAuthorizationResultCache(),
         cluster: WalletAdapterNetwork.Devnet,
-        onWalletNotFound: createDefaultWalletNotFoundHandler(),
+        onWalletNotFound: async () => {
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new Event('pierron-mwa-not-found'));
+          }
+        },
       }),
       ...createDesktopWallets(),
     ]);

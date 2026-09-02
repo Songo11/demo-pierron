@@ -200,7 +200,11 @@ export const en: Translations = {
     "connectHintConnecting": "Connecting wallet…",
     "connectRejectedHint": "Connection rejected in the wallet. Click Connect wallet again, pick Solflare or Phantom (Devnet), and approve.",
     "connectMobileWallet": "Use installed wallet",
-    "connectMobileHint": "On Android, Connect opens your installed wallet app (Phantom / Solflare) via Mobile Wallet Adapter."
+    "connectMobileHint": "On Android, Connect opens your installed wallet app (Phantom / Solflare) via Mobile Wallet Adapter.",
+    "connectMwaNotFound": "This browser cannot see wallets via Mobile Wallet Adapter (common on GrapheneOS / Vanadium). Open the dapp in Phantom or Solflare — connect works there like in the app.",
+    "connectBrowseHint": "Most reliable on phone: open this page in your wallet’s built-in browser, then Connect wallet.",
+    "openInPhantom": "Open in Phantom",
+    "openInSolflare": "Open in Solflare"
   },
   "settings": {
     "title": "Settings",

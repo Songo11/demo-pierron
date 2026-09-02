@@ -442,6 +442,37 @@ body {
   line-height: 1.4;
 }
 
+.pierron-connect-browse-fallback {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.pierron-connect-browse-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pierron-connect-browse-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--pierron-border-strong);
+  background: var(--pierron-surface-elevated);
+  color: var(--pierron-text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1.3;
+}
+
+.pierron-connect-browse-btn:hover {
+  border-color: var(--pierron-accent);
+}
+
 /* Light theme */
 html[data-pierron-theme='light'] {
   --pierron-bg: #ffffff;
