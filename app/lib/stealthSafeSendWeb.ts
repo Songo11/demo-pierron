@@ -97,7 +97,7 @@ export type StealthActionResult = {
 type StageFn = (message: string) => void;
 
 async function loadStealthOnChain() {
-  return import('../../../shared/mobile-stealth-v1/stealthOnChainExecutor.ts');
+  return import('../../shared/mobile-stealth-v1/stealthOnChainExecutor.ts');
 }
 
 function seedBytesToHex(bytes: number[] | Uint8Array): string {

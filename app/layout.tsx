@@ -11,7 +11,7 @@ import { useMemo } from 'react';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
-import { fetchWithRpcRetry } from '../../shared/solana/resilientConnection.ts';
+import { fetchWithRpcRetry } from '../shared/solana/resilientConnection.ts';
 import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
 
 import ServerLayout from './layout-server';
