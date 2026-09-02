@@ -416,11 +416,15 @@ body {
 
 .pierron-connect-wallet-wrap {
   width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
 }
 
 .pierron-connect-wallet-btn {
-  width: 100%;
+  width: 100% !important;
+  max-width: 260px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .pierron-connect-wallet-error {
@@ -613,38 +617,30 @@ html[data-pierron-theme='light'] .wallet-adapter-button-trigger {
 .pierron-connect-cta-row {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
   width: 100%;
 }
 
-@media (min-width: 420px) {
-  .pierron-connect-cta-row {
-    flex-direction: row;
-    align-items: stretch;
-  }
-
-  .pierron-connect-cta-row .wallet-adapter-button,
-  .pierron-connect-cta-row .pierron-connect-lang-btn {
-    flex: 1;
-    min-width: 0;
-  }
-}
-
 .pierron-connect-lang-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 16px;
+  gap: 8px;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  padding: 12px 18px;
   border-radius: 14px;
   border: 1px solid var(--pierron-border-strong);
   background: var(--pierron-surface-elevated);
   color: var(--pierron-text);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   line-height: 1.3;
+  flex: none;
+  white-space: nowrap;
 }
 
 .pierron-connect-lang-btn:hover {
