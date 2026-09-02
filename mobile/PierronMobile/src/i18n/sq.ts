@@ -187,17 +187,18 @@ export const sq: Translations = {
     "safeSend": "Dërgim i sigurt"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Zgjidhni paraqitjen e dapp",
+    "layoutPickerHint": "Telefon — pamje e ngushtë si aplikacioni celular. PC — panel më i gjerë për desktop.",
+    "layoutPhoneTitle": "Pamja e dapp në telefon",
+    "layoutPhoneSubtitle": "Ekran i ngushtë, navigim poshtë",
+    "layoutPcTitle": "Pamja e dapp në PC",
+    "layoutPcSubtitle": "Panel i gjerë, navigim anësor",
+    "layoutMenuTitle": "Paraqitja e dapp",
+    "layoutMenuSubtitle": "Telefon ose desktop",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Lidhni Phantom ose Solflare (Devnet) për të përdorur swap, ekosistemin dhe Safe Send.",
+    "connectHintConnecting": "Po lidhet portofoli…",
+    "connectRejectedHint": "Lidhja u refuzua në portofol. Klikoni përsëri Lidh portofolin, zgjidhni Solflare ose Phantom (Devnet) dhe aprovoni."
   },
   "settings": {
     "title": "Cilësimet",

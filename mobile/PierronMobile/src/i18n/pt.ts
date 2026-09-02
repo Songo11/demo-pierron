@@ -189,15 +189,16 @@ export const pt: Translations = {
   "dapp": {
     "layoutPickerTitle": "Escolha o layout do dapp",
     "layoutPickerHint": "Telefone — visualização estreita como o aplicativo móvel. PC — painel mais amplo para desktop.",
-    "layoutPhoneTitle": "visualização do aplicativo para smartphone",
-    "layoutPhoneSubtitle": "tela estreita, navegação inferior",
-    "layoutPcTitle": "visualização do aplicativo para PC",
-    "layoutPcSubtitle": "Painel amplo, navegação lateral",
-    "layoutMenuTitle": "layout Dapp",
-    "layoutMenuSubtitle": "telefone ou desktop",
+    "layoutPhoneTitle": "Visualização dapp no smartphone",
+    "layoutPhoneSubtitle": "Tela estreita, navegação inferior",
+    "layoutPcTitle": "Visualização dapp no PC",
+    "layoutPcSubtitle": "Painel largo, navegação lateral",
+    "layoutMenuTitle": "Layout do dapp",
+    "layoutMenuSubtitle": "Telefone ou desktop",
     "connectTagline": "Devnet · Web",
     "connectHint": "Conecte Phantom ou Solflare (Devnet) para usar swap, ecossistema e Safe Send.",
-    "connectHintConnecting": "Conectando carteira…"
+    "connectHintConnecting": "Conectando carteira…",
+    "connectRejectedHint": "Conexão rejeitada na carteira. Clique novamente em Conectar carteira, escolha Solflare ou Phantom (Devnet) e aprove."
   },
   "settings": {
     "title": "Definições",

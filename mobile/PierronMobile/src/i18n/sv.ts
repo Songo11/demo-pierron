@@ -187,17 +187,18 @@ export const sv: Translations = {
     "safeSend": "Säker sändning"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "Välj dapp-layout",
+    "layoutPickerHint": "Telefon — smal vy som mobilappen. PC — bredare panel för skrivbord.",
+    "layoutPhoneTitle": "Smarttelefon-dappvy",
+    "layoutPhoneSubtitle": "Smal skärm, navigering längst ner",
+    "layoutPcTitle": "PC-dappvy",
+    "layoutPcSubtitle": "Bred panel, sidonavigering",
+    "layoutMenuTitle": "Dapp-layout",
+    "layoutMenuSubtitle": "Telefon eller skrivbord",
+    "connectTagline": "Devnet · Webb",
+    "connectHint": "Anslut Phantom eller Solflare (Devnet) för att använda swap, ekosystem och Safe Send.",
+    "connectHintConnecting": "Ansluter plånbok…",
+    "connectRejectedHint": "Anslutningen avvisades i plånboken. Klicka Anslut plånbok igen, välj Solflare eller Phantom (Devnet) och godkänn."
   },
   "settings": {
     "title": "Inställningar",

@@ -187,17 +187,18 @@ export const is: Translations = {
     "safeSend": "Örugg sending"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "Veldu dapp-skipulag",
+    "layoutPickerHint": "Sími — þröng sýn eins og farsímaappið. PC — breiðari spjaldi fyrir skjáborð.",
+    "layoutPhoneTitle": "Snjallsíma dapp-sýn",
+    "layoutPhoneSubtitle": "Þröngur skjár, yfirsýn neðst",
+    "layoutPcTitle": "PC dapp-sýn",
+    "layoutPcSubtitle": "Breið spjaldi, hliðaryfirsýn",
+    "layoutMenuTitle": "Dapp-skipulag",
+    "layoutMenuSubtitle": "Sími eða skjáborð",
+    "connectTagline": "Devnet · Vefur",
+    "connectHint": "Tengdu Phantom eða Solflare (Devnet) til að nota swap, vistkerfi og Safe Send.",
+    "connectHintConnecting": "Tengir veski…",
+    "connectRejectedHint": "Tengingu var hafnað í veskinu. Smelltu aftur á Tengja veski, veldu Solflare eða Phantom (Devnet) og samþykktu."
   },
   "settings": {
     "title": "Stillingar",

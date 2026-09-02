@@ -187,17 +187,18 @@ export const ha: Translations = {
     "safeSend": "Aika amintacce"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "Zaɓi shimfidar dapp",
+    "layoutPickerHint": "Waya — ƙunƙuntaccen gani kamar app ɗin wayar hannu. PC — babban panel don desktop.",
+    "layoutPhoneTitle": "Kallon dapp na wayar hannu",
+    "layoutPhoneSubtitle": "Ƙunƙuntaccen allo, kewayawa ƙasa",
+    "layoutPcTitle": "Kallon dapp na PC",
+    "layoutPcSubtitle": "Babban panel, kewayawa gefe",
+    "layoutMenuTitle": "Shimfidar dapp",
+    "layoutMenuSubtitle": "Waya ko desktop",
+    "connectTagline": "Devnet · Yanar Gizo",
+    "connectHint": "Haɗa Phantom ko Solflare (Devnet) don amfani da swap, yanayin tsarin da Safe Send.",
+    "connectHintConnecting": "Ana haɗa wallet…",
+    "connectRejectedHint": "An ƙi haɗin a cikin wallet. Sake danna Haɗa wallet, zaɓi Solflare ko Phantom (Devnet), sannan amince."
   },
   "settings": {
     "title": "Saituna",

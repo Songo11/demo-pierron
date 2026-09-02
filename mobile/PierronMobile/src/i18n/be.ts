@@ -189,15 +189,16 @@ export const be: Translations = {
   "dapp": {
     "layoutPickerTitle": "Выберыце макет dapp",
     "layoutPickerHint": "Тэлефон — вузкі выгляд, як мабільнае прыкладанне. ПК — больш шырокая панэль для працоўнага стала.",
-    "layoutPhoneTitle": "Выгляд праграмы для смартфона",
-    "layoutPhoneSubtitle": "Вузкі экран, ніжняя навігацыя",
-    "layoutPcTitle": "Выгляд праграмы для кампутара",
+    "layoutPhoneTitle": "Выгляд dapp на смартфоне",
+    "layoutPhoneSubtitle": "Вузкі экран, навігацыя ўнізе",
+    "layoutPcTitle": "Выгляд dapp на ПК",
     "layoutPcSubtitle": "Шырокая панэль, бакавая навігацыя",
-    "layoutMenuTitle": "Макет Dapp",
-    "layoutMenuSubtitle": "Тэлефон або працоўны стол",
+    "layoutMenuTitle": "Макет dapp",
+    "layoutMenuSubtitle": "Тэлефон або ПК",
     "connectTagline": "Devnet · Інтэрнэт",
-    "connectHint": "Падключыце Phantom або Solflare (Devnet), каб выкарыстоўваць абмен, экасістэму і бяспечную адпраўку.",
-    "connectHintConnecting": "Падключэнне кашалька…"
+    "connectHint": "Падключыце Phantom або Solflare (Devnet), каб карыстацца свапам, экасістэмай і Safe Send.",
+    "connectHintConnecting": "Падключэнне кашалька…",
+    "connectRejectedHint": "Падключэнне адхілена ў кашальку. Зноў націсніце Падключыць кашалёк, выберыце Solflare або Phantom (Devnet) і пацвердзіце."
   },
   "settings": {
     "title": "Налады",

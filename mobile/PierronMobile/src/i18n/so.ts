@@ -187,17 +187,18 @@ export const so: Translations = {
     "safeSend": "Dirid ammaan ah"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Dooro qaabaynta dapp",
+    "layoutPickerHint": "Telefoon — aragti cidhiidhi ah sida abka mobilka. PC — panel ballaadhan desktop-ka.",
+    "layoutPhoneTitle": "Aragtida dapp ee smartphone",
+    "layoutPhoneSubtitle": "Shaashad cidhiidhi, navigation hoose",
+    "layoutPcTitle": "Aragtida dapp ee PC",
+    "layoutPcSubtitle": "Panel ballaadhan, navigation dhinac",
+    "layoutMenuTitle": "Qaabaynta dapp",
+    "layoutMenuSubtitle": "Telefoon ama desktop",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Ku xir Phantom ama Solflare (Devnet) si aad u isticmaasho swap, ecosystem iyo Safe Send.",
+    "connectHintConnecting": "Wallet ayaa la xirayaa…",
+    "connectRejectedHint": "Isku xirka waa la diiday wallet-ka. Guji mar kale Ku xir wallet, dooro Solflare ama Phantom (Devnet) oo aqbal."
   },
   "settings": {
     "title": "Dejinta",

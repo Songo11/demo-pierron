@@ -188,16 +188,17 @@ export const ar: Translations = {
   },
   "dapp": {
     "layoutPickerTitle": "اختر تخطيط dapp",
-    "layoutPickerHint": "الهاتف - عرض ضيق مثل تطبيق الهاتف المحمول. الكمبيوتر الشخصي - لوحة أوسع لسطح المكتب.",
-    "layoutPhoneTitle": "عرض dapp للهواتف الذكية",
-    "layoutPhoneSubtitle": "شاشة ضيقة، التنقل السفلي",
-    "layoutPcTitle": "عرض dapp للكمبيوتر الشخصي",
-    "layoutPcSubtitle": "لوحة واسعة، الملاحة الجانبية",
-    "layoutMenuTitle": "تخطيط داب",
-    "layoutMenuSubtitle": "الهاتف أو سطح المكتب",
-    "connectTagline": "ديفنيت · الويب",
-    "connectHint": "قم بتوصيل Phantom أو Solflare (Devnet) لاستخدام المبادلة والنظام البيئي والإرسال الآمن.",
-    "connectHintConnecting": "جارٍ ربط المحفظة…"
+    "layoutPickerHint": "الهاتف — عرض ضيق مثل تطبيق الجوال. الكمبيوتر — لوحة أوسع لسطح المكتب.",
+    "layoutPhoneTitle": "عرض dapp على الهاتف",
+    "layoutPhoneSubtitle": "شاشة ضيقة، تنقل سفلي",
+    "layoutPcTitle": "عرض dapp على الكمبيوتر",
+    "layoutPcSubtitle": "لوحة واسعة، تنقل جانبي",
+    "layoutMenuTitle": "تخطيط dapp",
+    "layoutMenuSubtitle": "هاتف أو سطح مكتب",
+    "connectTagline": "Devnet · الويب",
+    "connectHint": "اربط Phantom أو Solflare (Devnet) لاستخدام المبادلة والنظام البيئي وSafe Send.",
+    "connectHintConnecting": "جارٍ ربط المحفظة…",
+    "connectRejectedHint": "رُفض الاتصال في المحفظة. انقر ربط المحفظة مجددًا، اختر Solflare أو Phantom (Devnet) ووافق."
   },
   "settings": {
     "title": "إعدادات",

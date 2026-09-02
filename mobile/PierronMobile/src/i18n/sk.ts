@@ -187,17 +187,18 @@ export const sk: Translations = {
     "safeSend": "Bezpečné odoslanie"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Vyberte rozloženie dapp",
+    "layoutPickerHint": "Telefón — úzky pohľad ako v mobilnej aplikácii. PC — širší panel pre počítač.",
+    "layoutPhoneTitle": "Zobrazenie dapp na smartfóne",
+    "layoutPhoneSubtitle": "Úzka obrazovka, navigácia dole",
+    "layoutPcTitle": "Zobrazenie dapp na PC",
+    "layoutPcSubtitle": "Široký panel, bočná navigácia",
+    "layoutMenuTitle": "Rozloženie dapp",
+    "layoutMenuSubtitle": "Telefón alebo počítač",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Pripojte Phantom alebo Solflare (Devnet) na používanie swapu, ekosystému a Safe Send.",
+    "connectHintConnecting": "Pripája sa peňaženka…",
+    "connectRejectedHint": "Pripojenie bolo v peňaženke odmietnuté. Kliknite znova Pripojiť peňaženku, vyberte Solflare alebo Phantom (Devnet) a schváľte."
   },
   "settings": {
     "title": "Nastavenia",

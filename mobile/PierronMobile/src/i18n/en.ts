@@ -197,7 +197,8 @@ export const en: Translations = {
     "layoutMenuSubtitle": "Phone or desktop",
     "connectTagline": "Devnet · Web",
     "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHintConnecting": "Connecting wallet…",
+    "connectRejectedHint": "Connection rejected in the wallet. Click Connect wallet again, pick Solflare or Phantom (Devnet), and approve."
   },
   "settings": {
     "title": "Settings",

@@ -187,17 +187,18 @@ export const fa: Translations = {
     "safeSend": "ارسال امن"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "چیدمان دپ را انتخاب کنید",
+    "layoutPickerHint": "گوشی — نمای باریک مثل اپلیکیشن موبایل. رایانه — پنل عریض‌تر برای دسکتاپ.",
+    "layoutPhoneTitle": "نمای دپ برای گوشی",
+    "layoutPhoneSubtitle": "صفحه باریک، ناوبری پایین",
+    "layoutPcTitle": "نمای دپ برای رایانه",
+    "layoutPcSubtitle": "پنل عریض، ناوبری کناری",
+    "layoutMenuTitle": "چیدمان دپ",
+    "layoutMenuSubtitle": "گوشی یا دسکتاپ",
+    "connectTagline": "Devnet · وب",
+    "connectHint": "Phantom یا Solflare (Devnet) را وصل کنید تا از سواپ، اکوسیستم و Safe Send استفاده کنید.",
+    "connectHintConnecting": "در حال اتصال کیف پول…",
+    "connectRejectedHint": "اتصال در کیف پول رد شد. دوباره «اتصال کیف پول» را بزنید، Solflare یا Phantom (Devnet) را انتخاب کنید و تأیید کنید."
   },
   "settings": {
     "title": "تنظیمات",

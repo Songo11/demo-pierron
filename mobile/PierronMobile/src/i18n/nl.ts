@@ -187,17 +187,18 @@ export const nl: Translations = {
     "safeSend": "Veilig verzenden"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Kies dapp-indeling",
+    "layoutPickerHint": "Telefoon — smalle weergave zoals de mobiele app. PC — breder paneel voor desktop.",
+    "layoutPhoneTitle": "Smartphone dapp-weergave",
+    "layoutPhoneSubtitle": "Smal scherm, navigatie onderaan",
+    "layoutPcTitle": "PC dapp-weergave",
+    "layoutPcSubtitle": "Breed paneel, navigatie opzij",
+    "layoutMenuTitle": "Dapp-indeling",
+    "layoutMenuSubtitle": "Telefoon of desktop",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Verbind Phantom of Solflare (Devnet) om swap, ecosysteem en Safe Send te gebruiken.",
+    "connectHintConnecting": "Wallet verbinden…",
+    "connectRejectedHint": "Verbinding geweigerd in de wallet. Klik opnieuw op Wallet verbinden, kies Solflare of Phantom (Devnet) en keur goed."
   },
   "settings": {
     "title": "Instellingen",

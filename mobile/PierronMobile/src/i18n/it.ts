@@ -187,17 +187,18 @@ export const it: Translations = {
     "safeSend": "Invio sicuro"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Scegli il layout della dapp",
+    "layoutPickerHint": "Telefono — vista stretta come l’app mobile. PC — pannello più ampio per desktop.",
+    "layoutPhoneTitle": "Vista dapp smartphone",
+    "layoutPhoneSubtitle": "Schermo stretto, navigazione in basso",
+    "layoutPcTitle": "Vista dapp PC",
+    "layoutPcSubtitle": "Pannello ampio, navigazione laterale",
+    "layoutMenuTitle": "Layout della dapp",
+    "layoutMenuSubtitle": "Telefono o desktop",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Collega Phantom o Solflare (Devnet) per usare swap, ecosistema e Safe Send.",
+    "connectHintConnecting": "Connessione del portafoglio…",
+    "connectRejectedHint": "Connessione rifiutata nel portafoglio. Clicca di nuovo Collega portafoglio, scegli Solflare o Phantom (Devnet) e approva."
   },
   "settings": {
     "title": "Impostazioni",

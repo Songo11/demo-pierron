@@ -189,15 +189,16 @@ export const bg: Translations = {
   "dapp": {
     "layoutPickerTitle": "Изберете оформление на dapp",
     "layoutPickerHint": "Телефон — тесен изглед като мобилното приложение. PC — по-широк панел за настолен компютър.",
-    "layoutPhoneTitle": "Изглед на приложение за смартфон",
+    "layoutPhoneTitle": "Изглед на dapp на смартфон",
     "layoutPhoneSubtitle": "Тесен екран, долна навигация",
-    "layoutPcTitle": "Изглед на PC dapp",
+    "layoutPcTitle": "Изглед на dapp на PC",
     "layoutPcSubtitle": "Широк панел, странична навигация",
-    "layoutMenuTitle": "Dapp оформление",
-    "layoutMenuSubtitle": "Телефон или десктоп",
+    "layoutMenuTitle": "Оформление на dapp",
+    "layoutMenuSubtitle": "Телефон или настолен компютър",
     "connectTagline": "Devnet · Уеб",
-    "connectHint": "Свържете Phantom или Solflare (Devnet), за да използвате суап, екосистема и безопасно изпращане.",
-    "connectHintConnecting": "Портфейлът се свързва..."
+    "connectHint": "Свържете Phantom или Solflare (Devnet), за да използвате swap, екосистема и Safe Send.",
+    "connectHintConnecting": "Портфейлът се свързва…",
+    "connectRejectedHint": "Връзката е отхвърлена в портфейла. Кликнете отново Свързване на портфейл, изберете Solflare или Phantom (Devnet) и одобрете."
   },
   "settings": {
     "title": "Настройки",

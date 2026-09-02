@@ -188,16 +188,17 @@ export const zh: Translations = {
   },
   "dapp": {
     "layoutPickerTitle": "选择 dapp 布局",
-    "layoutPickerHint": "电话 — 像移动应用程序一样狭窄的视图。 PC — 更宽的桌面面板。",
+    "layoutPickerHint": "手机 — 像移动应用一样的窄视图。电脑 — 更宽的桌面面板。",
     "layoutPhoneTitle": "智能手机 dapp 视图",
-    "layoutPhoneSubtitle": "窄屏、底部导航",
-    "layoutPcTitle": "PC dapp 视图",
-    "layoutPcSubtitle": "宽面板、侧面导航",
+    "layoutPhoneSubtitle": "窄屏，底部导航",
+    "layoutPcTitle": "电脑 dapp 视图",
+    "layoutPcSubtitle": "宽面板，侧边导航",
     "layoutMenuTitle": "Dapp 布局",
     "layoutMenuSubtitle": "手机或桌面",
-    "connectTagline": "Devnet·Web",
-    "connectHint": "连接 Phantom 或 Solflare (Devnet) 以使用交换、生态系统和安全发送。",
-    "connectHintConnecting": "正在连接钱包..."
+    "connectTagline": "Devnet · Web",
+    "connectHint": "连接 Phantom 或 Solflare（Devnet）以使用兑换、生态和 Safe Send。",
+    "connectHintConnecting": "正在连接钱包…",
+    "connectRejectedHint": "钱包中拒绝了连接。请再次点击连接钱包，选择 Solflare 或 Phantom（Devnet）并批准。"
   },
   "settings": {
     "title": "设置",

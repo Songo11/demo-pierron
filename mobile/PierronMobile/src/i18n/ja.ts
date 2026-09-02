@@ -187,17 +187,18 @@ export const ja: Translations = {
     "safeSend": "セーフ送信"
   },
   "dapp": {
-    "layoutPickerTitle": "dapp レイアウトを選択します",
-    "layoutPickerHint": "電話 — モバイル アプリのように狭いビュー。 PC — デスクトップ用の幅広パネル。",
-    "layoutPhoneTitle": "スマートフォンdappビュー",
-    "layoutPhoneSubtitle": "狭い画面、下部ナビゲーション",
-    "layoutPcTitle": "PC dappビュー",
-    "layoutPcSubtitle": "ワイドパネル、サイドナビゲーション",
-    "layoutMenuTitle": "Dappレイアウト",
-    "layoutMenuSubtitle": "電話またはデスクトップ",
-    "connectTagline": "Devnet・Web",
-    "connectHint": "Phantom または Solflare (Devnet) を接続して、スワップ、エコシステム、セーフ センドを使用します。",
-    "connectHintConnecting": "ウォレットを接続中…"
+    "layoutPickerTitle": "dappレイアウトを選択",
+    "layoutPickerHint": "スマホ — モバイルアプリのような狭い表示。PC — デスクトップ向けの広いパネル。",
+    "layoutPhoneTitle": "スマートフォンのdapp表示",
+    "layoutPhoneSubtitle": "狭い画面、下部ナビ",
+    "layoutPcTitle": "PCのdapp表示",
+    "layoutPcSubtitle": "広いパネル、サイドナビ",
+    "layoutMenuTitle": "dappレイアウト",
+    "layoutMenuSubtitle": "スマホまたはデスクトップ",
+    "connectTagline": "Devnet · Web",
+    "connectHint": "スワップ、エコシステム、Safe Send を使うには Phantom または Solflare（Devnet）を接続してください。",
+    "connectHintConnecting": "ウォレットを接続中…",
+    "connectRejectedHint": "ウォレットで接続が拒否されました。もう一度ウォレットを接続し、Solflare または Phantom（Devnet）を選んで承認してください。"
   },
   "settings": {
     "title": "設定",

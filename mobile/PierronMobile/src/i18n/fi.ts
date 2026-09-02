@@ -187,17 +187,18 @@ export const fi: Translations = {
     "safeSend": "Turvallinen lähetys"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Valitse dapp-asettelu",
+    "layoutPickerHint": "Puhelin — kapea näkymä kuten mobiilisovelluksessa. PC — leveämpi paneeli työpöydälle.",
+    "layoutPhoneTitle": "Älypuhelimen dapp-näkymä",
+    "layoutPhoneSubtitle": "Kapea näyttö, navigointi alhaalla",
+    "layoutPcTitle": "PC-dapp-näkymä",
+    "layoutPcSubtitle": "Leveä paneeli, sivunavigointi",
+    "layoutMenuTitle": "Dapp-asettelu",
+    "layoutMenuSubtitle": "Puhelin tai työpöytä",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Yhdistä Phantom tai Solflare (Devnet) käyttääksesi swapia, ekosysteemiä ja Safe Sendia.",
+    "connectHintConnecting": "Yhdistetään lompakkoa…",
+    "connectRejectedHint": "Yhteys hylättiin lompakossa. Napsauta Yhdistä lompakko uudelleen, valitse Solflare tai Phantom (Devnet) ja hyväksy."
   },
   "settings": {
     "title": "Asetukset",

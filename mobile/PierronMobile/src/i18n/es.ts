@@ -187,17 +187,18 @@ export const es: Translations = {
     "safeSend": "Envío seguro"
   },
   "dapp": {
-    "layoutPickerTitle": "elija el diseño de la dapp",
+    "layoutPickerTitle": "Elige el diseño de la dapp",
     "layoutPickerHint": "Teléfono: vista estrecha como la aplicación móvil. PC: panel más amplio para escritorio.",
-    "layoutPhoneTitle": "vista de aplicación para teléfono inteligente",
-    "layoutPhoneSubtitle": "pantalla estrecha, navegación inferior",
-    "layoutPcTitle": "vista dapp para PC",
-    "layoutPcSubtitle": "panel ancho, navegación lateral",
-    "layoutMenuTitle": "Diseño Dapp",
-    "layoutMenuSubtitle": "Teléfono o computadora de escritorio",
+    "layoutPhoneTitle": "Vista dapp en smartphone",
+    "layoutPhoneSubtitle": "Pantalla estrecha, navegación inferior",
+    "layoutPcTitle": "Vista dapp en PC",
+    "layoutPcSubtitle": "Panel ancho, navegación lateral",
+    "layoutMenuTitle": "Diseño de la dapp",
+    "layoutMenuSubtitle": "Teléfono o escritorio",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Conecte Phantom o Solflare (Devnet) para usar swap, ecosistema y Safe Send.",
-    "connectHintConnecting": "Conectando billetera…"
+    "connectHint": "Conecta Phantom o Solflare (Devnet) para usar el swap, el ecosistema y Safe Send.",
+    "connectHintConnecting": "Conectando billetera…",
+    "connectRejectedHint": "Conexión rechazada en la billetera. Pulsa de nuevo Conectar billetera, elige Solflare o Phantom (Devnet) y aprueba."
   },
   "settings": {
     "title": "Ajustes",

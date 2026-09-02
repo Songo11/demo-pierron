@@ -189,15 +189,16 @@ export const cs: Translations = {
   "dapp": {
     "layoutPickerTitle": "Vyberte rozvržení dapp",
     "layoutPickerHint": "Telefon – úzký pohled jako mobilní aplikace. PC — širší panel pro stolní počítač.",
-    "layoutPhoneTitle": "Dapp pohled na smartphone",
-    "layoutPhoneSubtitle": "Úzká obrazovka, spodní navigace",
-    "layoutPcTitle": "PC Dapp pohled",
+    "layoutPhoneTitle": "Zobrazení dapp na smartphonu",
+    "layoutPhoneSubtitle": "Úzká obrazovka, navigace dole",
+    "layoutPcTitle": "Zobrazení dapp na PC",
     "layoutPcSubtitle": "Široký panel, boční navigace",
-    "layoutMenuTitle": "Dapp rozložení",
-    "layoutMenuSubtitle": "Telefon nebo desktop",
+    "layoutMenuTitle": "Rozvržení dapp",
+    "layoutMenuSubtitle": "Telefon nebo počítač",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Připojte Phantom nebo Solflare (Devnet), abyste mohli používat swap, ekosystém a bezpečné odesílání.",
-    "connectHintConnecting": "Připojování peněženky…"
+    "connectHint": "Připojte Phantom nebo Solflare (Devnet) pro swap, ekosystém a Safe Send.",
+    "connectHintConnecting": "Připojování peněženky…",
+    "connectRejectedHint": "Připojení bylo v peněžence odmítnuto. Klikněte znovu na Připojit peněženku, vyberte Solflare nebo Phantom (Devnet) a schvalte."
   },
   "settings": {
     "title": "Nastavení",

@@ -187,17 +187,18 @@ export const no: Translations = {
     "safeSend": "Sikker sending"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Velg dapp-layout",
+    "layoutPickerHint": "Telefon — smal visning som mobilappen. PC — bredere panel for skrivebord.",
+    "layoutPhoneTitle": "Smarttelefon-dappvisning",
+    "layoutPhoneSubtitle": "Smal skjerm, navigasjon nederst",
+    "layoutPcTitle": "PC-dappvisning",
+    "layoutPcSubtitle": "Bredt panel, sidenavigasjon",
+    "layoutMenuTitle": "Dapp-layout",
+    "layoutMenuSubtitle": "Telefon eller skrivebord",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Koble til Phantom eller Solflare (Devnet) for å bruke swap, økosystem og Safe Send.",
+    "connectHintConnecting": "Kobler til lommebok…",
+    "connectRejectedHint": "Tilkoblingen ble avvist i lommeboken. Klikk Koble til lommebok igjen, velg Solflare eller Phantom (Devnet) og godkjenn."
   },
   "settings": {
     "title": "Innstillinger",

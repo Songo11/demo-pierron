@@ -189,15 +189,16 @@ export const et: Translations = {
   "dapp": {
     "layoutPickerTitle": "Valige dappi paigutus",
     "layoutPickerHint": "Telefon – kitsas vaade nagu mobiilirakendus. PC – laiem paneel lauaarvuti jaoks.",
-    "layoutPhoneTitle": "Nutitelefoni dapp-vaade",
+    "layoutPhoneTitle": "Nutitelefoni dapi vaade",
     "layoutPhoneSubtitle": "Kitsas ekraan, alumine navigeerimine",
-    "layoutPcTitle": "PC dapp-vaade",
+    "layoutPcTitle": "PC dapi vaade",
     "layoutPcSubtitle": "Lai paneel, külgmine navigeerimine",
-    "layoutMenuTitle": "Dapp paigutus",
+    "layoutMenuTitle": "Dapi paigutus",
     "layoutMenuSubtitle": "Telefon või lauaarvuti",
     "connectTagline": "Devnet · Veeb",
-    "connectHint": "Ühendage Phantom või Solflare (Devnet), et kasutada vahetust, ökosüsteemi ja turvalist saatmist.",
-    "connectHintConnecting": "Rahakoti ühendamine…"
+    "connectHint": "Ühendage Phantom või Solflare (Devnet), et kasutada vahetust, ökosüsteemi ja Safe Sendi.",
+    "connectHintConnecting": "Rahakoti ühendamine…",
+    "connectRejectedHint": "Ühendus lükati rahakotis tagasi. Klõpsake uuesti Ühenda rahakott, valige Solflare või Phantom (Devnet) ja kinnitage."
   },
   "settings": {
     "title": "Seaded",

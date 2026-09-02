@@ -187,17 +187,18 @@ export const ka: Translations = {
     "safeSend": "უსაფრთხო გაგზავნა"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "აირჩიეთ dapp განლაგება",
+    "layoutPickerHint": "ტელეფონი — ვიწრო ხედი როგორც მობილურ აპში. PC — უფრო ფართო პანელი დესკტოპისთვის.",
+    "layoutPhoneTitle": "სმარტფონის dapp ხედი",
+    "layoutPhoneSubtitle": "ვიწრო ეკრანი, ქვედა ნავიგაცია",
+    "layoutPcTitle": "PC dapp ხედი",
+    "layoutPcSubtitle": "ფართო პანელი, გვერდითი ნავიგაცია",
+    "layoutMenuTitle": "Dapp განლაგება",
+    "layoutMenuSubtitle": "ტელეფონი ან დესკტოპი",
+    "connectTagline": "Devnet · ვები",
+    "connectHint": "დააკავშირეთ Phantom ან Solflare (Devnet) swap-ის, ეკოსისტემისა და Safe Send-ის გამოსაყენებლად.",
+    "connectHintConnecting": "საფულე იკავშირება…",
+    "connectRejectedHint": "კავშირი უარყოფილია საფულეში. კვლავ დააჭირეთ საფულის დაკავშირებას, აირჩიეთ Solflare ან Phantom (Devnet) და დაამტკიცეთ."
   },
   "settings": {
     "title": "პარამეტრები",

@@ -187,17 +187,18 @@ export const lt: Translations = {
     "safeSend": "Saugus siuntimas"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "Pasirinkite dapp išdėstymą",
+    "layoutPickerHint": "Telefonas — siauras vaizdas kaip programėlėje. PC — platesnis skydelis darbalaukiui.",
+    "layoutPhoneTitle": "Išmaniojo telefono dapp vaizdas",
+    "layoutPhoneSubtitle": "Siauras ekranas, navigacija apačioje",
+    "layoutPcTitle": "PC dapp vaizdas",
+    "layoutPcSubtitle": "Platus skydelis, šoninė navigacija",
+    "layoutMenuTitle": "Dapp išdėstymas",
+    "layoutMenuSubtitle": "Telefonas arba darbalaukis",
+    "connectTagline": "Devnet · Žiniatinklis",
+    "connectHint": "Prijunkite Phantom arba Solflare (Devnet), kad naudotumėte swap, ekosistemą ir Safe Send.",
+    "connectHintConnecting": "Jungiamasi prie piniginės…",
+    "connectRejectedHint": "Prisijungimas atmestas piniginėje. Dar kartą spustelėkite Prijungti piniginę, pasirinkite Solflare arba Phantom (Devnet) ir patvirtinkite."
   },
   "settings": {
     "title": "Nustatymai",

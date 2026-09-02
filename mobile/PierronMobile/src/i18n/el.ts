@@ -189,15 +189,16 @@ export const el: Translations = {
   "dapp": {
     "layoutPickerTitle": "Επιλέξτε διάταξη dapp",
     "layoutPickerHint": "Τηλέφωνο — στενή προβολή όπως η εφαρμογή για κινητά. Υπολογιστής — ευρύτερος πίνακας για επιτραπέζιους υπολογιστές.",
-    "layoutPhoneTitle": "Προβολή dapp smartphone",
+    "layoutPhoneTitle": "Προβολή dapp σε smartphone",
     "layoutPhoneSubtitle": "Στενή οθόνη, κάτω πλοήγηση",
-    "layoutPcTitle": "Προβολή dapp υπολογιστή",
-    "layoutPcSubtitle": "Ευρύ πάνελ, πλαϊνή πλοήγηση",
-    "layoutMenuTitle": "Διάταξη Dapp",
-    "layoutMenuSubtitle": "Τηλέφωνο ή επιφάνεια εργασίας",
+    "layoutPcTitle": "Προβολή dapp σε PC",
+    "layoutPcSubtitle": "Ευρύς πίνακας, πλευρική πλοήγηση",
+    "layoutMenuTitle": "Διάταξη dapp",
+    "layoutMenuSubtitle": "Τηλέφωνο ή υπολογιστής",
     "connectTagline": "Devnet · Ιστός",
-    "connectHint": "Συνδέστε το Phantom ή το Solflare (Devnet) για να χρησιμοποιήσετε την ανταλλαγή, το οικοσύστημα και την ασφαλή αποστολή.",
-    "connectHintConnecting": "Σύνδεση πορτοφολιού…"
+    "connectHint": "Συνδέστε Phantom ή Solflare (Devnet) για swap, οικοσύστημα και Safe Send.",
+    "connectHintConnecting": "Σύνδεση πορτοφολιού…",
+    "connectRejectedHint": "Η σύνδεση απορρίφθηκε στο πορτοφόλι. Κάντε ξανά κλικ στο Σύνδεση πορτοφολιού, επιλέξτε Solflare ή Phantom (Devnet) και εγκρίνετε."
   },
   "settings": {
     "title": "Ρυθμίσεις",

@@ -187,17 +187,18 @@ export const fr: Translations = {
     "safeSend": "Envoi sécurisé"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Choisir la disposition de la dapp",
+    "layoutPickerHint": "Téléphone — vue étroite comme l’appli mobile. PC — panneau plus large pour le bureau.",
+    "layoutPhoneTitle": "Vue dapp smartphone",
+    "layoutPhoneSubtitle": "Écran étroit, navigation en bas",
+    "layoutPcTitle": "Vue dapp PC",
+    "layoutPcSubtitle": "Panneau large, navigation latérale",
+    "layoutMenuTitle": "Disposition de la dapp",
+    "layoutMenuSubtitle": "Téléphone ou bureau",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Connectez Phantom ou Solflare (Devnet) pour utiliser le swap, l’écosystème et Safe Send.",
+    "connectHintConnecting": "Connexion du portefeuille…",
+    "connectRejectedHint": "Connexion refusée dans le portefeuille. Cliquez à nouveau sur Connecter le portefeuille, choisissez Solflare ou Phantom (Devnet) et approuvez."
   },
   "settings": {
     "title": "Paramètres",

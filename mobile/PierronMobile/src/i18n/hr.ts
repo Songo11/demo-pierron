@@ -187,17 +187,18 @@ export const hr: Translations = {
     "safeSend": "Sigurno slanje"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Odaberite raspored dappa",
+    "layoutPickerHint": "Telefon — uski prikaz kao mobilna aplikacija. PC — širi panel za desktop.",
+    "layoutPhoneTitle": "Prikaz dappa na pametnom telefonu",
+    "layoutPhoneSubtitle": "Uski zaslon, navigacija dolje",
+    "layoutPcTitle": "Prikaz dappa na PC-u",
+    "layoutPcSubtitle": "Široki panel, bočna navigacija",
+    "layoutMenuTitle": "Raspored dappa",
+    "layoutMenuSubtitle": "Telefon ili desktop",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Povežite Phantom ili Solflare (Devnet) za swap, ekosustav i Safe Send.",
+    "connectHintConnecting": "Povezivanje novčanika…",
+    "connectRejectedHint": "Veza je odbijena u novčaniku. Ponovno kliknite Poveži novčanik, odaberite Solflare ili Phantom (Devnet) i odobrite."
   },
   "settings": {
     "title": "Postavke",

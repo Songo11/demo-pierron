@@ -192,12 +192,13 @@ export const de: Translations = {
     "layoutPhoneTitle": "Smartphone-Dapp-Ansicht",
     "layoutPhoneSubtitle": "Schmaler Bildschirm, Navigation unten",
     "layoutPcTitle": "PC-Dapp-Ansicht",
-    "layoutPcSubtitle": "Breites Panel, seitliche Navigation",
+    "layoutPcSubtitle": "Breites Panel, Seitennavigation",
     "layoutMenuTitle": "Dapp-Layout",
     "layoutMenuSubtitle": "Telefon oder Desktop",
     "connectTagline": "Devnet · Web",
     "connectHint": "Verbinden Sie Phantom oder Solflare (Devnet), um Swap, Ökosystem und Safe Send zu nutzen.",
-    "connectHintConnecting": "Wallet verbinden…"
+    "connectHintConnecting": "Wallet verbinden…",
+    "connectRejectedHint": "Verbindung in der Wallet abgelehnt. Klicken Sie erneut auf Wallet verbinden, wählen Sie Solflare oder Phantom (Devnet) und bestätigen Sie."
   },
   "settings": {
     "title": "Einstellungen",

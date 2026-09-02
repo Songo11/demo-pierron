@@ -187,17 +187,18 @@ export const ku: Translations = {
     "safeSend": "Şandina ewle"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "Sêwirana dapp hilbijêre",
+    "layoutPickerHint": "Telefon — dîtina teng wekî sepana mobîl. PC — panela berfirehtir ji bo sermaseyê.",
+    "layoutPhoneTitle": "Dîtina dapp a smartfonê",
+    "layoutPhoneSubtitle": "Ekrana teng, navîgasyona jêrîn",
+    "layoutPcTitle": "Dîtina dapp a PC",
+    "layoutPcSubtitle": "Panela berfireh, navîgasyona kêlekê",
+    "layoutMenuTitle": "Sêwirana dapp",
+    "layoutMenuSubtitle": "Telefon an sermase",
+    "connectTagline": "Devnet · Tor",
+    "connectHint": "Ji bo swap, ekosîstem û Safe Send Phantom an Solflare (Devnet) girêdin.",
+    "connectHintConnecting": "Cüzdan tê girêdan…",
+    "connectRejectedHint": "Girêdan di cüzdanê de hate redkirin. Dîsa Girêdana cüzdanê bitikîne, Solflare an Phantom (Devnet) hilbijêre û pejirîne."
   },
   "settings": {
     "title": "Mîhengan",

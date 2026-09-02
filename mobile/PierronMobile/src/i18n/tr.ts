@@ -187,17 +187,18 @@ export const tr: Translations = {
     "safeSend": "Güvenli gönderim"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Dapp düzenini seçin",
+    "layoutPickerHint": "Telefon — mobil uygulama gibi dar görünüm. PC — masaüstü için daha geniş panel.",
+    "layoutPhoneTitle": "Akıllı telefon dapp görünümü",
+    "layoutPhoneSubtitle": "Dar ekran, alt gezinme",
+    "layoutPcTitle": "PC dapp görünümü",
+    "layoutPcSubtitle": "Geniş panel, yan gezinme",
+    "layoutMenuTitle": "Dapp düzeni",
+    "layoutMenuSubtitle": "Telefon veya masaüstü",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Swap, ekosistem ve Safe Send için Phantom veya Solflare (Devnet) bağlayın.",
+    "connectHintConnecting": "Cüzdan bağlanıyor…",
+    "connectRejectedHint": "Bağlantı cüzdanda reddedildi. Tekrar Cüzdan bağla’ya tıklayın, Solflare veya Phantom (Devnet) seçin ve onaylayın."
   },
   "settings": {
     "title": "Ayarlar",

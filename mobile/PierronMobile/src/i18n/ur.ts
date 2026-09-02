@@ -187,17 +187,18 @@ export const ur: Translations = {
     "safeSend": "محفوظ بھیجیں"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "ڈیب لے آؤٹ منتخب کریں",
+    "layoutPickerHint": "فون — موبائل ایپ جیسا تنگ منظر۔ PC — ڈیسک ٹاپ کے لیے چوڑا پینل۔",
+    "layoutPhoneTitle": "اسمارٹ فون ڈیب منظر",
+    "layoutPhoneSubtitle": "تنگ اسکرین، نیچے نیویگیشن",
+    "layoutPcTitle": "PC ڈیب منظر",
+    "layoutPcSubtitle": "چوڑا پینل، سائیڈ نیویگیشن",
+    "layoutMenuTitle": "ڈیب لے آؤٹ",
+    "layoutMenuSubtitle": "فون یا ڈیسک ٹاپ",
+    "connectTagline": "Devnet · ویب",
+    "connectHint": "سواپ، ایکوسسٹم اور Safe Send کے لیے Phantom یا Solflare (Devnet) جوڑیں۔",
+    "connectHintConnecting": "والٹ جڑ رہا ہے…",
+    "connectRejectedHint": "والٹ میں کنکشن مسترد ہوا۔ دوبارہ والٹ جوڑیں، Solflare یا Phantom (Devnet) منتخب کریں اور منظور کریں۔"
   },
   "settings": {
     "title": "ترتیبات",

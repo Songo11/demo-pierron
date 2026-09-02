@@ -187,17 +187,18 @@ export const hu: Translations = {
     "safeSend": "Biztonságos küldés"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Válassza ki a dapp elrendezését",
+    "layoutPickerHint": "Telefon — keskeny nézet, mint a mobilalkalmazásban. PC — szélesebb panel asztalra.",
+    "layoutPhoneTitle": "Okostelefonos dapp nézet",
+    "layoutPhoneSubtitle": "Keskeny képernyő, alsó navigáció",
+    "layoutPcTitle": "PC dapp nézet",
+    "layoutPcSubtitle": "Széles panel, oldalsó navigáció",
+    "layoutMenuTitle": "Dapp elrendezés",
+    "layoutMenuSubtitle": "Telefon vagy asztali",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Csatlakoztasson Phantom vagy Solflare (Devnet) tárcát a swap, az ökoszisztéma és a Safe Send használatához.",
+    "connectHintConnecting": "Tárca csatlakoztatása…",
+    "connectRejectedHint": "A csatlakozást elutasították a tárcában. Kattintson újra a Tárca csatlakoztatása gombra, válassza a Solflare vagy Phantom (Devnet) lehetőséget, és hagyja jóvá."
   },
   "settings": {
     "title": "Beállítások",

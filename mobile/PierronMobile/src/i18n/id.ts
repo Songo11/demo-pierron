@@ -187,17 +187,18 @@ export const id: Translations = {
     "safeSend": "Kirim aman"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Pilih tata letak dapp",
+    "layoutPickerHint": "Ponsel — tampilan sempit seperti aplikasi seluler. PC — panel lebih lebar untuk desktop.",
+    "layoutPhoneTitle": "Tampilan dapp ponsel",
+    "layoutPhoneSubtitle": "Layar sempit, navigasi bawah",
+    "layoutPcTitle": "Tampilan dapp PC",
+    "layoutPcSubtitle": "Panel lebar, navigasi samping",
+    "layoutMenuTitle": "Tata letak dapp",
+    "layoutMenuSubtitle": "Ponsel atau desktop",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Hubungkan Phantom atau Solflare (Devnet) untuk memakai swap, ekosistem, dan Safe Send.",
+    "connectHintConnecting": "Menghubungkan dompet…",
+    "connectRejectedHint": "Koneksi ditolak di dompet. Klik Hubungkan dompet lagi, pilih Solflare atau Phantom (Devnet), lalu setujui."
   },
   "settings": {
     "title": "Pengaturan",

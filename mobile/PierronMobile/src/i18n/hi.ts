@@ -187,17 +187,18 @@ export const hi: Translations = {
     "safeSend": "सुरक्षित भेजें"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "डैप लेआउट चुनें",
+    "layoutPickerHint": "फ़ोन — मोबाइल ऐप जैसा संकीर्ण दृश्य। PC — डेस्कटॉप के लिए चौड़ा पैनल।",
+    "layoutPhoneTitle": "स्मार्टफ़ोन डैप दृश्य",
+    "layoutPhoneSubtitle": "संकीर्ण स्क्रीन, नीचे नेविगेशन",
+    "layoutPcTitle": "PC डैप दृश्य",
+    "layoutPcSubtitle": "चौड़ा पैनल, साइड नेविगेशन",
+    "layoutMenuTitle": "डैप लेआउट",
+    "layoutMenuSubtitle": "फ़ोन या डेस्कटॉप",
+    "connectTagline": "Devnet · वेब",
+    "connectHint": "स्वैप, इकोसिस्टम और Safe Send के लिए Phantom या Solflare (Devnet) कनेक्ट करें।",
+    "connectHintConnecting": "वॉलेट कनेक्ट हो रहा है…",
+    "connectRejectedHint": "वॉलेट में कनेक्शन अस्वीकार किया गया। फिर से वॉलेट कनेक्ट करें, Solflare या Phantom (Devnet) चुनें और स्वीकृत करें।"
   },
   "settings": {
     "title": "सेटिंग्स",

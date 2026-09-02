@@ -187,17 +187,18 @@ export const ro: Translations = {
     "safeSend": "Trimitere sigură"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Alegeți aspectul dapp",
+    "layoutPickerHint": "Telefon — vizualizare îngustă ca în aplicația mobilă. PC — panou mai lat pentru desktop.",
+    "layoutPhoneTitle": "Vizualizare dapp pe smartphone",
+    "layoutPhoneSubtitle": "Ecran îngust, navigare jos",
+    "layoutPcTitle": "Vizualizare dapp pe PC",
+    "layoutPcSubtitle": "Panou lat, navigare laterală",
+    "layoutMenuTitle": "Aspect dapp",
+    "layoutMenuSubtitle": "Telefon sau desktop",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Conectați Phantom sau Solflare (Devnet) pentru swap, ecosistem și Safe Send.",
+    "connectHintConnecting": "Se conectează portofelul…",
+    "connectRejectedHint": "Conexiunea a fost respinsă în portofel. Apăsați din nou Conectează portofelul, alegeți Solflare sau Phantom (Devnet) și aprobați."
   },
   "settings": {
     "title": "Setări",

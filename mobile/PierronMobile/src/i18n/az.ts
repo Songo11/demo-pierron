@@ -190,14 +190,15 @@ export const az: Translations = {
     "layoutPickerTitle": "Dapp layout seçin",
     "layoutPickerHint": "Telefon — mobil proqram kimi dar görünüş. PC — iş masası üçün daha geniş panel.",
     "layoutPhoneTitle": "Smartfon dapp görünüşü",
-    "layoutPhoneSubtitle": "Dar ekran, alt naviqasiya",
+    "layoutPhoneSubtitle": "Dar ekran, aşağı naviqasiya",
     "layoutPcTitle": "PC dapp görünüşü",
     "layoutPcSubtitle": "Geniş panel, yan naviqasiya",
-    "layoutMenuTitle": "Dapp tərtibatı",
-    "layoutMenuSubtitle": "Telefon və ya masa üstü",
+    "layoutMenuTitle": "Dapp layout",
+    "layoutMenuSubtitle": "Telefon və ya masaüstü",
     "connectTagline": "Devnet · Veb",
-    "connectHint": "Mübadilə, ekosistem və Safe Send istifadə etmək üçün Phantom və ya Solflare (Devnet) birləşdirin.",
-    "connectHintConnecting": "Pulqabı qoşulur..."
+    "connectHint": "Swap, ekosistem və Safe Send üçün Phantom və ya Solflare (Devnet) qoşun.",
+    "connectHintConnecting": "Pulqabı qoşulur…",
+    "connectRejectedHint": "Pulqabında bağlantı rədd edildi. Yenidən Pulqabını qoşun düyməsinə klikləyin, Solflare və ya Phantom (Devnet) seçin və təsdiqləyin."
   },
   "settings": {
     "title": "Parametrlər",

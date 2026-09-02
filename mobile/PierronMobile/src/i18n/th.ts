@@ -187,17 +187,18 @@ export const th: Translations = {
     "safeSend": "ส่งอย่างปลอดภัย"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "เลือกเลย์เอาต์ dapp",
+    "layoutPickerHint": "โทรศัพท์ — มุมมองแคบเหมือนแอปมือถือ PC — แผงกว้างขึ้นสำหรับเดสก์ท็อป",
+    "layoutPhoneTitle": "มุมมอง dapp สมาร์ทโฟน",
+    "layoutPhoneSubtitle": "หน้าจอแคบ แถบนำทางด้านล่าง",
+    "layoutPcTitle": "มุมมอง dapp PC",
+    "layoutPcSubtitle": "แผงกว้าง แถบนำทางด้านข้าง",
+    "layoutMenuTitle": "เลย์เอาต์ dapp",
+    "layoutMenuSubtitle": "โทรศัพท์หรือเดสก์ท็อป",
+    "connectTagline": "Devnet · เว็บ",
+    "connectHint": "เชื่อมต่อ Phantom หรือ Solflare (Devnet) เพื่อใช้สวอป ระบบนิเวศ และ Safe Send",
+    "connectHintConnecting": "กำลังเชื่อมต่อวอลเล็ต…",
+    "connectRejectedHint": "การเชื่อมต่อถูกปฏิเสธในวอลเล็ต คลิกเชื่อมต่อวอลเล็ตอีกครั้ง เลือก Solflare หรือ Phantom (Devnet) แล้วอนุมัติ"
   },
   "settings": {
     "title": "การตั้งค่า",

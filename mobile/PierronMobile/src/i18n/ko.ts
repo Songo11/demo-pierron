@@ -187,17 +187,18 @@ export const ko: Translations = {
     "safeSend": "안전 전송"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Dapp 레이아웃 선택",
+    "layoutPickerHint": "스마트폰 — 모바일 앱처럼 좁은 화면. PC — 데스크톱용 넓은 패널.",
+    "layoutPhoneTitle": "스마트폰 Dapp 보기",
+    "layoutPhoneSubtitle": "좁은 화면, 하단 탐색",
+    "layoutPcTitle": "PC Dapp 보기",
+    "layoutPcSubtitle": "넓은 패널, 측면 탐색",
+    "layoutMenuTitle": "Dapp 레이아웃",
+    "layoutMenuSubtitle": "스마트폰 또는 데스크톱",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "스왑, 생태계, Safe Send를 쓰려면 Phantom 또는 Solflare(Devnet)를 연결하세요.",
+    "connectHintConnecting": "지갑 연결 중…",
+    "connectRejectedHint": "지갑에서 연결이 거부되었습니다. 지갑 연결을 다시 누르고 Solflare 또는 Phantom(Devnet)을 선택한 뒤 승인하세요."
   },
   "settings": {
     "title": "설정",

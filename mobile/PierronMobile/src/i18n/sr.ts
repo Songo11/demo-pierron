@@ -187,17 +187,18 @@ export const sr: Translations = {
     "safeSend": "Безбедно слање"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "Изаберите распоред dapp-а",
+    "layoutPickerHint": "Телефон — уски приказ као мобилна апликација. PC — шири панел за десктоп.",
+    "layoutPhoneTitle": "Приказ dapp-а на паметном телефону",
+    "layoutPhoneSubtitle": "Уски екран, навигација доле",
+    "layoutPcTitle": "Приказ dapp-а на PC-у",
+    "layoutPcSubtitle": "Широки панел, бочна навигација",
+    "layoutMenuTitle": "Распоред dapp-а",
+    "layoutMenuSubtitle": "Телефон или десктоп",
+    "connectTagline": "Devnet · Веб",
+    "connectHint": "Повежите Phantom или Solflare (Devnet) за swap, екосистем и Safe Send.",
+    "connectHintConnecting": "Повезивање новчаника…",
+    "connectRejectedHint": "Веза је одбијена у новчанику. Поново кликните Повежи новчаник, изаберите Solflare или Phantom (Devnet) и одобрите."
   },
   "settings": {
     "title": "Подешавања",

@@ -187,17 +187,18 @@ export const ta: Translations = {
     "safeSend": "பாதுகாப்பான அனுப்புதல்"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "dapp தளவமைப்பைத் தேர்ந்தெடுக்கவும்",
+    "layoutPickerHint": "தொலைபேசி — மொபைல் ஆப் போன்ற குறுகிய காட்சி. PC — டெஸ்க்டாப்பிற்கு அகலமான பேனல்.",
+    "layoutPhoneTitle": "ஸ்மார்ட்போன் dapp காட்சி",
+    "layoutPhoneSubtitle": "குறுகிய திரை, கீழ் வழிசெலுத்தல்",
+    "layoutPcTitle": "PC dapp காட்சி",
+    "layoutPcSubtitle": "அகலமான பேனல், பக்க வழிசெலுத்தல்",
+    "layoutMenuTitle": "dapp தளவமைப்பு",
+    "layoutMenuSubtitle": "தொலைபேசி அல்லது டெஸ்க்டாப்",
+    "connectTagline": "Devnet · வலை",
+    "connectHint": "ஸ்வாப், சூழல் அமைப்பு மற்றும் Safe Send பயன்படுத்த Phantom அல்லது Solflare (Devnet) இணைக்கவும்.",
+    "connectHintConnecting": "வாலட் இணைக்கப்படுகிறது…",
+    "connectRejectedHint": "வாலட்டில் இணைப்பு நிராகரிக்கப்பட்டது. மீண்டும் வாலட் இணை என்பதை அழுத்தி, Solflare அல்லது Phantom (Devnet) தேர்ந்தெடுத்து அனுமதியுங்கள்."
   },
   "settings": {
     "title": "அமைப்புகள்",

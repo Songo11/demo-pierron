@@ -187,17 +187,18 @@ export const tl: Translations = {
     "safeSend": "Ligtas na pagpapadala"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Piliin ang layout ng dapp",
+    "layoutPickerHint": "Telepono — makitid na view gaya ng mobile app. PC — mas malawak na panel para sa desktop.",
+    "layoutPhoneTitle": "View ng dapp sa smartphone",
+    "layoutPhoneSubtitle": "Makitid na screen, navigation sa ibaba",
+    "layoutPcTitle": "View ng dapp sa PC",
+    "layoutPcSubtitle": "Malawak na panel, side navigation",
+    "layoutMenuTitle": "Layout ng dapp",
+    "layoutMenuSubtitle": "Telepono o desktop",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Ikonekta ang Phantom o Solflare (Devnet) para sa swap, ecosystem at Safe Send.",
+    "connectHintConnecting": "Kinokonekta ang wallet…",
+    "connectRejectedHint": "Tinanggihan ang koneksyon sa wallet. I-click ulit ang Ikonekta ang wallet, piliin ang Solflare o Phantom (Devnet), at aprubahan."
   },
   "settings": {
     "title": "Mga setting",

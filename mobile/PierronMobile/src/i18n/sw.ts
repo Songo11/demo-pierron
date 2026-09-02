@@ -187,17 +187,18 @@ export const sw: Translations = {
     "safeSend": "Tuma salama"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
-    "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "layoutPickerTitle": "Chagua mpangilio wa dapp",
+    "layoutPickerHint": "Simu — mwonekano mwembamba kama programu ya simu. PC — paneli pana zaidi kwa desktop.",
+    "layoutPhoneTitle": "Mwonekano wa dapp kwenye simu",
+    "layoutPhoneSubtitle": "Skrini nyembamba, urambazaji chini",
+    "layoutPcTitle": "Mwonekano wa dapp kwenye PC",
+    "layoutPcSubtitle": "Paneli pana, urambazaji pembeni",
+    "layoutMenuTitle": "Mpangilio wa dapp",
+    "layoutMenuSubtitle": "Simu au desktop",
+    "connectTagline": "Devnet · Wavuti",
+    "connectHint": "Unganisha Phantom au Solflare (Devnet) ili kutumia swap, ikolojia na Safe Send.",
+    "connectHintConnecting": "Inaunganisha pochi…",
+    "connectRejectedHint": "Muunganisho umekataliwa kwenye pochi. Bofya tena Unganisha pochi, chagua Solflare au Phantom (Devnet) na idhinisha."
   },
   "settings": {
     "title": "Mipangilio",

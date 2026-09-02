@@ -187,17 +187,18 @@ export const ru: Translations = {
     "safeSend": "Безопасная отправка"
   },
   "dapp": {
-    "layoutPickerTitle": "выберите макет децентрализованного приложения.",
+    "layoutPickerTitle": "Выберите макет dapp",
     "layoutPickerHint": "Телефон — узкий вид, как в мобильном приложении. ПК — более широкая панель для рабочего стола.",
-    "layoutPhoneTitle": "вид децентрализованного приложения для смартфона",
-    "layoutPhoneSubtitle": "Узкий экран, нижняя навигация.",
-    "layoutPcTitle": "вид приложения для ПК",
-    "layoutPcSubtitle": "Широкая панель, боковая навигация.",
-    "layoutMenuTitle": "макет децентрализованного приложения",
-    "layoutMenuSubtitle": "Телефон или компьютер.",
+    "layoutPhoneTitle": "Вид dapp на смартфоне",
+    "layoutPhoneSubtitle": "Узкий экран, навигация внизу",
+    "layoutPcTitle": "Вид dapp на ПК",
+    "layoutPcSubtitle": "Широкая панель, боковая навигация",
+    "layoutMenuTitle": "Макет dapp",
+    "layoutMenuSubtitle": "Телефон или ПК",
     "connectTagline": "Devnet · Интернет",
-    "connectHint": "подключите Phantom или Solflare (Devnet), чтобы использовать обмен, экосистему и безопасную отправку.",
-    "connectHintConnecting": "Подключение кошелька…"
+    "connectHint": "Подключите Phantom или Solflare (Devnet), чтобы пользоваться свопом, экосистемой и Safe Send.",
+    "connectHintConnecting": "Подключение кошелька…",
+    "connectRejectedHint": "Подключение отклонено в кошельке. Нажмите «Подключить кошелёк» снова, выберите Solflare или Phantom (Devnet) и подтвердите."
   },
   "settings": {
     "title": "Настройки",

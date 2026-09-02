@@ -187,17 +187,18 @@ export const vi: Translations = {
     "safeSend": "Gửi an toàn"
   },
   "dapp": {
-    "layoutPickerTitle": "Choose dapp layout",
-    "layoutPickerHint": "Phone — narrow view like the mobile app. PC — wider panel for desktop.",
-    "layoutPhoneTitle": "Smartphone dapp view",
-    "layoutPhoneSubtitle": "Narrow screen, bottom navigation",
-    "layoutPcTitle": "PC dapp view",
-    "layoutPcSubtitle": "Wide panel, side navigation",
-    "layoutMenuTitle": "Dapp layout",
-    "layoutMenuSubtitle": "Phone or desktop",
+    "layoutPickerTitle": "Chọn bố cục dapp",
+    "layoutPickerHint": "Điện thoại — giao diện hẹp như ứng dụng di động. PC — bảng rộng hơn cho máy tính.",
+    "layoutPhoneTitle": "Giao diện dapp điện thoại",
+    "layoutPhoneSubtitle": "Màn hình hẹp, điều hướng dưới",
+    "layoutPcTitle": "Giao diện dapp PC",
+    "layoutPcSubtitle": "Bảng rộng, điều hướng bên",
+    "layoutMenuTitle": "Bố cục dapp",
+    "layoutMenuSubtitle": "Điện thoại hoặc máy tính",
     "connectTagline": "Devnet · Web",
-    "connectHint": "Connect Phantom or Solflare (Devnet) to use swap, ecosystem and Safe Send.",
-    "connectHintConnecting": "Connecting wallet…"
+    "connectHint": "Kết nối Phantom hoặc Solflare (Devnet) để dùng swap, hệ sinh thái và Safe Send.",
+    "connectHintConnecting": "Đang kết nối ví…",
+    "connectRejectedHint": "Kết nối bị từ chối trong ví. Nhấn Kết nối ví lại, chọn Solflare hoặc Phantom (Devnet) và phê duyệt."
   },
   "settings": {
     "title": "Cài đặt",
