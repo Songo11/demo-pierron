@@ -3,7 +3,6 @@
 import { useEffect, useRef } from 'react';
 import type { WalletName } from '@solana/wallet-adapter-base';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 
 import {
   RESUME_WALLET_NAME_KEY,
@@ -12,10 +11,8 @@ import {
 } from '../lib/openInMobileWalletBrowser';
 
 /**
- * After Solflare/MWA returns to the browser (or page restores from bfcache),
- * wallet-adapter often has authorization cached but `connected` is still false
- * when autoConnect was off or walletName was cleared on unload.
- * Re-select + connect on pageshow / visibility.
+ * Invisible: after Solflare/MWA returns to the browser, re-select + connect
+ * so the gate unlocks without extra buttons.
  */
 export default function MobileWalletResume() {
   const { connected, connecting, wallet, connect, select } = useWallet();
@@ -23,23 +20,21 @@ export default function MobileWalletResume() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (!isAndroidUserAgent() && !detectInjectedWalletBrowser()) return;
 
     const resume = async () => {
       if (connected || connecting || busyRef.current) return;
+      if (!isAndroidUserAgent() && !detectInjectedWalletBrowser()) return;
+
       busyRef.current = true;
       try {
         const injected = detectInjectedWalletBrowser();
         let name =
           (wallet?.adapter.name as string | undefined) ||
-          (typeof sessionStorage !== 'undefined'
-            ? sessionStorage.getItem(RESUME_WALLET_NAME_KEY)
-            : null);
+          sessionStorage.getItem(RESUME_WALLET_NAME_KEY);
 
         if (!name && injected) {
           name = injected === 'solflare' ? 'Solflare' : 'Phantom';
         }
-        // MWA: WalletProvider stores this name after a prior mobile connect attempt.
         if (!name) {
           try {
             const stored = localStorage.getItem('walletName');
@@ -48,21 +43,15 @@ export default function MobileWalletResume() {
             /* ignore */
           }
         }
-        if (!name && isAndroidUserAgent()) {
-          name = SolanaMobileWalletAdapterWalletName;
-        }
+        // Only resume an existing selection / handoff — never start a fresh MWA prompt.
         if (!name) return;
 
         select(name as WalletName);
-        await new Promise((r) => window.setTimeout(r, 150));
+        await new Promise((r) => window.setTimeout(r, 120));
         await connect();
-        try {
-          sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
-        } catch {
-          /* ignore */
-        }
+        sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
       } catch {
-        // Leave gate visible; user can tap connect again.
+        /* user can tap Połącz again */
       } finally {
         busyRef.current = false;
       }
@@ -71,21 +60,18 @@ export default function MobileWalletResume() {
     const onShow = () => {
       void resume();
     };
-
     const onVisibility = () => {
       if (document.visibilityState === 'visible') onShow();
     };
+
     window.addEventListener('pageshow', onShow);
     document.addEventListener('visibilitychange', onVisibility);
-    // First paint after redirect back from wallet.
-    const t1 = window.setTimeout(onShow, 400);
-    const t2 = window.setTimeout(onShow, 1200);
+    const timers = [300, 800, 1600, 2800].map((ms) => window.setTimeout(onShow, ms));
 
     return () => {
       window.removeEventListener('pageshow', onShow);
       document.removeEventListener('visibilitychange', onVisibility);
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
+      timers.forEach((id) => window.clearTimeout(id));
     };
   }, [connected, connecting, connect, select, wallet]);
 

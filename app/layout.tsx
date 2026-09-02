@@ -6,12 +6,12 @@ import './lib/bufferBigIntPolyfill';
 import { WalletAdapterNetwork, type WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { useCallback, useMemo } from 'react';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 import { fetchWithRpcRetry } from '../shared/solana/resilientConnection.ts';
-import { createAndroidAwareWalletAdapters } from './lib/androidBrowseWalletAdapters';
 import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
 
 import ServerLayout from './layout-server';
@@ -40,10 +40,12 @@ export default function RootLayout({
     []
   );
 
-  // Phantom/Solflare: on Android Loadable → browse into wallet WebView (not return-to-Vanadium).
-  // autoConnect=true is required so MWA can resume after authorize → return.
+  // autoConnect must stay on so MWA resumes after Solflare authorize → return to browser.
   const wallets = useMemo(
-    () => createAndroidAwareWalletAdapters(WalletAdapterNetwork.Devnet),
+    () => [
+      new PhantomWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
+      new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
+    ],
     []
   );
 
