@@ -328,7 +328,7 @@ export const pl = {
     "scanCameraAllow": "Zezwól",
     "scanCameraAim": "Skieruj kamerę na QR Pierron Pay",
     "scanCameraUnavailable": "Skaner QR wymaga przebudowy aplikacji",
-    "scanCameraRebuildHint": "Zainstaluj nowe APK z expo-camera na komputerze:\n  nvm use\n  ANDROID_CLEAN_NATIVE=1 ANDROID_GRADLE_DAEMON=0 npm run android:build\n\nDo tego czasu wklej link płatności ręcznie poniżej."
+    "scanCameraRebuildHint": "Nie udało się uruchomić kamery. Zezwól na dostęp do kamery w przeglądarce albo wklej link płatności ręcznie poniżej."
   },
   "history": {
     "title": "Historia",

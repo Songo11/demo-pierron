@@ -329,7 +329,7 @@ export const en: Translations = {
     "scanCameraAllow": "Allow",
     "scanCameraAim": "Point the camera at a Pierron Pay QR code",
     "scanCameraUnavailable": "QR scanner needs an app rebuild",
-    "scanCameraRebuildHint": "Install a new APK with expo-camera on your PC:\n  nvm use\n  ANDROID_CLEAN_NATIVE=1 ANDROID_GRADLE_DAEMON=0 npm run android:build\n\nUntil then, paste the payment link below."
+    "scanCameraRebuildHint": "Could not start the camera. Allow camera access in the browser, or paste the payment link below."
   },
   "history": {
     "title": "History",

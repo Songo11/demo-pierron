@@ -5,13 +5,14 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useSearchParams } from 'next/navigation';
 
 import { PierronPayMerchantPanel } from '../../components/PierronPayMerchantPanel';
+import StealthQrScannerModal from '../../components/stealth/StealthQrScannerModal';
 import { useTranslations } from '../../context/LocaleContext';
 import { loadAppSettings } from '../../lib/appSettings';
 import {
   formatPayRecipientShort,
   parsePierronPayLink,
   type PierronPayRequest,
-} from '../../../shared/pierron/pierronPayFlow.ts';
+} from '../../../../shared/pierron/pierronPayFlow.ts';
 import { mapPierronPayError, signAndSubmitPierronPay } from '../../lib/pierronPayWeb';
 
 export default function PayPage() {
@@ -33,6 +34,7 @@ function PayPageContent() {
   const [paying, setPaying] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [lastSignature, setLastSignature] = useState<string | null>(null);
+  const [scanOpen, setScanOpen] = useState(false);
 
   const applyLink = useCallback((raw: string) => {
     const trimmed = raw.trim();
@@ -64,7 +66,7 @@ function PayPageContent() {
       alert(`${t.common.blad}\n${t.pay.walletRequired}`);
       return;
     }
-    alert(t.pay.scanCameraRebuildHint);
+    setScanOpen(true);
   };
 
   const onPay = async () => {
@@ -187,6 +189,26 @@ function PayPageContent() {
         <p className="pierron-card-label">{t.pay.merchantSectionTitle}</p>
         <PierronPayMerchantPanel />
       </div>
+
+      <StealthQrScannerModal
+        open={scanOpen}
+        title={t.pay.scanQr}
+        hintCamera={t.stealthUi?.scanQrHintCamera ?? t.pay.scanCameraAim}
+        hintScreen={
+          t.stealthUi?.scanQrHintScreen ??
+          'PC: wybierz okno lub ekran z widocznym QR.'
+        }
+        labelCamera={t.stealthUi?.scanQrCamera ?? t.pay.scanCameraAllow}
+        labelScreen={t.stealthUi?.scanQrScreen ?? 'Ekran PC'}
+        labelCancel={t.common.anuluj}
+        labelScanning={t.stealthUi?.scanQrScanning ?? t.pay.scanCameraLoading}
+        labelPickSource={t.stealthUi?.scanQrPickSource ?? t.pay.scanCameraAim}
+        onClose={() => setScanOpen(false)}
+        onScanned={(raw) => {
+          setScanOpen(false);
+          applyLink(raw);
+        }}
+      />
     </div>
   );
 }
