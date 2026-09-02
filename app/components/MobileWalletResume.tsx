@@ -7,51 +7,49 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import {
   RESUME_WALLET_NAME_KEY,
   detectInjectedWalletBrowser,
-  isAndroidUserAgent,
 } from '../lib/openInMobileWalletBrowser';
 
 /**
- * Invisible: after Solflare/MWA returns to the browser, re-select + connect
- * so the gate unlocks without extra buttons.
+ * After Solflare/MWA returns to the browser, finish connect only when we
+ * explicitly marked a handoff (sessionStorage). Never auto-spam connect on load.
  */
 export default function MobileWalletResume() {
-  const { connected, connecting, wallet, connect, select } = useWallet();
+  const { connected, connecting, connect, select } = useWallet();
   const busyRef = useRef(false);
+  const triedRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const resume = async () => {
-      if (connected || connecting || busyRef.current) return;
-      if (!isAndroidUserAgent() && !detectInjectedWalletBrowser()) return;
+      if (connected || connecting || busyRef.current || triedRef.current) return;
 
+      let name: string | null = null;
+      try {
+        name = sessionStorage.getItem(RESUME_WALLET_NAME_KEY);
+      } catch {
+        /* ignore */
+      }
+
+      const injected = detectInjectedWalletBrowser();
+      if (!name && injected) {
+        name = injected === 'solflare' ? 'Solflare' : 'Phantom';
+      }
+      if (!name) return;
+
+      triedRef.current = true;
       busyRef.current = true;
       try {
-        const injected = detectInjectedWalletBrowser();
-        let name =
-          (wallet?.adapter.name as string | undefined) ||
-          sessionStorage.getItem(RESUME_WALLET_NAME_KEY);
-
-        if (!name && injected) {
-          name = injected === 'solflare' ? 'Solflare' : 'Phantom';
-        }
-        if (!name) {
-          try {
-            const stored = localStorage.getItem('walletName');
-            if (stored) name = JSON.parse(stored) as string;
-          } catch {
-            /* ignore */
-          }
-        }
-        // Only resume an existing selection / handoff — never start a fresh MWA prompt.
-        if (!name) return;
-
         select(name as WalletName);
         await new Promise((r) => window.setTimeout(r, 120));
         await connect();
-        sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
+        try {
+          sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
+        } catch {
+          /* ignore */
+        }
       } catch {
-        /* user can tap Połącz again */
+        triedRef.current = false;
       } finally {
         busyRef.current = false;
       }
@@ -66,14 +64,16 @@ export default function MobileWalletResume() {
 
     window.addEventListener('pageshow', onShow);
     document.addEventListener('visibilitychange', onVisibility);
-    const timers = [300, 800, 1600, 2800].map((ms) => window.setTimeout(onShow, ms));
+    const t1 = window.setTimeout(onShow, 400);
+    const t2 = window.setTimeout(onShow, 1500);
 
     return () => {
       window.removeEventListener('pageshow', onShow);
       document.removeEventListener('visibilitychange', onVisibility);
-      timers.forEach((id) => window.clearTimeout(id));
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
     };
-  }, [connected, connecting, connect, select, wallet]);
+  }, [connected, connecting, connect, select]);
 
   return null;
 }

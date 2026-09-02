@@ -3,7 +3,7 @@
 
 import './lib/bufferBigIntPolyfill';
 
-import { WalletAdapterNetwork, type WalletError } from '@solana/wallet-adapter-base';
+import { WalletAdapterNetwork, type WalletAdapter, type WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
@@ -13,6 +13,10 @@ import '@solana/wallet-adapter-react-ui/styles.css';
 
 import { fetchWithRpcRetry } from '../shared/solana/resilientConnection.ts';
 import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
+import {
+  RESUME_WALLET_NAME_KEY,
+  detectInjectedWalletBrowser,
+} from './lib/openInMobileWalletBrowser';
 
 import ServerLayout from './layout-server';
 
@@ -40,7 +44,18 @@ export default function RootLayout({
     []
   );
 
-  // autoConnect must stay on so MWA resumes after Solflare authorize → return to browser.
+  // Only autoConnect after an explicit handoff (or inside wallet browser).
+  // Unconditional autoConnect + stale walletName hangs on "Łączenie…" / dead button.
+  const shouldAutoConnect = useCallback(async (_adapter: WalletAdapter) => {
+    if (typeof window === 'undefined') return false;
+    if (detectInjectedWalletBrowser()) return true;
+    try {
+      return Boolean(sessionStorage.getItem(RESUME_WALLET_NAME_KEY));
+    } catch {
+      return false;
+    }
+  }, []);
+
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
@@ -63,7 +78,7 @@ export default function RootLayout({
         <LocaleProvider>
           <LayoutModeProvider>
             <ConnectionProvider endpoint={endpoint} config={connectionConfig}>
-              <WalletProvider wallets={wallets} autoConnect onError={onWalletError}>
+              <WalletProvider wallets={wallets} autoConnect={shouldAutoConnect} onError={onWalletError}>
                 <WalletModalProvider>
                   <MobileWalletResume />
                   {children}
