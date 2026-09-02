@@ -7,19 +7,50 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { useTranslations } from '../context/LocaleContext';
 
 /**
- * Explicit connect CTA for the gate overlay.
- * WalletMultiButton alone can look stuck when connect fails silently;
- * this surfaces errors and always opens the wallet modal.
+ * Gate CTA: always recoverable after reject / hung connect.
+ * Never stays disabled on "Łączenie…" — clears selection and reopens the modal.
  */
 export default function ConnectWalletGateButton() {
   const t = useTranslations();
-  const { connected, connecting, wallet, connect, publicKey } = useWallet();
+  const { connected, connecting, wallet, publicKey, select, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
   const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (connected) setError(null);
+    if (connected) {
+      setError(null);
+      setBusy(false);
+    }
   }, [connected]);
+
+  // If adapter reports connecting for too long after a reject, unlock the CTA.
+  useEffect(() => {
+    if (!connecting) {
+      setBusy(false);
+      return;
+    }
+    setBusy(true);
+    const id = window.setTimeout(() => setBusy(false), 2500);
+    return () => window.clearTimeout(id);
+  }, [connecting]);
+
+  useEffect(() => {
+    const onWalletErr = (ev: Event) => {
+      const msg = (ev as CustomEvent<{ message?: string }>).detail?.message;
+      if (!msg) return;
+      const rejected = /reject|denied|cancel/i.test(msg);
+      setError(
+        rejected
+          ? (t.dapp.connectRejectedHint ??
+            'Odrzucono w portfelu. Kliknij ponownie i zatwierdź połączenie.')
+          : msg
+      );
+      setBusy(false);
+    };
+    window.addEventListener('pierron-wallet-error', onWalletErr);
+    return () => window.removeEventListener('pierron-wallet-error', onWalletErr);
+  }, [t.dapp.connectRejectedHint]);
 
   const onClick = useCallback(async () => {
     setError(null);
@@ -27,25 +58,30 @@ export default function ConnectWalletGateButton() {
       setVisible(true);
       return;
     }
-    // No wallet chosen yet → open modal (Phantom / Solflare / Mobile).
-    if (!wallet) {
-      setVisible(true);
-      return;
+
+    // Clear hung / rejected selection so the next attempt is clean.
+    try {
+      if (wallet) {
+        await disconnect().catch(() => undefined);
+      }
+    } catch {
+      // ignore
     }
     try {
-      await connect();
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      setError(msg || t.wallet.najpierwPodlaczPortfel);
-      setVisible(true);
+      select(null);
+    } catch {
+      // ignore
     }
-  }, [connected, connect, setVisible, t.wallet.najpierwPodlaczPortfel, wallet]);
+
+    setBusy(false);
+    setVisible(true);
+  }, [connected, disconnect, select, setVisible, wallet]);
 
   const label = connected
     ? publicKey
       ? `${publicKey.toBase58().slice(0, 4)}…${publicKey.toBase58().slice(-4)}`
       : t.wallet.portfelPodlaczony
-    : connecting
+    : busy || connecting
       ? t.dapp.connectHintConnecting
       : t.wallet.polaczPortfel;
 
@@ -57,7 +93,6 @@ export default function ConnectWalletGateButton() {
         onClick={() => {
           void onClick();
         }}
-        disabled={connecting}
       >
         {label}
       </button>

@@ -52,9 +52,11 @@ export default function RootLayout({
 
   const onWalletError = useCallback((error: WalletError) => {
     console.error('[pierron wallet]', error);
-    if (typeof window !== 'undefined' && error?.message) {
-      window.alert(`Wallet: ${error.message}`);
-    }
+    if (typeof window === 'undefined' || !error?.message) return;
+    // Inline UI via ConnectWalletGateButton — avoid blocking alert that freezes "Łączenie…".
+    window.dispatchEvent(
+      new CustomEvent('pierron-wallet-error', { detail: { message: error.message } })
+    );
   }, []);
 
   return (
@@ -63,7 +65,8 @@ export default function RootLayout({
         <LocaleProvider>
           <LayoutModeProvider>
             <ConnectionProvider endpoint={endpoint} config={connectionConfig}>
-              <WalletProvider wallets={wallets} autoConnect onError={onWalletError}>
+              {/* autoConnect off: rejected popups + localStorage left the gate stuck on "Łączenie…". */}
+              <WalletProvider wallets={wallets} autoConnect={false} onError={onWalletError}>
                 <WalletModalProvider>{children}</WalletModalProvider>
               </WalletProvider>
             </ConnectionProvider>

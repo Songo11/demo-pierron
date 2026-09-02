@@ -1,5 +1,5 @@
-import { PROJECT_INFO_BODY } from '../../shared/content/projectInfoBodies/pl.ts';
-import { AUTHOR_WORD_BODY } from '../../shared/content/authorWordBodies/pl.ts';
+import { PROJECT_INFO_BODY } from '../../../shared/content/projectInfoBodies/pl.ts';
+import { AUTHOR_WORD_BODY } from '../../../shared/content/authorWordBodies/pl.ts';
 
 export const pl = {
     "common": {
@@ -196,7 +196,8 @@ export const pl = {
     "layoutMenuSubtitle": "Smartfon lub komputer",
     "connectTagline": "Devnet · Web",
     "connectHint": "Podłącz Phantom lub Solflare (Devnet), żeby korzystać ze swapu, ekosystemu i Safe Send.",
-    "connectHintConnecting": "Łączenie z portfelem…"
+    "connectHintConnecting": "Łączenie z portfelem…",
+    "connectRejectedHint": "Odrzucono w portfelu. Kliknij ponownie „Połącz portfel”, wybierz Solflare lub Phantom (Devnet) i zatwierdź połączenie."
   },
   "settings": {
     "title": "Ustawienia",
