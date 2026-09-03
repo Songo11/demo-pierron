@@ -5,24 +5,24 @@ import {
   type TransactionSignature,
 } from '@solana/web3.js';
 
-import type { AppSettings } from '../../../shared/core/config';
-import { getProgramIds, setCurrentCluster } from '../../../shared/core/programIds';
-import { sanitizeRpcUrlForDisplay } from '../../../shared/light/compressionRpcTransport.ts';
+import type { AppSettings } from '../../shared/core/config';
+import { getProgramIds, setCurrentCluster } from '../../shared/core/programIds';
+import { sanitizeRpcUrlForDisplay } from '../../shared/light/compressionRpcTransport.ts';
 import {
   fetchPendingLotteryPayout,
   type PendingLotteryPayoutSnapshot,
-} from '../../../shared/pierron/lotteryClaimEligibility.ts';
+} from '../../shared/pierron/lotteryClaimEligibility.ts';
 import {
   buildLotteryClaimTransactions,
   type PreparedLotteryClaim,
-} from '../../../shared/pierron/lotteryClaimFlow.ts';
+} from '../../shared/pierron/lotteryClaimFlow.ts';
 import {
   buildSyncUserFromTradeBookTransaction,
   waitForPierronLightAccountsIndexed,
-} from '../../../shared/pierron/syncUserFromTradeBookFlow.ts';
-import type { TradeBookParticipantSnapshot } from '../../../shared/pierron/tradeBookParticipant.ts';
-import { assertDevnetRpcConnection } from '../../../shared/solana/devnetClusterAssert.ts';
-import { resolvePierronDevnetCompressionEndpoint } from '../../../shared/solana/devnetRpcDefaults.ts';
+} from '../../shared/pierron/syncUserFromTradeBookFlow.ts';
+import type { TradeBookParticipantSnapshot } from '../../shared/pierron/tradeBookParticipant.ts';
+import { assertDevnetRpcConnection } from '../../shared/solana/devnetClusterAssert.ts';
+import { resolvePierronDevnetCompressionEndpoint } from '../../shared/solana/devnetRpcDefaults.ts';
 
 import { loadAppSettings } from './appSettings';
 import { pierronDevnet } from './pierronDevnet';

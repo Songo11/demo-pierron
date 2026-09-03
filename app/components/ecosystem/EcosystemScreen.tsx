@@ -16,7 +16,7 @@ import {
 } from '../../lib/ecosystem/claimBlockMessages';
 import { formatTokenomicsUiLabel } from '../../lib/ecosystem/deflationSnapshot';
 import { formatMessage } from '../../lib/formatMessage';
-import { POST_ROLLOVER_DELAY_SECS } from '../../shared/pierron/redistributionClaimEligibility.ts';
+import { POST_ROLLOVER_DELAY_SECS } from '../../../shared/pierron/redistributionClaimEligibility.ts';
 
 const EcosystemMeteoraPoolCard = dynamic(() => import('./EcosystemMeteoraPoolCard'), {
   ssr: false,
