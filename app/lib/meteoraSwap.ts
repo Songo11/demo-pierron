@@ -338,6 +338,84 @@ function isLikelyMobileWeb(): boolean {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
+/**
+ * @solana-mobile/wallet-adapter-mobile 2.2.x calls `tx.serialize()` with no options
+ * when handing bytes to the wallet. Default `requireAllSignatures: true` throws
+ * "Missing signature for public key [wallet]" on *unsigned* txs — the wallet never opens.
+ * protocol-web3js already passes `requireAllSignatures: false`; the React adapter does not.
+ */
+async function withUnsignedTxSerializeAllowed<T>(fn: () => Promise<T>): Promise<T> {
+  const proto = Transaction.prototype;
+  const original = proto.serialize;
+  proto.serialize = function serializeForWalletSign(
+    this: Transaction,
+    config?: Parameters<typeof original>[0]
+  ) {
+    if (config === undefined) {
+      return original.call(this, {
+        requireAllSignatures: false,
+        verifySignatures: false,
+      });
+    }
+    return original.call(this, config);
+  };
+  try {
+    return await fn();
+  } finally {
+    proto.serialize = original;
+  }
+}
+
+function assertTransactionFullySigned(
+  tx: Transaction,
+  expectedSigner: PublicKey
+): void {
+  const entry = tx.signatures.find((s) => s.publicKey.equals(expectedSigner));
+  if (!entry?.signature) {
+    throw new Error(
+      isLikelyMobileWeb()
+        ? 'Portfel nie zwrócił podpisu. Zatwierdź w Solflare/Phantom i wróć do tej samej karty (albo odłącz i połącz ponownie).'
+        : 'Portfel nie zwrócił podpisu — zatwierdź transakcję i spróbuj ponownie.'
+    );
+  }
+  try {
+    tx.serialize({ requireAllSignatures: true, verifySignatures: true });
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
+    throw new Error(
+      `Podpis z portfela jest niekompletny: ${detail}` +
+        (isLikelyMobileWeb()
+          ? ' Zatwierdź w Solflare/Phantom i wróć do tej karty.'
+          : '')
+    );
+  }
+}
+
+async function signSwapTransactions(
+  wallet: MeteoraSwapWallet,
+  txs: Transaction[]
+): Promise<Transaction[]> {
+  const total = txs.length;
+  return withUnsignedTxSerializeAllowed(async () => {
+    if (typeof wallet.signAllTransactions === 'function') {
+      return wallet.signAllTransactions(txs);
+    }
+    if (total === 1) {
+      return [await wallet.signTransaction(txs[0]!)];
+    }
+    if (isLikelyMobileWeb()) {
+      throw new Error(
+        'Ten portfel na telefonie nie podpisuje wielu transakcji naraz. Połącz ponownie przez Solflare/Phantom (Mobile Wallet Adapter) i spróbuj jeszcze raz.'
+      );
+    }
+    const out: Transaction[] = [];
+    for (const tx of txs) {
+      out.push(await wallet.signTransaction(tx));
+    }
+    return out;
+  });
+}
+
 /** Buduje plan, podpisuje (1 potwierdzenie w portfelu jak mobilka) i wysyła swap Meteora. */
 export async function executeMeteoraPierronSwap(params: {
   connection: Connection;
@@ -361,27 +439,17 @@ export async function executeMeteoraPierronSwap(params: {
     confirmContexts.push(await refreshTransactionBlockhash(params.connection, tx));
   }
 
-  let signedList: Transaction[];
   // Prefer batch signing whenever available — one wallet session (critical on Android MWA).
-  if (typeof params.wallet.signAllTransactions === 'function') {
-    signedList = await params.wallet.signAllTransactions(txs);
-  } else if (total === 1) {
-    signedList = [await params.wallet.signTransaction(txs[0]!)];
-  } else if (isLikelyMobileWeb()) {
-    throw new Error(
-      'Ten portfel na telefonie nie podpisuje wielu transakcji naraz. Połącz ponownie przez Solflare/Phantom (Mobile Wallet Adapter) i spróbuj jeszcze raz.'
-    );
-  } else {
-    signedList = [];
-    for (const tx of txs) {
-      signedList.push(await params.wallet.signTransaction(tx));
-    }
-  }
+  const signedList = await signSwapTransactions(params.wallet, txs);
 
   if (!Array.isArray(signedList) || signedList.length !== total) {
     throw new Error(
       `Portfel zwrócił ${signedList?.length ?? 0} podpisów, oczekiwano ${total}.`
     );
+  }
+
+  for (const signed of signedList) {
+    assertTransactionFullySigned(signed, params.wallet.publicKey);
   }
 
   let lastSig: TransactionSignature = '';
@@ -437,10 +505,11 @@ async function unwrapLeftoverWsolIfAny(
   );
   tx.feePayer = wallet.publicKey;
   const confirmContext = await refreshTransactionBlockhash(connection, tx);
-  const signed = await wallet.signTransaction(tx);
+  const [signed] = await signSwapTransactions(wallet, [tx]);
+  assertTransactionFullySigned(signed!, wallet.publicKey);
   return sendSignedSwapStep(
     connection,
-    signed,
+    signed!,
     { index: 0, total: 1 },
     'sell',
     confirmContext
