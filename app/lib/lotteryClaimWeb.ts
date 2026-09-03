@@ -5,24 +5,24 @@ import {
   type TransactionSignature,
 } from '@solana/web3.js';
 
-import type { AppSettings } from '../../shared/core/config';
-import { getProgramIds, setCurrentCluster } from '../../shared/core/programIds';
-import { sanitizeRpcUrlForDisplay } from '../../shared/light/compressionRpcTransport.ts';
+import type { AppSettings } from '../../../shared/core/config';
+import { getProgramIds, setCurrentCluster } from '../../../shared/core/programIds';
+import { sanitizeRpcUrlForDisplay } from '../../../shared/light/compressionRpcTransport.ts';
 import {
   fetchPendingLotteryPayout,
   type PendingLotteryPayoutSnapshot,
-} from '../../shared/pierron/lotteryClaimEligibility.ts';
+} from '../../../shared/pierron/lotteryClaimEligibility.ts';
 import {
   buildLotteryClaimTransactions,
   type PreparedLotteryClaim,
-} from '../../shared/pierron/lotteryClaimFlow.ts';
+} from '../../../shared/pierron/lotteryClaimFlow.ts';
 import {
   buildSyncUserFromTradeBookTransaction,
   waitForPierronLightAccountsIndexed,
-} from '../../shared/pierron/syncUserFromTradeBookFlow.ts';
-import type { TradeBookParticipantSnapshot } from '../../shared/pierron/tradeBookParticipant.ts';
-import { assertDevnetRpcConnection } from '../../shared/solana/devnetClusterAssert.ts';
-import { resolvePierronDevnetCompressionEndpoint } from '../../shared/solana/devnetRpcDefaults.ts';
+} from '../../../shared/pierron/syncUserFromTradeBookFlow.ts';
+import type { TradeBookParticipantSnapshot } from '../../../shared/pierron/tradeBookParticipant.ts';
+import { assertDevnetRpcConnection } from '../../../shared/solana/devnetClusterAssert.ts';
+import { resolvePierronDevnetCompressionEndpoint } from '../../../shared/solana/devnetRpcDefaults.ts';
 
 import { loadAppSettings } from './appSettings';
 import { pierronDevnet } from './pierronDevnet';
@@ -102,11 +102,14 @@ export type PreparedLotteryClaimWeb = {
   lotteryDrawEpoch: number;
 };
 
-/** Android/iOS Chrome: MWA needs a fresh user gesture after long Photon prepare. */
+/** Android/iOS Chrome: MWA needs a fresh user gesture — prepare must finish before the tap that opens the wallet. */
 export function isMobileWebClaimGestureRequired(): boolean {
   if (typeof navigator === 'undefined') return false;
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
+
+/** Thrown when background prepare needs a wallet signature (Light sync) — wait for a user tap. */
+export const LIGHT_SYNC_REQUIRES_GESTURE = 'LIGHT_SYNC_REQUIRES_GESTURE';
 
 async function signAndSendTransactions(params: {
   connection: Connection;
@@ -159,7 +162,7 @@ async function signAndSendTransactions(params: {
   return lastSig;
 }
 
-/** Build claim txs (Photon/Light) without opening the wallet. */
+/** Build claim txs (Photon/Light) without opening the wallet (unless Light sync is required). */
 export async function prepareLotteryClaimWeb(params: {
   connection: Connection;
   wallet: LotteryClaimWallet;
@@ -167,6 +170,8 @@ export async function prepareLotteryClaimWeb(params: {
   participant: TradeBookParticipantSnapshot | null;
   lotteryDrawEpoch: number;
   pendingVoucher?: PendingLotteryPayoutSnapshot | null;
+  /** When false, skip Light sync signing (for silent background prepare on mobile). */
+  allowWalletSigning?: boolean;
   onStage?: (message: string) => void;
 }): Promise<PreparedLotteryClaimWeb> {
   await assertDevnetRpcConnection(params.connection);
@@ -219,6 +224,9 @@ export async function prepareLotteryClaimWeb(params: {
     if (!isLightPrepareError(firstErr)) {
       throw firstErr;
     }
+    if (params.allowWalletSigning === false) {
+      throw new Error(LIGHT_SYNC_REQUIRES_GESTURE);
+    }
     params.onStage?.('Aktualizacja konta Light przed odbiorem…');
     await syncLightThenWait({
       connection: params.connection,
@@ -251,7 +259,7 @@ export async function prepareLotteryClaimWeb(params: {
   };
 }
 
-/** Sign+send after prepare — call from a fresh button tap on mobile Chrome. */
+/** Sign+send after prepare — on mobile Chrome this must run from the claim button tap. */
 export async function submitPreparedLotteryClaimWeb(params: {
   connection: Connection;
   wallet: LotteryClaimWallet;
@@ -337,7 +345,7 @@ async function prepareClaim(params: {
   });
 }
 
-/** One-shot claim (desktop). Mobile Chrome should use prepare + submit with a second tap. */
+/** One-shot claim (desktop / Light-sync path). Prefer background prepare + submit on mobile. */
 export async function runLotteryClaimWeb(params: {
   connection: Connection;
   wallet: LotteryClaimWallet;
@@ -373,6 +381,9 @@ export function mapLotteryClaimErrorMessage(
     msg.includes('HELIUS_REQUIRED')
   ) {
     return t.claimLotteryNoHeliusKey ?? t.claimLotteryNoLightAccount;
+  }
+  if (msg.includes(LIGHT_SYNC_REQUIRES_GESTURE)) {
+    return t.claimLotteryNoLightAccount;
   }
   if (msg.includes('PHOTON_INDEXING_TIMEOUT')) {
     return (
