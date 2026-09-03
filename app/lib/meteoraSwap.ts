@@ -16,27 +16,27 @@ import {
   type TransactionSignature,
 } from '@solana/web3.js';
 
-import pierronIdl from '../../shared/idl/pierron.json';
+import pierronIdl from '../../../shared/idl/pierron.json';
 import {
   buildPierronDlmmSwapPlan,
   type PierronDlmmSwapPlan,
-} from '../../shared/meteora/buildPierronDlmmSwapTx.ts';
+} from '../../../shared/meteora/buildPierronDlmmSwapTx.ts';
 import {
   isMeteoraInsufficientLiquidityError,
   quoteMeteoraDlmmSwap,
-} from '../../shared/meteora/meteoraDlmmSwapQuote.ts';
-import { assertDexSwapAmountWithinPolicy } from '../../shared/pierron/assertDexSwapPolicy.ts';
-import { humanizeSwapPolicyError } from '../../shared/pierron/swapPolicyLimits.ts';
-import { fetchConsumedRedistributionClaimPubkeys } from '../../shared/pierron/redistributionClaimEligibility.ts';
-import { buyRedistributionTaxBaseUnits } from '../../shared/pierron/sellRedistributionTaxPretransfer.ts';
-import { netBaseUnitsForGrossSell } from '../../shared/pierron/tradeTax.ts';
-import { getPierronProgramId } from '../../shared/core/programIds.ts';
-import { pierronMeteoraAgUrl, pierronPoolSolscanUrl } from '../../shared/meteora/pierronPoolExplorer.ts';
-import { PIERRON_DEVNET_METEORA_POOL } from '../../shared/meteora/pierronPoolCanonical.ts';
+} from '../../../shared/meteora/meteoraDlmmSwapQuote.ts';
+import { assertDexSwapAmountWithinPolicy } from '../../../shared/pierron/assertDexSwapPolicy.ts';
+import { humanizeSwapPolicyError } from '../../../shared/pierron/swapPolicyLimits.ts';
+import { fetchConsumedRedistributionClaimPubkeys } from '../../../shared/pierron/redistributionClaimEligibility.ts';
+import { buyRedistributionTaxBaseUnits } from '../../../shared/pierron/sellRedistributionTaxPretransfer.ts';
+import { netBaseUnitsForGrossSell } from '../../../shared/pierron/tradeTax.ts';
+import { getPierronProgramId } from '../../../shared/core/programIds.ts';
+import { pierronMeteoraAgUrl, pierronPoolSolscanUrl } from '../../../shared/meteora/pierronPoolExplorer.ts';
+import { PIERRON_DEVNET_METEORA_POOL } from '../../../shared/meteora/pierronPoolCanonical.ts';
 import {
   assertDexRpcReady,
   classifyDexRpcError,
-} from '../../shared/solana/rpcEndpoint.ts';
+} from '../../../shared/solana/rpcEndpoint.ts';
 
 import { pierronDevnet } from './pierronDevnet';
 import {
@@ -52,7 +52,7 @@ import {
 import {
   assertDevnetRpcConnection,
   DEVNET_GENESIS_HASH,
-} from '../../shared/solana/devnetClusterAssert.ts';
+} from '../../../shared/solana/devnetClusterAssert.ts';
 
 export { DEVNET_GENESIS_HASH };
 
@@ -333,6 +333,11 @@ async function sendSignedSwapStep(
   return sig;
 }
 
+function isLikelyMobileWeb(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
 /** Buduje plan, podpisuje (1 potwierdzenie w portfelu jak mobilka) i wysyła swap Meteora. */
 export async function executeMeteoraPierronSwap(params: {
   connection: Connection;
@@ -357,11 +362,15 @@ export async function executeMeteoraPierronSwap(params: {
   }
 
   let signedList: Transaction[];
-  if (total === 1) {
-    signedList = [await params.wallet.signTransaction(txs[0]!)];
-  } else if (typeof params.wallet.signAllTransactions === 'function') {
-    // Jedno okno portfela dla całego planu (setup+swap / tax+swap) — jak mobilka.
+  // Prefer batch signing whenever available — one wallet session (critical on Android MWA).
+  if (typeof params.wallet.signAllTransactions === 'function') {
     signedList = await params.wallet.signAllTransactions(txs);
+  } else if (total === 1) {
+    signedList = [await params.wallet.signTransaction(txs[0]!)];
+  } else if (isLikelyMobileWeb()) {
+    throw new Error(
+      'Ten portfel na telefonie nie podpisuje wielu transakcji naraz. Połącz ponownie przez Solflare/Phantom (Mobile Wallet Adapter) i spróbuj jeszcze raz.'
+    );
   } else {
     signedList = [];
     for (const tx of txs) {
@@ -386,11 +395,15 @@ export async function executeMeteoraPierronSwap(params: {
     );
   }
 
-  // Safety net: packing can omit CloseAccount when fitting ≤1232 B. Leftover wSOL
-  // then shows as a second "SOL" balance — close ATA → native SOL.
+  // Safety net: leftover wSOL after sell. On mobile a *second* wallet prompt after
+  // the main swap often fails/cancels the whole flow — never fail a landed swap.
   if (params.side === 'sell') {
-    const unwrapSig = await unwrapLeftoverWsolIfAny(params.connection, params.wallet);
-    if (unwrapSig) lastSig = unwrapSig;
+    try {
+      const unwrapSig = await unwrapLeftoverWsolIfAny(params.connection, params.wallet);
+      if (unwrapSig) lastSig = unwrapSig;
+    } catch (err) {
+      console.warn('[pierron swap] wSOL unwrap skipped after successful sell', err);
+    }
   }
 
   return lastSig;

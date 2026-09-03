@@ -69,20 +69,30 @@ function formatBaseUnitsUiDot(
 
 export default function SwapPage() {
   const t = useTranslations();
-  const { publicKey, signTransaction, signAllTransactions } = useWallet();
+  const { publicKey, signTransaction, signAllTransactions, wallet } = useWallet();
   const { connection } = useConnection();
   const { program, idlLoading, idlError } = usePierronProgram();
 
   const anchorWallet = useMemo(() => {
     if (!publicKey || !signTransaction) return null;
+    const adapter = wallet?.adapter as
+      | { signAllTransactions?: (txs: unknown[]) => Promise<unknown[]> }
+      | undefined;
+    const batchSign =
+      signAllTransactions ??
+      (adapter && typeof adapter.signAllTransactions === 'function'
+        ? async (txs: Parameters<NonNullable<typeof signAllTransactions>>[0]) =>
+            (await adapter.signAllTransactions!(txs as never[])) as Awaited<
+              ReturnType<NonNullable<typeof signAllTransactions>>
+            >
+        : undefined);
     return {
       publicKey,
       signTransaction,
-      // Prefer native batch signing (one wallet approval). Do NOT fall back to
-      // sequential signTransaction — that forces two Phantom/Solflare popups.
-      signAllTransactions,
+      // Prefer native batch signing (one wallet approval). Critical on Android MWA.
+      signAllTransactions: batchSign,
     };
-  }, [publicKey, signTransaction, signAllTransactions]);
+  }, [publicKey, signTransaction, signAllTransactions, wallet?.adapter]);
 
   const [tradeSide, setTradeSide] = useState<'buy' | 'sell'>('buy');
   const [amount, setAmount] = useState('0.05');
@@ -340,12 +350,27 @@ export default function SwapPage() {
       }, 1500);
     } catch (err: unknown) {
       let msg = err instanceof Error ? err.message : String(err);
-      if (
+      const mobile =
+        typeof navigator !== 'undefined' &&
+        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const userCancel =
+        /user rejected|user denied|user cancel|odrzuc|anulowan/i.test(msg) ||
+        (/cancel(led|led)?/i.test(msg) &&
+          !/timeout|associat|not found|unable|session|authoriz/i.test(msg));
+      if (userCancel) {
+        msg = mobile
+          ? (t.pure.swapSignCancelledMobile ??
+            'Podpis nie został zatwierdzony w portfelu. Zatwierdź w Solflare/Phantom i wróć do tej karty.')
+          : (t.pure.swapSignCancelledDesktop ??
+            'Podpis anulowany w portfelu. Zatwierdź w Solflare/Phantom.');
+      } else if (
         err instanceof WalletSignTransactionError ||
-        /cancelled|rejected|user rejected/i.test(msg)
+        /sign(ature|ing)|WalletSign/i.test(msg)
       ) {
-        msg =
-          'Podpis anulowany w portfelu. Otwórz Solflare/Phantom, zatwierdź transakcję i nie zamykaj okna rozszerzenia.';
+        const hint = mobile
+          ? (t.pure.swapSignFailedMobileHint ?? '')
+          : '';
+        msg = hint ? `${msg}\n\n${hint}` : msg;
       } else if (/blockhash|expired|block height exceeded/i.test(msg)) {
         msg =
           'Blockhash wygasł — zatwierdź w portfelu szybciej i spróbuj ponownie.';
