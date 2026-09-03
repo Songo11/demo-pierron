@@ -115,6 +115,8 @@ export const ja: Translations = {
     "tickWykonany": "TICKアクションを用意しました。",
     "poolConnectFailed": "メテオラ プールへの接続に失敗しました",
     "insufficientSol": "SOL が足りません ({have} を持っていますが、料金が必要な ~{need} が必要です)。",
+    "needDevnetSolBanner": "devnet SOL がありません — スワップには手数料が必要です（faucet: https://faucet.solana.com）。PIERRON 残高では取引手数料を賄えません。",
+    "getDevnetSolFaucet": "devnet SOL を取得: https://faucet.solana.com",
     "insufficientPoolLiquidity": "現在の価格ではメテオラのビンに十分なピエロンの流動性がありません。プール TVL はスワップ可能な流動性と同じではありません。オペレーターはアクティブ ビン (devnet-seed-meteora-liquidity スクリプトまたは Meteora UI) に LP を追加する必要があります。より少ない量 (例: 0.01 SOL) を試してください。",
     "preparingWithPool": "トランザクションを準備中（プールのロード）…",
     "swapStagePreparing": "スワップを準備しています…",

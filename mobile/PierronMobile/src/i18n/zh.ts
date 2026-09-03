@@ -115,6 +115,8 @@ export const zh: Translations = {
     "tickWykonany": "TICK 操作已准备就绪。",
     "poolConnectFailed": "连接 Meteora 池失败",
     "insufficientSol": "SOL 不足（您有 {have}，含手续费约需 {need}）。",
+    "needDevnetSolBanner": "没有 devnet SOL — 兑换需要手续费（水龙头：https://faucet.solana.com）。PIERRON 余额不足以支付交易费。",
+    "getDevnetSolFaucet": "领取 devnet SOL：https://faucet.solana.com",
     "insufficientPoolLiquidity": "当前价格下 Meteora bin 中 PIERRON 流动性不足。池 TVL 不等于可 swap 流动性——运营方须在活跃 bin 中添加 LP（devnet-seed-meteora-liquidity 脚本或 Meteora UI）。请尝试更小金额（如 0.01 SOL）。",
     "preparingWithPool": "正在准备交易（加载池）…",
     "swapStagePreparing": "正在准备交换...",

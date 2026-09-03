@@ -115,6 +115,8 @@ export const ko: Translations = {
     "tickWykonany": "TICK 액션이 준비되었습니다.",
     "poolConnectFailed": "Meteora 풀에 연결하지 못했습니다.",
     "insufficientSol": "SOL이 충분하지 않습니다(수수료가 포함된 {have}, need ~{need} 필요).",
+    "needDevnetSolBanner": "devnet SOL이 없습니다 — 스왑에는 수수료가 필요합니다(faucet: https://faucet.solana.com). PIERRON 잔액으로는 거래 수수료를 충당할 수 없습니다.",
+    "getDevnetSolFaucet": "devnet SOL 받기: https://faucet.solana.com",
     "insufficientPoolLiquidity": "현재 가격으로는 Meteora 빈의 PIERRON 유동성이 충분하지 않습니다. 풀 TVL은 스왑 가능한 유동성과 동일하지 않습니다. 운영자는 활성 저장소(devnet-seed-meteora-liquidity 스크립트 또는 Meteora UI)에 LP를 추가해야 합니다. 더 적은 양(예: 0.01 SOL)을 시도해 보십시오.",
     "preparingWithPool": "거래 준비(풀 로딩)…",
     "swapStagePreparing": "Preparing swap…",

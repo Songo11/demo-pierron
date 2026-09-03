@@ -111,6 +111,8 @@ export const pl = {
     "tickWykonany": "Akcja TICK została przygotowana.",
     "poolConnectFailed": "Nie udało się połączyć z pulą Meteora",
     "insufficientSol": "Za mało SOL (masz {have}, potrzebujesz ~{need} z opłatami).",
+    "needDevnetSolBanner": "Brak devnet SOL — swap wymaga opłat (faucet: https://faucet.solana.com). Saldo PIERRON nie wystarczy na opłaty transakcyjne.",
+    "getDevnetSolFaucet": "Weź devnet SOL: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Za mało płynności PIERRON w binach Meteora (przy aktualnej cenie). TVL w puli to nie to samo co płynność do swapu — operator musi dodać LP w aktywnym binie (skrypt devnet-seed-meteora-liquidity lub Meteora UI). Spróbuj mniejszej kwoty (np. 0,01 SOL).",
     "preparingWithPool": "Przygotowanie transakcji (ładowanie puli)…",
     "swapStagePreparing": "Przygotowuję swap…",

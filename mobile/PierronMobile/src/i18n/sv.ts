@@ -115,6 +115,8 @@ export const sv: Translations = {
     "tickWykonany": "KRYSSA åtgärd förberedd.",
     "poolConnectFailed": "Det gick inte att ansluta till Meteora-poolen",
     "insufficientSol": "Inte tillräckligt med SOL (du har {have}, behöver ~{need} med avgifter).",
+    "needDevnetSolBanner": "Ingen devnet-SOL — swap kräver avgifter (faucet: https://faucet.solana.com). PIERRON-saldot räcker inte till transaktionsavgifter.",
+    "getDevnetSolFaucet": "Hämta devnet-SOL: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Inte tillräckligt MED Pierron-likviditet i Meteoras papperskorgar till nuvarande pris. Pool TVL är inte detsamma som utbytbar likviditet — operatören måste lägga till LP i den aktiva behållaren (devnet-seed-meteora-liquidity script eller Meteora UI). Prova en mindre mängd (t.ex. 0,01 SOL).",
     "preparingWithPool": "Förbereder transaktion (laddningspool)...",
     "swapStagePreparing": "Preparing swap…",

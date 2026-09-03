@@ -115,6 +115,8 @@ export const ha: Translations = {
     "tickWykonany": "TiCK mataki shirya.",
     "poolConnectFailed": "An kasa haɗawa zuwa tafkin Meteora",
     "insufficientSol": "Bai isa ba SOL (kana da {na da}, bukatar ~{buƙata} tare da kudade).",
+    "needDevnetSolBanner": "Babu SOL na devnet — musanya na buƙatar kuɗin hidima (faucet: https://faucet.solana.com). Ma'aunin PIERRON bai isa ba don kuɗin ma'amala.",
+    "getDevnetSolFaucet": "Sami SOL na devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Rashin isasshen ruwa na PIERRON a cikin kwandon Meteora akan farashin yanzu. Pool TVL ba iri ɗaya bane da swappable liquidity - dole ne mai aiki ya ƙara LP a cikin bin mai aiki (rubutun devnet-seed-meteora-liquidity ko Meteora UI). Gwada ƙaramin adadin (misali 0.01 SOL).",
     "preparingWithPool": "Ana shirya ma'amala (loading pool)…",
     "swapStagePreparing": "Preparing swap…",

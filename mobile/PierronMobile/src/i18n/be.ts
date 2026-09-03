@@ -115,6 +115,8 @@ export const be: Translations = {
     "tickWykonany": "падрыхтавана акцыя TICK.",
     "poolConnectFailed": "Не ўдалося падключыцца да пула Meteora",
     "insufficientSol": "Недастаткова SOL (у вас ёсць {ёсць}, патрэбна ~{трэба} з платай).",
+    "needDevnetSolBanner": "Няма SOL у devnet — для свопу патрэбны камісіі (faucet: https://faucet.solana.com). Балансу PIERRON не хапае на камісіі транзакцыі.",
+    "getDevnetSolFaucet": "Атрымайце SOL у devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Недастаткова ліквіднасці PIERRON у сметніках Meteora па бягучай цане. Пул TVL - гэта не тое ж самае, што заменная ліквіднасць - аператар павінен дадаць LP у актыўны бак (скрыпт devnet-seed-meteora-liquidity або інтэрфейс Meteora). Паспрабуйце меншую колькасць (напрыклад, 0,01 SOL).",
     "preparingWithPool": "Падрыхтоўка транзакцыі (загрузка пула)…",
     "swapStagePreparing": "Падрыхтоўка абмену…",

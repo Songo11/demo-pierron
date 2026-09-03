@@ -115,6 +115,8 @@ export const tr: Translations = {
     "tickWykonany": "TICK eylemi hazırlandı.",
     "poolConnectFailed": "Meteora havuzuna bağlanılamadı",
     "insufficientSol": "Yeterli SOL yok ({var} var, ücretlerle birlikte ~{need} gerekiyor).",
+    "needDevnetSolBanner": "Devnet SOL yok — takas ücret gerektirir (faucet: https://faucet.solana.com). PIERRON bakiyesi işlem ücretlerini karşılamaz.",
+    "getDevnetSolFaucet": "Devnet SOL alın: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Meteora kutularında mevcut fiyata yeterli PIERRON likiditesi yok. Havuz TVL'si, değiştirilebilir likidite ile aynı şey değildir; operatörün LP'yi aktif kutuya (devnet-seed-meteora-likidite komut dosyası veya Meteora kullanıcı arayüzü) eklemesi gerekir. Daha küçük bir miktar deneyin (örneğin 0,01 SOL).",
     "preparingWithPool": "İşlem hazırlanıyor (yükleme havuzu)…",
     "swapStagePreparing": "Preparing swap…",

@@ -115,6 +115,8 @@ export const sr: Translations = {
     "tickWykonany": "ТИЦК акција припремљена.",
     "poolConnectFailed": "Повезивање са базеном Метеора није успело",
     "insufficientSol": "Није довољно СОЛ (имате {имате}, требате ~{потребно} са накнадама).",
+    "needDevnetSolBanner": "Нема devnet SOL — своп захтева накнаде (faucet: https://faucet.solana.com). Стање PIERRON није довољно за накнаде трансакције.",
+    "getDevnetSolFaucet": "Узми devnet SOL: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Нема довољно ПИЕРРОН ликвидности у кантама Метеора по тренутној цени. Поол ТВЛ није исто што и заменљива ликвидност — оператер мора додати ЛП у активну канту (девнет-сеед-метеора-ликуидити сцрипт или Метеора УИ). Покушајте са мањом количином (нпр. 0,01 СОЛ).",
     "preparingWithPool": "Припрема трансакције (учитавање скупа)…",
     "swapStagePreparing": "Preparing swap…",

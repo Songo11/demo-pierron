@@ -115,6 +115,8 @@ export const vi: Translations = {
     "tickWykonany": "Hành động TICK đã được chuẩn bị.",
     "poolConnectFailed": "Không thể kết nối với nhóm Meteora",
     "insufficientSol": "Không đủ SOL (bạn có {có}, cần ~{cần} kèm theo phí).",
+    "needDevnetSolBanner": "Thiếu SOL trên devnet — swap cần phí (faucet: https://faucet.solana.com). Số dư PIERRON không đủ trả phí giao dịch.",
+    "getDevnetSolFaucet": "Nhận SOL trên devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Không đủ thanh khoản PIERRON trong thùng Meteora ở mức giá hiện tại. Pool TVL không giống như thanh khoản có thể hoán đổi - nhà điều hành phải thêm LP vào thùng đang hoạt động (tập lệnh devnet-seed-meteora-liquidity hoặc giao diện người dùng Meteora). Hãy thử số lượng nhỏ hơn (ví dụ: 0,01 SOL).",
     "preparingWithPool": "Đang chuẩn bị giao dịch (đang tải nhóm)…",
     "swapStagePreparing": "Preparing swap…",

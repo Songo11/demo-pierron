@@ -115,6 +115,8 @@ export const tl: Translations = {
     "tickWykonany": "TIKAN ng aksyon na inihanda.",
     "poolConnectFailed": "Nabigong kumonekta sa Meteora pool",
     "insufficientSol": "Hindi sapat ang SOL (mayroon kang {have}, kailangan ~{need} with fees).",
+    "needDevnetSolBanner": "Walang devnet SOL — kailangan ng bayarin ang swap (faucet: https://faucet.solana.com). Hindi sapat ang balanse ng PIERRON para sa bayarin sa transaksyon.",
+    "getDevnetSolFaucet": "Kumuha ng devnet SOL: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Hindi sapat ang PIERRON liquidity sa Meteora bins sa kasalukuyang presyo. Ang Pool TVL ay hindi katulad ng swappable liquidity — ang operator ay dapat magdagdag ng LP sa aktibong bin (devnet-seed-meteora-liquidity script o Meteora UI). Subukan ang mas maliit na halaga (hal. 0.01 SOL).",
     "preparingWithPool": "Inihahanda ang transaksyon (naglo-load ng pool)…",
     "swapStagePreparing": "Preparing swap…",

@@ -115,6 +115,8 @@ export const th: Translations = {
     "tickWykonany": "เตรียมการดำเนินการ TICK แล้ว",
     "poolConnectFailed": "ไม่สามารถเชื่อมต่อกับพูล Meteora",
     "insufficientSol": "SOL ไม่เพียงพอ (คุณมี {have}, ต้องการ ~{need} พร้อมค่าธรรมเนียม)",
+    "needDevnetSolBanner": "ไม่มี SOL บน devnet — การสวอปต้องมีค่าธรรมเนียม (faucet: https://faucet.solana.com) ยอด PIERRON ไม่พอสำหรับค่าธรรมเนียมธุรกรรม",
+    "getDevnetSolFaucet": "รับ SOL บน devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "สภาพคล่องของ PIERRON ในถัง Meteora ไม่เพียงพอในราคาปัจจุบัน Pool TVL ไม่เหมือนกับสภาพคล่องที่สลับได้ — ผู้ดำเนินการจะต้องเพิ่ม LP ในถังที่ใช้งานอยู่ (สคริปต์ devnet-seed-meteora-liquidity หรือ Meteora UI) ลองจำนวนน้อยลง (เช่น 0.01 SOL)",
     "preparingWithPool": "กำลังเตรียมธุรกรรม (กำลังโหลดพูล)…",
     "swapStagePreparing": "Preparing swap…",

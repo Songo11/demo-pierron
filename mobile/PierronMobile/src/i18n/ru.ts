@@ -115,6 +115,8 @@ export const ru: Translations = {
     "tickWykonany": "Действие TICK подготовлено.",
     "poolConnectFailed": "Не удалось подключиться к пулу Meteora",
     "insufficientSol": "Недостаточно SOL (есть {have}, нужно ~{need} с комиссией).",
+    "needDevnetSolBanner": "Нет SOL в devnet — для свопа нужны комиссии (faucet: https://faucet.solana.com). Баланса PIERRON недостаточно для оплаты транзакций.",
+    "getDevnetSolFaucet": "Получите SOL в devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Недостаточно ликвидности PIERRON в bin Meteora при текущей цене. TVL пула ≠ ликвидность для swap — оператор должен добавить LP в активный bin (скрипт devnet-seed-meteora-liquidity или Meteora UI). Попробуйте меньшую сумму (напр. 0,01 SOL).",
     "preparingWithPool": "Подготовка транзакции (загрузка пула)…",
     "swapStagePreparing": "Подготовка обмена…",

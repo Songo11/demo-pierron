@@ -115,6 +115,8 @@ export const ka: Translations = {
     "tickWykonany": "მომზადებულია TICK ქმედება.",
     "poolConnectFailed": "მეტეორას აუზთან დაკავშირება ვერ მოხერხდა",
     "insufficientSol": "არ არის საკმარისი SOL (თქვენ გაქვთ {have}, გჭირდებათ ~{საჭიროება} საკომისიოებით).",
+    "needDevnetSolBanner": "devnet-ზე SOL არ არის — სვაპს სჭირდება საკომისიოები (faucet: https://faucet.solana.com). PIERRON-ის ბალანსი ტრანზაქციის საკომისიოს არ ფარავს.",
+    "getDevnetSolFaucet": "მიიღეთ SOL devnet-ზე: https://faucet.solana.com",
     "insufficientPoolLiquidity": "არ არის საკმარისი PIERRON ლიკვიდობა Meteora ურნაში მიმდინარე ფასით. Pool TVL არ არის იგივე, რაც გაცვლადი ლიკვიდობა - ოპერატორმა უნდა დაამატოს LP აქტიურ ყუთში (devnet-seed-meteora-liquidity სკრიპტი ან Meteora UI). სცადეთ უფრო მცირე რაოდენობა (მაგ. 0.01 SOL).",
     "preparingWithPool": "ტრანზაქციის მომზადება (ჩატვირთვის აუზი)…",
     "swapStagePreparing": "Preparing swap…",

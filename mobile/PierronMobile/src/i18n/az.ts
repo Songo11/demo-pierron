@@ -115,6 +115,8 @@ export const az: Translations = {
     "tickWykonany": "TICK hərəkəti hazırlanmışdır.",
     "poolConnectFailed": "Meteora hovuzuna qoşulmaq alınmadı",
     "insufficientSol": "Kifayət qədər SOL yoxdur (sizdə {var}, ödənişli ~{lazım} lazımdır).",
+    "needDevnetSolBanner": "Devnet SOL yoxdur — mübadilə üçün komissiya lazımdır (faucet: https://faucet.solana.com). PIERRON balansı əməliyyat komissiyalarını ödəmir.",
+    "getDevnetSolFaucet": "Devnet SOL əldə edin: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Cari qiymətə Meteora qutularında kifayət qədər PIERRON likvidliyi yoxdur. Pool TVL dəyişdirilə bilən likvidliklə eyni deyil - operator aktiv qutuya LP əlavə etməlidir (devnet-seed-meteora-likvidlik skripti və ya Meteora UI). Daha kiçik məbləği sınayın (məsələn, 0,01 SOL).",
     "preparingWithPool": "Tranzaksiya hazırlanır (pulun yüklənməsi)…",
     "swapStagePreparing": "Mübadilə hazırlanır...",

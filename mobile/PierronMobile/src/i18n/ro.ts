@@ -115,6 +115,8 @@ export const ro: Translations = {
     "tickWykonany": "Acțiunea TICK pregătită.",
     "poolConnectFailed": "Nu s-a putut conecta la piscina Meteora",
     "insufficientSol": "Nu este suficient SOL (aveți {aveți}, aveți nevoie de ~{need} cu taxe).",
+    "needDevnetSolBanner": "Lipsă SOL pe devnet — swap-ul necesită comisioane (faucet: https://faucet.solana.com). Soldul PIERRON nu acoperă comisioanele de tranzacție.",
+    "getDevnetSolFaucet": "Obține SOL pe devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Nu este suficientă lichiditate PIERRON în pubele Meteora la prețul actual. Pool TVL nu este același lucru cu lichiditatea swapable — operatorul trebuie să adauge LP în coșul activ (scriptul devnet-seed-meteora-liquidity sau Meteora UI). Încercați o cantitate mai mică (de exemplu, 0,01 SOL).",
     "preparingWithPool": "Se pregătește tranzacția (se încarcă grupul)...",
     "swapStagePreparing": "Preparing swap…",

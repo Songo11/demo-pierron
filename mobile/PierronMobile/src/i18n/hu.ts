@@ -115,6 +115,8 @@ export const hu: Translations = {
     "tickWykonany": "TICK akció előkészítve.",
     "poolConnectFailed": "Nem sikerült csatlakozni a Meteora poolhoz",
     "insufficientSol": "Nem elég SOL (van {van}, kell ~{szükség} díjjal).",
+    "needDevnetSolBanner": "Nincs devnet SOL — a swap díjakat igényel (faucet: https://faucet.solana.com). A PIERRON egyenleg nem fedezi a tranzakciós díjakat.",
+    "getDevnetSolFaucet": "Szerezz devnet SOL-t: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Nincs elég PIERRON likviditás a Meteora tartályokban a jelenlegi áron. A pool TVL nem azonos a cserélhető likviditással – az üzemeltetőnek hozzá kell adnia az LP-t az aktív tárolóhoz (devnet-seed-meteora-liquidity script vagy Meteora UI). Próbálkozzon kisebb mennyiséggel (pl. 0,01 SOL).",
     "preparingWithPool": "Tranzakció előkészítése (betöltési készlet)…",
     "swapStagePreparing": "Preparing swap…",

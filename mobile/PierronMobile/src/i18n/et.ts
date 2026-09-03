@@ -115,6 +115,8 @@ export const et: Translations = {
     "tickWykonany": "TICK toiming valmis.",
     "poolConnectFailed": "Meteora basseiniga ühenduse loomine ebaõnnestus",
     "insufficientSol": "SOL-i pole piisavalt (teil on {on}, vaja ~{vaja} tasudega).",
+    "needDevnetSolBanner": "Puudub devnet SOL — vahetus vajab tasusid (faucet: https://faucet.solana.com). PIERRON-i saldo ei kata tehingutasusid.",
+    "getDevnetSolFaucet": "Hangi devnet SOL: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Meteora prügikastides pole praeguse hinnaga piisavalt PIERRONi likviidsust. Pool TVL ei ole sama mis vahetatav likviidsus – operaator peab lisama LP aktiivsesse salve (devnet-seed-meteora-likviidsuse skript või Meteora kasutajaliides). Proovige väiksemat kogust (nt 0,01 SOL).",
     "preparingWithPool": "tehingu ettevalmistamine (laadimiskogum)…",
     "swapStagePreparing": "Vahetuse ettevalmistamine…",

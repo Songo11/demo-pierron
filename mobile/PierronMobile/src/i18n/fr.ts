@@ -115,6 +115,8 @@ export const fr: Translations = {
     "tickWykonany": "Action COCHE préparée.",
     "poolConnectFailed": "Échec de la connexion au pool Meteora",
     "insufficientSol": "Pas assez de SOL (vous avez {have}, besoin de ~{need} avec frais).",
+    "needDevnetSolBanner": "Pas de SOL devnet — le swap nécessite des frais (faucet : https://faucet.solana.com). Le solde PIERRON ne couvre pas les frais de transaction.",
+    "getDevnetSolFaucet": "Obtenir du SOL devnet : https://faucet.solana.com",
     "insufficientPoolLiquidity": "Pas assez de liquidité PIERRON dans les bacs Météores au cours actuel. Le Pool TVL n'est pas la même chose que la liquidité échangeable : l'opérateur doit ajouter du LP dans le bac actif (script devnet-seed-meteora-liquidity ou Meteora UI). Essayez une quantité plus petite (par exemple 0,01 SOL).",
     "preparingWithPool": "Préparation de la transaction (chargement du pool)…",
     "swapStagePreparing": "Preparing swap…",

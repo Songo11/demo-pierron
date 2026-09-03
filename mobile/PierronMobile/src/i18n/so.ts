@@ -115,6 +115,8 @@ export const so: Translations = {
     "tickWykonany": "TICK tallaabo waa la diyaariyay.",
     "poolConnectFailed": "Waa ku guuldareystay in lagu xiro barkadda Meteora",
     "insufficientSol": "Kuma filna SOL (waad haysataa, waxaad u baahan tahay khidmadaha).",
+    "needDevnetSolBanner": "SOL ee devnet ma jiro — swap wuxuu u baahan yahay khidmado (faucet: https://faucet.solana.com). Hadhaaga PIERRON kuma filna khidmadaha macaamilka.",
+    "getDevnetSolFaucet": "Hel SOL ee devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Kuma filna dareeraha PIERRON ee qashinka Meteora ee qiimaha hadda jira. Pool TVL la mid ma aha dareeraha la isku bedeli karo - hawlwadeenku waa inuu ku daraa LP qashinka firfircoon (qoraalka devnet-seed-meteora-liquidity script ama Meteora UI). Isku day qadar yar (tusaale 0.01 SOL).",
     "preparingWithPool": "Diyaarinta wax kala iibsiga ( barkadda rarida)…",
     "swapStagePreparing": "Preparing swap…",

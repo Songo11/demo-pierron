@@ -115,6 +115,8 @@ export const hr: Translations = {
     "tickWykonany": "TICK akcija pripremljena.",
     "poolConnectFailed": "Neuspješno povezivanje s bazenom Meteora",
     "insufficientSol": "Nema dovoljno SOL-a (imate {imate}, trebate ~{trebate} s naknadama).",
+    "needDevnetSolBanner": "Nedostaje devnet SOL — swap zahtijeva naknade (faucet: https://faucet.solana.com). Saldo PIERRON nije dovoljan za naknade transakcije.",
+    "getDevnetSolFaucet": "Nabavite devnet SOL: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Nema dovoljno PIERRON likvidnosti u spremnicima Meteora po trenutnoj cijeni. Pool TVL nije isto što i zamjenjiva likvidnost — operater mora dodati LP u aktivni spremnik (devnet-seed-meteora-liquidity skripta ili Meteora UI). Pokušajte s manjom količinom (npr. 0,01 SOL).",
     "preparingWithPool": "Priprema transakcije (učitavanje skupa)…",
     "swapStagePreparing": "Preparing swap…",

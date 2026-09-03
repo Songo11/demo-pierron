@@ -115,6 +115,8 @@ export const id: Translations = {
     "tickWykonany": "Tindakan TICK disiapkan.",
     "poolConnectFailed": "Gagal terhubung ke kolam Meteora",
     "insufficientSol": "SOL tidak cukup (Anda punya {miliki}, perlu ~{butuh} dengan biaya).",
+    "needDevnetSolBanner": "Tidak ada SOL devnet — swap membutuhkan biaya (faucet: https://faucet.solana.com). Saldo PIERRON tidak cukup untuk biaya transaksi.",
+    "getDevnetSolFaucet": "Dapatkan SOL devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Likuiditas PIERRON di bin Meteora tidak mencukupi pada harga saat ini. Pool TVL tidak sama dengan likuiditas yang dapat ditukar — operator harus menambahkan LP di bin aktif (skrip devnet-seed-meteora-liquidity atau Meteora UI). Coba jumlah yang lebih kecil (misalnya 0,01 SOL).",
     "preparingWithPool": "Mempersiapkan transaksi (memuat kumpulan)…",
     "swapStagePreparing": "Preparing swap…",

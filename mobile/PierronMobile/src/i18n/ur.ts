@@ -115,6 +115,8 @@ export const ur: Translations = {
     "tickWykonany": "TICK ایکشن تیار۔",
     "poolConnectFailed": "میٹیورا پول سے منسلک ہونے میں ناکام",
     "insufficientSol": "کافی SOL نہیں ہے (آپ کے پاس {have} ہے، فیس کے ساتھ ~{need} کی ضرورت ہے)۔",
+    "needDevnetSolBanner": "devnet SOL نہیں ہے — سواپ کے لیے فیس درکار ہے (faucet: https://faucet.solana.com)۔ PIERRON بیلنس لین دین کی فیس کے لیے کافی نہیں۔",
+    "getDevnetSolFaucet": "devnet SOL حاصل کریں: https://faucet.solana.com",
     "insufficientPoolLiquidity": "موجودہ قیمت پر Meteora کے ڈبوں میں کافی PIERRON لیکویڈیٹی نہیں ہے۔ پول TVL تبدیل کرنے کے قابل لیکویڈیٹی جیسا نہیں ہے — آپریٹر کو ایکٹو بن (devnet-seed-meteora-liquidity اسکرپٹ یا Meteora UI) میں LP شامل کرنا چاہیے۔ ایک چھوٹی رقم کی کوشش کریں (جیسے 0.01 SOL)۔",
     "preparingWithPool": "لین دین کی تیاری (لوڈنگ پول)…",
     "swapStagePreparing": "Preparing swap…",

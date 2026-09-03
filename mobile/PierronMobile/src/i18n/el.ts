@@ -115,6 +115,8 @@ export const el: Translations = {
     "tickWykonany": "Ετοιμάστηκε η ενέργεια TICK.",
     "poolConnectFailed": "Αποτυχία σύνδεσης με την πισίνα Meteora",
     "insufficientSol": "Δεν αρκεί SOL (έχετε {have}, χρειάζεστε ~{need} με χρεώσεις).",
+    "needDevnetSolBanner": "Λείπει το SOL στο devnet — το swap χρειάζεται προμήθειες (faucet: https://faucet.solana.com). Το υπόλοιπο PIERRON δεν επαρκεί για τα τέλη συναλλαγής.",
+    "getDevnetSolFaucet": "Πάρτε SOL στο devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Δεν υπάρχει αρκετή ρευστότητα PIERRON στους κάδους των Μετεώρων στην τρέχουσα τιμή. Το Pool TVL δεν είναι το ίδιο με τη ρευστότητα με δυνατότητα ανταλλαγής — ο χειριστής πρέπει να προσθέσει LP στον ενεργό κάδο (σενάριο devnet-seed-meteora-liquidity ή Meteora UI). Δοκιμάστε μια μικρότερη ποσότητα (π.χ. 0,01 SOL).",
     "preparingWithPool": "Προετοιμασία συναλλαγής (pool φόρτωσης)…",
     "swapStagePreparing": "Προετοιμασία ανταλλαγής…",

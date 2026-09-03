@@ -115,6 +115,8 @@ export const ku: Translations = {
     "tickWykonany": "Çalakiya TICK hat amadekirin.",
     "poolConnectFailed": "Nekarî bi hewza Meteora ve were girêdan",
     "insufficientSol": "SOL têra xwe nake (te {heye} heye, ~{hewceyî} bi xercan heye).",
+    "needDevnetSolBanner": "SOL ya devnet tune — swap hewceyî xercê ye (faucet: https://faucet.solana.com). Balansa PIERRON ji bo xercên danûstendinê têrê nake.",
+    "getDevnetSolFaucet": "SOL ya devnet bistîne: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Bi bihayê niha têra PIERRON lîkîdîtiya di qulikên Meteora de nake. Pool TVL ne heman şixulê guhezbar e - pêdivî ye ku operator LP-ê li binça çalak (nivîsara devnet-seed-meteora-liquidity an Meteora UI) zêde bike. Mîqdarek piçûktir biceribînin (mînak 0,01 SOL).",
     "preparingWithPool": "Amadekirina danûstandinê (hewza barkirinê)…",
     "swapStagePreparing": "Preparing swap…",

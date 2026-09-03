@@ -115,6 +115,8 @@ export const hi: Translations = {
     "tickWykonany": "टिक कार्रवाई तैयार।",
     "poolConnectFailed": "मेटियोरा पूल से कनेक्ट करने में विफल",
     "insufficientSol": "पर्याप्त एसओएल नहीं (आपके पास है, फीस के साथ जरूरत है)।",
+    "needDevnetSolBanner": "devnet SOL नहीं है — स्वैप के लिए शुल्क चाहिए (faucet: https://faucet.solana.com)। PIERRON शेष लेनदेन शुल्क के लिए पर्याप्त नहीं है।",
+    "getDevnetSolFaucet": "devnet SOL प्राप्त करें: https://faucet.solana.com",
     "insufficientPoolLiquidity": "मौजूदा कीमत पर मेटियोरा डिब्बे में पर्याप्त पियररॉन तरलता नहीं है। पूल टीवीएल स्वैपेबल लिक्विडिटी के समान नहीं है - ऑपरेटर को सक्रिय बिन (डेवनेट-सीड-मेटियोरा-लिक्विडिटी स्क्रिप्ट या मेटियोरा यूआई) में एलपी जोड़ना होगा। छोटी मात्रा का प्रयास करें (उदा. 0.01 एसओएल)।",
     "preparingWithPool": "लेनदेन की तैयारी (लोडिंग पूल)…",
     "swapStagePreparing": "Preparing swap…",

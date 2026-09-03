@@ -115,6 +115,8 @@ export const bg: Translations = {
     "tickWykonany": "Подготвено действие TICK.",
     "poolConnectFailed": "Неуспешно свързване с басейна на Метеора",
     "insufficientSol": "Няма достатъчно SOL (имате {have}, трябва ~{need} с такси).",
+    "needDevnetSolBanner": "Няма SOL в devnet — суапът изисква такси (faucet: https://faucet.solana.com). Балансът на PIERRON не стига за таксите по транзакцията.",
+    "getDevnetSolFaucet": "Вземете SOL в devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Няма достатъчно ликвидност на PIERRON в кошчетата Meteora на текущата цена. Pool TVL не е същото като заменяема ликвидност — операторът трябва да добави LP в активния контейнер (devnet-seed-meteora-liquidity скрипт или Meteora UI). Опитайте с по-малко количество (напр. 0,01 SOL).",
     "preparingWithPool": "Подготовка на транзакция (пул за зареждане)…",
     "swapStagePreparing": "Подготвя се размяна…",

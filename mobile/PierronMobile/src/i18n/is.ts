@@ -115,6 +115,8 @@ export const is: Translations = {
     "tickWykonany": "TICK aðgerð undirbúin.",
     "poolConnectFailed": "Mistókst að tengjast Meteora lauginni",
     "insufficientSol": "Ekki nóg SOL (þú hefur {hafa}, þarft ~{þarf} með gjöldum).",
+    "needDevnetSolBanner": "Vantar SOL á devnet — skipti krefjast gjalda (faucet: https://faucet.solana.com). PIERRON-staða dugar ekki fyrir viðskiptagjöld.",
+    "getDevnetSolFaucet": "Sæktu SOL á devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Ekki nóg PIERRON lausafé í Meteora tunnunum á núverandi verði. Pool TVL er ekki það sama og lausafjár sem hægt er að skipta um - rekstraraðilinn verður að bæta við LP í virka hólfin (devnet-seed-meteora-liquidity script eða Meteora UI). Prófaðu minna magn (t.d. 0,01 SOL).",
     "preparingWithPool": "Undirbýr viðskipti (hleðsla)...",
     "swapStagePreparing": "Preparing swap…",

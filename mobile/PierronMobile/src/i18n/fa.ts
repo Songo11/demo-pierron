@@ -115,6 +115,8 @@ export const fa: Translations = {
     "tickWykonany": "اقدام تیک آماده شد.",
     "poolConnectFailed": "اتصال به استخر Meteora انجام نشد",
     "insufficientSol": "SOL کافی نیست (شما {have}، نیاز به ~{need} با کارمزد دارید).",
+    "needDevnetSolBanner": "SOL شبکهٔ devnet ندارید — سواپ به کارمزد نیاز دارد (faucet: https://faucet.solana.com). موجودی PIERRON برای کارمزد تراکنش کافی نیست.",
+    "getDevnetSolFaucet": "SOL شبکهٔ devnet بگیرید: https://faucet.solana.com",
     "insufficientPoolLiquidity": "نقدینگی PIERRON در سطل های Meteora با قیمت فعلی کافی نیست. Pool TVL مانند نقدینگی قابل مبادله نیست - اپراتور باید LP را در سطل فعال اضافه کند (اسکریپت devnet-seed-meteora-liquidity یا Meteora UI). مقدار کمتری را امتحان کنید (به عنوان مثال 0.01 SOL).",
     "preparingWithPool": "در حال آماده سازی تراکنش (استخر بارگیری)…",
     "swapStagePreparing": "Preparing swap…",

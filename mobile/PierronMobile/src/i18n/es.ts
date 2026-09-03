@@ -115,6 +115,8 @@ export const es: Translations = {
     "tickWykonany": "Acción TICK preparada.",
     "poolConnectFailed": "No se pudo conectar al pool Meteora",
     "insufficientSol": "SOL insuficiente (tienes {have}, necesitas ~{need} con comisiones).",
+    "needDevnetSolBanner": "Sin SOL de devnet — el swap necesita comisiones (faucet: https://faucet.solana.com). El saldo de PIERRON no cubre las comisiones de transacción.",
+    "getDevnetSolFaucet": "Consigue SOL de devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "No hay suficiente liquidez de PIERRON en los contenedores de Meteora al precio actual. Pool TVL no es lo mismo que liquidez intercambiable: el operador debe agregar LP en el contenedor activo (script devnet-seed-meteora-liquidity o Meteora UI). Pruebe con una cantidad menor (por ejemplo, 0,01 SOL).",
     "preparingWithPool": "Preparando transacción (cargando pool)…",
     "swapStagePreparing": "Preparando el intercambio…",

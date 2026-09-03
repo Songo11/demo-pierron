@@ -115,6 +115,8 @@ export const nl: Translations = {
     "tickWykonany": "TICK-actie voorbereid.",
     "poolConnectFailed": "Kan geen verbinding maken met de Meteora-pool",
     "insufficientSol": "Niet genoeg SOL (je hebt {have}, need ~{need} met kosten).",
+    "needDevnetSolBanner": "Geen devnet-SOL — swap vereist kosten (faucet: https://faucet.solana.com). PIERRON-saldo dekt de transactiekosten niet.",
+    "getDevnetSolFaucet": "Haal devnet-SOL: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Niet genoeg PIERRON-liquiditeit in Meteora-opslagplaatsen tegen de huidige prijs. Pool TVL is niet hetzelfde als verwisselbare liquiditeit: de operator moet LP toevoegen aan de actieve bak (devnet-seed-meteora-liquidity script of Meteora UI). Probeer een kleinere hoeveelheid (bijvoorbeeld 0,01 SOL).",
     "preparingWithPool": "Transactie voorbereiden (laadpool)…",
     "swapStagePreparing": "Preparing swap…",

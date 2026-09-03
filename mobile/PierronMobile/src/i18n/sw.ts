@@ -115,6 +115,8 @@ export const sw: Translations = {
     "tickWykonany": "Kitendo cha TICK kimetayarishwa.",
     "poolConnectFailed": "Imeshindwa kuunganisha kwenye bwawa la Meteora",
     "insufficientSol": "SOL haitoshi (una {have}, unahitaji ~{need} pamoja na ada).",
+    "needDevnetSolBanner": "Hakuna SOL ya devnet — swap inahitaji ada (faucet: https://faucet.solana.com). Salio la PIERRON halitoshi ada za muamala.",
+    "getDevnetSolFaucet": "Pata SOL ya devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Hakuna ukwasi wa kutosha wa PIERRON kwenye mapipa ya Meteora kwa bei ya sasa. Pool TVL si sawa na ukwasi unaoweza kubadilishwa — lazima opereta aongeze LP kwenye pipa amilifu (hati ya devnet-seed-meteora-liquidity au Meteora UI). Jaribu kiasi kidogo (k.m. 0.01 SOL).",
     "preparingWithPool": "Inatayarisha muamala (dimbwi la kupakia)…",
     "swapStagePreparing": "Preparing swap…",

@@ -115,6 +115,8 @@ export const sq: Translations = {
     "tickWykonany": "Veprimi TICK i përgatitur.",
     "poolConnectFailed": "Lidhja me pishinën Meteora dështoi",
     "insufficientSol": "SOL nuk mjafton (keni {have}, keni nevojë ~{need} me tarifa).",
+    "needDevnetSolBanner": "Mungon SOL në devnet — swap kërkon tarifa (faucet: https://faucet.solana.com). Bilanci i PIERRON nuk mjafton për tarifat e transakcionit.",
+    "getDevnetSolFaucet": "Merr SOL në devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "Nuk ka mjaftueshëm likuiditet PIERRON në kazanët e Meteora me çmimin aktual. Pool TVL nuk është i njëjtë me likuiditetin e këmbyeshëm - operatori duhet të shtojë LP në koshin aktiv (skript devnet-seed-meteora-liquidity ose Meteora UI). Provoni një sasi më të vogël (p.sh. 0,01 SOL).",
     "preparingWithPool": "Po përgatit transaksion (pool ngarkimi)…",
     "swapStagePreparing": "Preparing swap…",

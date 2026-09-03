@@ -115,6 +115,8 @@ export const ta: Translations = {
     "tickWykonany": "டிக் செயல் தயார்.",
     "poolConnectFailed": "Meteora பூலுடன் இணைக்க முடியவில்லை",
     "insufficientSol": "போதுமான SOL இல்லை (உங்களிடம் {உள்ளது}, கட்டணத்துடன் ~{நீட்} வேண்டும்).",
+    "needDevnetSolBanner": "devnet SOL இல்லை — ஸ்வாப்பிற்கு கட்டணம் தேவை (faucet: https://faucet.solana.com). PIERRON இருப்பு பரிவர்த்தனை கட்டணங்களுக்கு போதாது.",
+    "getDevnetSolFaucet": "devnet SOL பெறுக: https://faucet.solana.com",
     "insufficientPoolLiquidity": "தற்போதைய விலையில் Meteora தொட்டிகளில் போதுமான PIERRON பணப்புழக்கம் இல்லை. பூல் டிவிஎல் என்பது மாற்றத்தக்க பணப்புழக்கம் போன்றது அல்ல - ஆபரேட்டர் செயலில் உள்ள தொட்டியில் (devnet-seed-meteora-liquidity script or Meteora UI) LPஐ சேர்க்க வேண்டும். சிறிய தொகையை முயற்சிக்கவும் (எ.கா. 0.01 SOL).",
     "preparingWithPool": "பரிவர்த்தனையைத் தயார் செய்கிறது (ஏற்றுதல் குளம்)…",
     "swapStagePreparing": "Preparing swap…",

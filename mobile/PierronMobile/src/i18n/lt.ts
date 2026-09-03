@@ -115,6 +115,8 @@ export const lt: Translations = {
     "tickWykonany": "paruoštas TICK veiksmas.",
     "poolConnectFailed": "Nepavyko prisijungti prie Meteora baseino",
     "insufficientSol": "nepakanka SOL (turite {turite}, reikia ~{reikia} su mokesčiais).",
+    "needDevnetSolBanner": "Trūksta devnet SOL — apsikeitimui reikia mokesčių (faucet: https://faucet.solana.com). PIERRON likučio nepakanka operacijos mokesčiams.",
+    "getDevnetSolFaucet": "Gaukite devnet SOL: https://faucet.solana.com",
     "insufficientPoolLiquidity": "nepakanka PIERRON likvidumo Meteora šiukšliadėžėse dabartine kaina. „Pool TVL“ nėra tas pats, kas keičiamasis likvidumas – operatorius turi įtraukti LP į aktyvųjį langelį (devnet-seed-meteora-liquidity script arba Meteora UI). Išbandykite mažesnę sumą (pvz., 0,01 SOL).",
     "preparingWithPool": "ruošiamas sandoris (kraunamas baseinas)…",
     "swapStagePreparing": "Preparing swap…",

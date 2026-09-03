@@ -115,6 +115,8 @@ export const ar: Translations = {
     "tickWykonany": "تم إعداد إجراء القراد.",
     "poolConnectFailed": "فشل الاتصال بمجمع Meteora",
     "insufficientSol": "لا يوجد ما يكفي من SOL (لديك {لديك}، تحتاج إلى ~{need} مع الرسوم).",
+    "needDevnetSolBanner": "لا يوجد SOL على devnet — المبادلة تحتاج رسومًا (faucet: https://faucet.solana.com). رصيد PIERRON لا يكفي لرسوم المعاملة.",
+    "getDevnetSolFaucet": "احصل على SOL على devnet: https://faucet.solana.com",
     "insufficientPoolLiquidity": "لا توجد سيولة كافية في PIERRON في صناديق Meteora بالسعر الحالي. لا يختلف Pool TVL عن السيولة القابلة للتبديل - يجب على المشغل إضافة LP في السلة النشطة (البرنامج النصي devnet-seed-meteora-liquidity أو Meteora UI). جرّب مبلغًا أصغر (على سبيل المثال 0.01 سول).",
     "preparingWithPool": "جارٍ تحضير المعاملة (تحميل المجمع)…",
     "swapStagePreparing": "جارٍ تحضير المبادلة…",

@@ -308,7 +308,7 @@ export default function SwapPage() {
         `${t.common.blad}\n${formatMessage(t.pure.insufficientSol, {
           have: solUi.toFixed(4),
           need: minSolForSwap.toFixed(3),
-        })}\n\nWeź devnet SOL: https://faucet.solana.com`
+        })}\n\n${t.pure.getDevnetSolFaucet}`
       );
     }
     if (cooldownRemaining > 0) {
@@ -510,8 +510,7 @@ export default function SwapPage() {
         ) : null}
         {solBalance != null && solBalance < 0.005 ? (
           <p className="pierron-helper" style={{ color: 'var(--pierron-error)' }}>
-            Brak devnet SOL — swap wymaga opłat (faucet: https://faucet.solana.com). Saldo PIERRON
-            nie wystarczy na opłaty transakcyjne.
+            {t.pure.needDevnetSolBanner}
           </p>
         ) : null}
         <button type="button" className="pierron-link" onClick={openMeteora}>
