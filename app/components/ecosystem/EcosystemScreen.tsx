@@ -56,16 +56,22 @@ export default function EcosystemScreen() {
 
   const [lotteryClaiming, setLotteryClaiming] = useState(false);
   const [lotteryClaimStatus, setLotteryClaimStatus] = useState<string | null>(null);
-  // Mobile Chrome: Photon prepare runs in the background so one tap only opens the wallet.
-  const [lotteryPreparedClaim, setLotteryPreparedClaim] = useState<{
-    transactions: Transaction[];
-    payoutHint: bigint;
-    lotteryDrawEpoch: number;
-  } | null>(null);
+  // Mobile: proof is prepared in the background; live payload stays in a ref (not React state).
+  const [lotteryProofReady, setLotteryProofReady] = useState(false);
   const [lotteryBackgroundPreparing, setLotteryBackgroundPreparing] = useState(false);
   const lotteryPrepareGenerationRef = useRef(0);
   /** Avoid re-running failed silent prepares in a loop for the same draw. */
   const lotterySilentPrepareKeyRef = useRef<string | null>(null);
+  const lotteryPreparedRef = useRef<{
+    wireTransactions: string[];
+    payoutHint: bigint;
+    lotteryDrawEpoch: number;
+    blockhash: string;
+    lastValidBlockHeight: number;
+  } | null>(null);
+  const lotteryClaimWebModRef = useRef<typeof import('../../lib/lotteryClaimWeb') | null>(
+    null
+  );
   const [redistributionClaiming, setRedistributionClaiming] = useState(false);
   const [redistributionClaimStatus, setRedistributionClaimStatus] = useState<string | null>(
     null
@@ -142,17 +148,52 @@ export default function EcosystemScreen() {
     snapshot.showLotteryClaimButton && snapshot.canExecuteLotteryClaim;
 
   useEffect(() => {
-    if (
-      lotteryPreparedClaim &&
-      lotteryPreparedClaim.lotteryDrawEpoch !== snapshot.lotteryDrawEpoch
-    ) {
+    const prepared = lotteryPreparedRef.current;
+    if (prepared && prepared.lotteryDrawEpoch !== snapshot.lotteryDrawEpoch) {
       lotteryPrepareGenerationRef.current += 1;
       lotterySilentPrepareKeyRef.current = null;
-      setLotteryPreparedClaim(null);
+      lotteryPreparedRef.current = null;
+      setLotteryProofReady(false);
       setLotteryClaimStatus(null);
       setLotteryBackgroundPreparing(false);
     }
-  }, [lotteryPreparedClaim, snapshot.lotteryDrawEpoch]);
+  }, [snapshot.lotteryDrawEpoch]);
+
+  // Keep blockhash fresh while waiting for the claim tap (so sign needs no RPC first).
+  useEffect(() => {
+    if (!lotteryProofReady || !publicKey) return;
+    if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
+
+    let cancelled = false;
+    const tick = async () => {
+      const prepared = lotteryPreparedRef.current;
+      const mod = lotteryClaimWebModRef.current;
+      if (!prepared || !mod || cancelled) return;
+      try {
+        const refreshed = await mod.refreshPreparedLotteryClaimWeb({
+          connection,
+          prepared,
+          feePayer: publicKey,
+        });
+        if (cancelled) return;
+        if (
+          lotteryPreparedRef.current &&
+          lotteryPreparedRef.current.lotteryDrawEpoch === refreshed.lotteryDrawEpoch
+        ) {
+          lotteryPreparedRef.current = refreshed;
+        }
+      } catch {
+        /* keep previous blockhash; next tick retries */
+      }
+    };
+
+    void tick();
+    const id = window.setInterval(() => void tick(), 12_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(id);
+    };
+  }, [connection, lotteryProofReady, publicKey]);
 
   // Mobile: silently build Light proof while claim panel is ready — claim tap only signs.
   useEffect(() => {
@@ -161,8 +202,8 @@ export default function EcosystemScreen() {
     if (!lotteryClaimButtonEnabled || lotteryClaiming || lotteryBackgroundPreparing) return;
     if (!publicKey || !signTransaction || !program) return;
     if (
-      lotteryPreparedClaim &&
-      lotteryPreparedClaim.lotteryDrawEpoch === snapshot.lotteryDrawEpoch
+      lotteryProofReady &&
+      lotteryPreparedRef.current?.lotteryDrawEpoch === snapshot.lotteryDrawEpoch
     ) {
       return;
     }
@@ -185,8 +226,9 @@ export default function EcosystemScreen() {
 
     void (async () => {
       try {
-        const { prepareLotteryClaimWeb } = await import('../../lib/lotteryClaimWeb');
-        const prepared = await prepareLotteryClaimWeb({
+        const mod = await import('../../lib/lotteryClaimWeb');
+        lotteryClaimWebModRef.current = mod;
+        const prepared = await mod.prepareLotteryClaimWeb({
           connection,
           wallet,
           program,
@@ -200,12 +242,20 @@ export default function EcosystemScreen() {
           },
         });
         if (lotteryPrepareGenerationRef.current !== generation) return;
-        setLotteryPreparedClaim(prepared);
+        // Stamp a fresh blockhash so the claim tap can open the wallet with no RPC first.
+        const refreshed = await mod.refreshPreparedLotteryClaimWeb({
+          connection,
+          prepared,
+          feePayer: publicKey,
+        });
+        if (lotteryPrepareGenerationRef.current !== generation) return;
+        lotteryPreparedRef.current = refreshed;
+        setLotteryProofReady(true);
         setLotteryClaimStatus(null);
       } catch {
         if (lotteryPrepareGenerationRef.current !== generation) return;
-        // Soft-fail / Light sync: interactive claim on button press (no retry loop).
-        setLotteryPreparedClaim(null);
+        lotteryPreparedRef.current = null;
+        setLotteryProofReady(false);
         setLotteryClaimStatus(null);
       } finally {
         if (lotteryPrepareGenerationRef.current === generation) {
@@ -218,7 +268,7 @@ export default function EcosystemScreen() {
     lotteryBackgroundPreparing,
     lotteryClaimButtonEnabled,
     lotteryClaiming,
-    lotteryPreparedClaim,
+    lotteryProofReady,
     participant,
     program,
     publicKey,
@@ -453,7 +503,7 @@ export default function EcosystemScreen() {
   ]);
 
   const handleClaimLottery = useCallback(() => {
-    if (!lotteryClaimButtonEnabled && !lotteryPreparedClaim) {
+    if (!lotteryClaimButtonEnabled && !lotteryProofReady) {
       if (snapshot.showLotteryClaimButton && !snapshot.canExecuteLotteryClaim) {
         alert(
           mapLotteryClaimBlockReasonToMessage(
@@ -472,7 +522,7 @@ export default function EcosystemScreen() {
     }
 
     // Wait for silent Photon prepare — opening the wallet mid-prepare fails on Chrome MWA.
-    if (lotteryBackgroundPreparing && !lotteryPreparedClaim) {
+    if (lotteryBackgroundPreparing && !lotteryProofReady) {
       setLotteryClaimStatus(t.ecosystem.claimLotteryPreparing);
       return;
     }
@@ -485,20 +535,66 @@ export default function EcosystemScreen() {
         | undefined,
     };
 
+    const preparedLive = lotteryPreparedRef.current;
+    const mobileReady =
+      lotteryProofReady &&
+      preparedLive &&
+      preparedLive.lotteryDrawEpoch === snapshot.lotteryDrawEpoch &&
+      lotteryClaimWebModRef.current;
+
+    // Mobile happy path: first await MUST be wallet.sign* (gesture). No import/RPC first.
+    if (mobileReady) {
+      const mod = lotteryClaimWebModRef.current!;
+      const prepared = preparedLive!;
+      setLotteryClaiming(true);
+      setLotteryClaimStatus(t.ecosystem.claimLotteryApproveSign);
+      void (async () => {
+        try {
+          const result = await mod.signPreparedLotteryClaimWebNow({
+            connection,
+            wallet,
+            prepared,
+            onStage: setLotteryClaimStatus,
+          });
+          lotteryPrepareGenerationRef.current += 1;
+          lotteryPreparedRef.current = null;
+          lotterySilentPrepareKeyRef.current = null;
+          setLotteryProofReady(false);
+          alert(
+            formatMessage(t.ecosystem.claimLotterySuccessBody, {
+              amount: snapshot.lotteryPrizeUi,
+              signature: `${result.signature.slice(0, 8)}…`,
+            })
+          );
+          setLotteryClaimStatus(null);
+          await refresh();
+        } catch (err) {
+          let detail = err instanceof Error ? err.message : String(err);
+          try {
+            detail = mod.mapLotteryClaimErrorMessage(err, t.ecosystem);
+          } catch {
+            /* keep detail */
+          }
+          alert(`${t.ecosystem.claimLotteryErrorTitle}\n\n${detail}`);
+          setLotteryClaimStatus(null);
+        } finally {
+          setLotteryClaiming(false);
+        }
+      })();
+      return;
+    }
+
     void (async () => {
       setLotteryClaiming(true);
       try {
-        const {
-          prepareLotteryClaimWeb,
-          submitPreparedLotteryClaimWeb,
-          runLotteryClaimWeb,
-          mapLotteryClaimErrorMessage,
-          isMobileWebClaimGestureRequired,
-        } = await import('../../lib/lotteryClaimWeb');
+        const mod = await import('../../lib/lotteryClaimWeb');
+        lotteryClaimWebModRef.current = mod;
 
         const finishSuccess = async (signature: string) => {
           lotteryPrepareGenerationRef.current += 1;
-          setLotteryPreparedClaim(null);
+          lotteryPreparedRef.current = null;
+          lotterySilentPrepareKeyRef.current = null;
+          setLotteryProofReady(false);
           alert(
             formatMessage(t.ecosystem.claimLotterySuccessBody, {
               amount: snapshot.lotteryPrizeUi,
@@ -509,26 +605,10 @@ export default function EcosystemScreen() {
           await refresh();
         };
 
-        // Mobile: proof already built in background — this tap only opens the wallet.
-        if (
-          lotteryPreparedClaim &&
-          lotteryPreparedClaim.lotteryDrawEpoch === snapshot.lotteryDrawEpoch
-        ) {
-          setLotteryClaimStatus(t.ecosystem.claimLotteryApproveSign);
-          const result = await submitPreparedLotteryClaimWeb({
-            connection,
-            wallet,
-            prepared: lotteryPreparedClaim,
-            onStage: setLotteryClaimStatus,
-          });
-          await finishSuccess(result.signature);
-          return;
-        }
-
-        if (isMobileWebClaimGestureRequired()) {
-          // Fallback when background prepare could not finish (e.g. Light sync).
+        if (mod.isMobileWebClaimGestureRequired()) {
+          // Fallback: prepare on tap, then keep proof ready for a clean sign tap if MWA hangs.
           setLotteryClaimStatus(t.ecosystem.claimLotteryPreparing);
-          const prepared = await prepareLotteryClaimWeb({
+          const prepared = await mod.prepareLotteryClaimWeb({
             connection,
             wallet,
             program,
@@ -537,18 +617,23 @@ export default function EcosystemScreen() {
             allowWalletSigning: true,
             onStage: setLotteryClaimStatus,
           });
+          const refreshed = await mod.refreshPreparedLotteryClaimWeb({
+            connection,
+            prepared,
+            feePayer: publicKey,
+          });
+          lotteryPreparedRef.current = refreshed;
+          setLotteryProofReady(true);
           try {
             setLotteryClaimStatus(t.ecosystem.claimLotteryApproveSign);
-            const result = await submitPreparedLotteryClaimWeb({
+            const result = await mod.signPreparedLotteryClaimWebNow({
               connection,
               wallet,
-              prepared,
+              prepared: refreshed,
               onStage: setLotteryClaimStatus,
             });
             await finishSuccess(result.signature);
           } catch (signErr) {
-            // Gesture often expires during Light sync+prepare — next tap only signs.
-            setLotteryPreparedClaim(prepared);
             setLotteryClaimStatus(t.ecosystem.claimLotteryTapToSign);
             const { isMwaWalletNotFoundMessage } = await import(
               '../../lib/openInMobileWalletBrowser'
@@ -563,7 +648,7 @@ export default function EcosystemScreen() {
         }
 
         setLotteryClaimStatus(t.ecosystem.claimLotteryPreparing);
-        const result = await runLotteryClaimWeb({
+        const result = await mod.runLotteryClaimWeb({
           connection,
           wallet,
           program,
@@ -575,14 +660,13 @@ export default function EcosystemScreen() {
       } catch (err) {
         let detail = err instanceof Error ? err.message : String(err);
         try {
-          const mod = await import('../../lib/lotteryClaimWeb');
+          const mod = lotteryClaimWebModRef.current ?? (await import('../../lib/lotteryClaimWeb'));
           detail = mod.mapLotteryClaimErrorMessage(err, t.ecosystem);
         } catch {
           /* keep detail */
         }
         alert(`${t.ecosystem.claimLotteryErrorTitle}\n\n${detail}`);
         setLotteryClaimStatus(null);
-        // Keep prepared txs if sign failed after prepare (retry opens wallet again).
       } finally {
         setLotteryClaiming(false);
       }
@@ -591,7 +675,7 @@ export default function EcosystemScreen() {
     connection,
     lotteryBackgroundPreparing,
     lotteryClaimButtonEnabled,
-    lotteryPreparedClaim,
+    lotteryProofReady,
     participant,
     program,
     publicKey,
@@ -1112,7 +1196,7 @@ export default function EcosystemScreen() {
           <button
             type="button"
             className={`pierron-claim-btn ${
-              lotteryClaimButtonEnabled || lotteryPreparedClaim
+              lotteryClaimButtonEnabled || lotteryProofReady
                 ? 'pierron-claim-btn-ready'
                 : 'pierron-claim-btn-locked'
             }`}
@@ -1121,7 +1205,7 @@ export default function EcosystemScreen() {
               lotteryClaiming ||
               lotteryBackgroundPreparing ||
               (!lotteryClaimButtonEnabled &&
-                !lotteryPreparedClaim &&
+                !lotteryProofReady &&
                 !snapshot.showLotteryClaimButton)
             }
           >
@@ -1138,19 +1222,15 @@ export default function EcosystemScreen() {
               ? lotteryClaimStatus
               : lotteryBackgroundPreparing && lotteryClaimStatus
                 ? lotteryClaimStatus
-                : lotteryPreparedClaim && lotteryClaimButtonEnabled
+                : lotteryClaimButtonEnabled || lotteryProofReady
                   ? formatMessage(t.ecosystem.claimLotteryReadyAmount, {
                       amount: snapshot.lotteryPrizeUi,
                     })
-                  : lotteryClaimButtonEnabled
-                    ? formatMessage(t.ecosystem.claimLotteryReadyAmount, {
-                        amount: snapshot.lotteryPrizeUi,
-                      })
-                    : mapLotteryClaimBlockReasonToMessage(
-                        snapshot.lotteryClaimBlockReason,
-                        t.ecosystem,
-                        snapshot.lotteryPayoutDelayRemainingSecs
-                      )}
+                  : mapLotteryClaimBlockReasonToMessage(
+                      snapshot.lotteryClaimBlockReason,
+                      t.ecosystem,
+                      snapshot.lotteryPayoutDelayRemainingSecs
+                    )}
           </p>
         </div>
       ) : null}

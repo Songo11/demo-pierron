@@ -97,9 +97,12 @@ function resolveLightRuntime(settings: AppSettings) {
 }
 
 export type PreparedLotteryClaimWeb = {
-  transactions: Transaction[];
+  /** Legacy txs as base64 (unsigned) — do not keep live Transaction in React state. */
+  wireTransactions: string[];
   payoutHint: bigint;
   lotteryDrawEpoch: number;
+  blockhash: string;
+  lastValidBlockHeight: number;
 };
 
 /** Android/iOS Chrome: MWA needs a fresh user gesture — prepare must finish before the tap that opens the wallet. */
@@ -111,20 +114,43 @@ export function isMobileWebClaimGestureRequired(): boolean {
 /** Thrown when background prepare needs a wallet signature (Light sync) — wait for a user tap. */
 export const LIGHT_SYNC_REQUIRES_GESTURE = 'LIGHT_SYNC_REQUIRES_GESTURE';
 
+function encodeWireTransactions(txs: Transaction[]): string[] {
+  return txs.map((tx) =>
+    Buffer.from(
+      tx.serialize({ requireAllSignatures: false, verifySignatures: false })
+    ).toString('base64')
+  );
+}
+
+export function decodeWireTransactions(wires: string[]): Transaction[] {
+  return wires.map((wire) => Transaction.from(Buffer.from(wire, 'base64')));
+}
+
 async function signAndSendTransactions(params: {
   connection: Connection;
   wallet: LotteryClaimWallet;
   transactions: Transaction[];
+  /** Skip RPC before wallet open — required on mobile Chrome (user gesture). */
+  skipBlockhashRefresh?: boolean;
+  confirmContexts?: { blockhash: string; lastValidBlockHeight: number }[];
   onStage?: (message: string) => void;
 }): Promise<TransactionSignature> {
   const { connection, wallet, transactions: txs } = params;
   const total = txs.length;
-  const confirmContexts: { blockhash: string; lastValidBlockHeight: number }[] = [];
+  const confirmContexts: { blockhash: string; lastValidBlockHeight: number }[] =
+    params.confirmContexts ? [...params.confirmContexts] : [];
 
-  // Refresh right before opening the wallet — prepare can take tens of seconds.
-  for (const tx of txs) {
-    tx.feePayer = wallet.publicKey;
-    confirmContexts.push(await refreshTransactionBlockhash(connection, tx));
+  if (!params.skipBlockhashRefresh) {
+    for (const tx of txs) {
+      tx.feePayer = wallet.publicKey;
+      confirmContexts.push(await refreshTransactionBlockhash(connection, tx));
+    }
+  } else if (confirmContexts.length !== total) {
+    throw new Error('Brak świeżego blockhash przed podpisem — poczekaj chwilę i spróbuj ponownie.');
+  } else {
+    for (const tx of txs) {
+      tx.feePayer = wallet.publicKey;
+    }
   }
 
   params.onStage?.(
@@ -133,8 +159,9 @@ async function signAndSendTransactions(params: {
       : 'Zatwierdź odbiór w portfelu…'
   );
 
+  // Batch required on mobile — sequential MWA sessions hang after the first hop.
   const signedList = await signTransactionsForWallet(wallet, txs, {
-    requireBatchOnMobile: false,
+    requireBatchOnMobile: true,
   });
 
   let lastSig: TransactionSignature = '';
@@ -162,7 +189,28 @@ async function signAndSendTransactions(params: {
   return lastSig;
 }
 
-/** Build claim txs (Photon/Light) without opening the wallet (unless Light sync is required). */
+/** Re-stamp blockhash on prepared wire txs (safe to run in background while waiting for tap). */
+export async function refreshPreparedLotteryClaimWeb(params: {
+  connection: Connection;
+  prepared: PreparedLotteryClaimWeb;
+  feePayer: PublicKey;
+}): Promise<PreparedLotteryClaimWeb> {
+  const txs = decodeWireTransactions(params.prepared.wireTransactions);
+  let blockhash = '';
+  let lastValidBlockHeight = 0;
+  for (const tx of txs) {
+    tx.feePayer = params.feePayer;
+    const latest = await refreshTransactionBlockhash(params.connection, tx);
+    blockhash = latest.blockhash;
+    lastValidBlockHeight = latest.lastValidBlockHeight;
+  }
+  return {
+    ...params.prepared,
+    wireTransactions: encodeWireTransactions(txs),
+    blockhash,
+    lastValidBlockHeight,
+  };
+}
 export async function prepareLotteryClaimWeb(params: {
   connection: Connection;
   wallet: LotteryClaimWallet;
@@ -252,28 +300,68 @@ export async function prepareLotteryClaimWeb(params: {
     });
   }
 
+  const blockhash = prepared.transactions[0]?.recentBlockhash ?? '';
+  const lastValidBlockHeight = prepared.transactions[0]?.lastValidBlockHeight ?? 0;
+  for (const tx of prepared.transactions) {
+    tx.feePayer = params.wallet.publicKey;
+  }
+
   return {
-    transactions: prepared.transactions,
+    wireTransactions: encodeWireTransactions(prepared.transactions),
     payoutHint: prepared.payoutHint,
     lotteryDrawEpoch: params.lotteryDrawEpoch,
+    blockhash,
+    lastValidBlockHeight,
   };
 }
 
-/** Sign+send after prepare — on mobile Chrome this must run from the claim button tap. */
-export async function submitPreparedLotteryClaimWeb(params: {
+/**
+ * Sign+send with zero RPC awaits before the wallet opens.
+ * Call only with a freshly `refreshPreparedLotteryClaimWeb`'d payload (mobile Chrome).
+ */
+export async function signPreparedLotteryClaimWebNow(params: {
   connection: Connection;
   wallet: LotteryClaimWallet;
   prepared: PreparedLotteryClaimWeb;
   onStage?: (message: string) => void;
 }): Promise<{ signature: TransactionSignature; payoutHint: bigint }> {
-  await assertDevnetRpcConnection(params.connection);
+  const txs = decodeWireTransactions(params.prepared.wireTransactions);
+  const confirmContexts = params.prepared.wireTransactions.map(() => ({
+    blockhash: params.prepared.blockhash,
+    lastValidBlockHeight: params.prepared.lastValidBlockHeight,
+  }));
   const signature = await signAndSendTransactions({
     connection: params.connection,
     wallet: params.wallet,
-    transactions: params.prepared.transactions,
+    transactions: txs,
+    skipBlockhashRefresh: true,
+    confirmContexts,
     onStage: params.onStage,
   });
   return { signature, payoutHint: params.prepared.payoutHint };
+}
+
+/** Sign+send after prepare (desktop / non-gesture path — may refresh blockhash first). */
+export async function submitPreparedLotteryClaimWeb(params: {
+  connection: Connection;
+  wallet: LotteryClaimWallet;
+  prepared: PreparedLotteryClaimWeb;
+  skipBlockhashRefresh?: boolean;
+  onStage?: (message: string) => void;
+}): Promise<{ signature: TransactionSignature; payoutHint: bigint }> {
+  await assertDevnetRpcConnection(params.connection);
+  if (params.skipBlockhashRefresh) {
+    return signPreparedLotteryClaimWebNow(params);
+  }
+  const refreshed = await refreshPreparedLotteryClaimWeb({
+    connection: params.connection,
+    prepared: params.prepared,
+    feePayer: params.wallet.publicKey,
+  });
+  return signPreparedLotteryClaimWebNow({
+    ...params,
+    prepared: refreshed,
+  });
 }
 
 async function syncLightThenWait(params: {
