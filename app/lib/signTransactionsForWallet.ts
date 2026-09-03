@@ -1,5 +1,10 @@
 import { PublicKey, Transaction } from '@solana/web3.js';
 
+import {
+  handleMobileWalletNotFoundForSign,
+  isMwaWalletNotFoundMessage,
+} from './openInMobileWalletBrowser';
+
 export type WalletTransactionSigner = {
   publicKey: PublicKey;
   signTransaction: (tx: Transaction) => Promise<Transaction>;
@@ -73,24 +78,33 @@ export async function signTransactionsForWallet(
   options?: { requireBatchOnMobile?: boolean }
 ): Promise<Transaction[]> {
   const total = txs.length;
-  const signedList = await withUnsignedTxSerializeAllowed(async () => {
-    if (typeof wallet.signAllTransactions === 'function') {
-      return wallet.signAllTransactions(txs);
+  let signedList: Transaction[];
+  try {
+    signedList = await withUnsignedTxSerializeAllowed(async () => {
+      if (typeof wallet.signAllTransactions === 'function') {
+        return wallet.signAllTransactions(txs);
+      }
+      if (total === 1) {
+        return [await wallet.signTransaction(txs[0]!)];
+      }
+      if (options?.requireBatchOnMobile !== false && isLikelyMobileWeb()) {
+        throw new Error(
+          'Ten portfel na telefonie nie podpisuje wielu transakcji naraz. Połącz ponownie przez Solflare/Phantom (Mobile Wallet Adapter) i spróbuj jeszcze raz.'
+        );
+      }
+      const out: Transaction[] = [];
+      for (const tx of txs) {
+        out.push(await wallet.signTransaction(tx));
+      }
+      return out;
+    });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (isMwaWalletNotFoundMessage(msg)) {
+      throw handleMobileWalletNotFoundForSign();
     }
-    if (total === 1) {
-      return [await wallet.signTransaction(txs[0]!)];
-    }
-    if (options?.requireBatchOnMobile !== false && isLikelyMobileWeb()) {
-      throw new Error(
-        'Ten portfel na telefonie nie podpisuje wielu transakcji naraz. Połącz ponownie przez Solflare/Phantom (Mobile Wallet Adapter) i spróbuj jeszcze raz.'
-      );
-    }
-    const out: Transaction[] = [];
-    for (const tx of txs) {
-      out.push(await wallet.signTransaction(tx));
-    }
-    return out;
-  });
+    throw err;
+  }
 
   if (!Array.isArray(signedList) || signedList.length !== total) {
     throw new Error(

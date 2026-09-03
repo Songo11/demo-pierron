@@ -16,6 +16,7 @@ import {
 } from '../../lib/ecosystem/claimBlockMessages';
 import { formatTokenomicsUiLabel } from '../../lib/ecosystem/deflationSnapshot';
 import { formatMessage } from '../../lib/formatMessage';
+import { ensureAndroidWalletBrowserForSigning } from '../../lib/openInMobileWalletBrowser';
 import { POST_ROLLOVER_DELAY_SECS } from '../../../shared/pierron/redistributionClaimEligibility.ts';
 
 const EcosystemMeteoraPoolCard = dynamic(() => import('./EcosystemMeteoraPoolCard'), {
@@ -275,6 +276,12 @@ export default function EcosystemScreen() {
       return;
     }
 
+    const browserGate = ensureAndroidWalletBrowserForSigning();
+    if (!browserGate.ok) {
+      alert(browserGate.message ?? t.dapp.connectAndroidStayHint);
+      return;
+    }
+
     void (async () => {
       setRedistributionClaiming(true);
       setRedistributionClaimStatus(
@@ -370,6 +377,12 @@ export default function EcosystemScreen() {
 
     if (!publicKey || !signTransaction || !program) {
       alert(t.ecosystem.claimLotteryGenericError);
+      return;
+    }
+
+    const browserGate = ensureAndroidWalletBrowserForSigning();
+    if (!browserGate.ok) {
+      alert(browserGate.message ?? t.dapp.connectAndroidStayHint);
       return;
     }
 

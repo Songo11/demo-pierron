@@ -181,7 +181,37 @@ export function openCurrentPageInSolflare(): void {
 }
 
 export function isMwaWalletNotFoundMessage(msg: string): boolean {
-  return /no installed wallet|supports the mobile wallet protocol|can't find a wallet|cannot find a wallet/i.test(
+  return /no installed wallet|supports the mobile wallet protocol|can't find a wallet|cannot find a wallet|We can't find a wallet/i.test(
     msg
+  );
+}
+
+/**
+ * Android Chrome/Vanadium often cannot discover Solflare/Phantom via MWA
+ * (package visibility / GrapheneOS). Signing must happen in the wallet in-app browser.
+ * Returns false after opening Solflare browse — caller should abort the current flow.
+ */
+export function ensureAndroidWalletBrowserForSigning(): {
+  ok: boolean;
+  message: string | null;
+} {
+  if (typeof window === 'undefined') return { ok: true, message: null };
+  if (!isAndroidUserAgent()) return { ok: true, message: null };
+  if (detectInjectedWalletBrowser()) return { ok: true, message: null };
+  openCurrentPageInSolflare();
+  return {
+    ok: false,
+    message:
+      'Chrome/Vanadium nie widzi portfela (Mobile Wallet Adapter). Otwieram dappkę w Solflare — połącz portfel i powtórz czynność wewnątrz Solflare (nie wracaj do Chrome).',
+  };
+}
+
+/** When MWA association fails mid-sign, open Solflare browse and return a clear error. */
+export function handleMobileWalletNotFoundForSign(): Error {
+  if (isAndroidUserAgent() && !detectInjectedWalletBrowser()) {
+    openCurrentPageInSolflare();
+  }
+  return new Error(
+    'Nie znaleziono portfela MWA. Otwórz dappkę w Solflare lub Phantom i wykonaj czynność stamtąd.'
   );
 }

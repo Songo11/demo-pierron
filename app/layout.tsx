@@ -7,6 +7,11 @@ import { WalletAdapterNetwork, type Adapter, type WalletError } from '@solana/wa
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
+import {
+  createDefaultAddressSelector,
+  createDefaultAuthorizationResultCache,
+  SolanaMobileWalletAdapter,
+} from '@solana-mobile/wallet-adapter-mobile';
 import { useCallback, useMemo } from 'react';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
@@ -16,6 +21,7 @@ import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
 import {
   RESUME_WALLET_NAME_KEY,
   isWalletUserDisconnected,
+  openCurrentPageInSolflare,
 } from './lib/openInMobileWalletBrowser';
 
 import ServerLayout from './layout-server';
@@ -57,13 +63,30 @@ export default function RootLayout({
     }
   }, []);
 
-  const wallets = useMemo(
-    () => [
+  const wallets = useMemo(() => {
+    // Custom MWA: on GrapheneOS/Vanadium, default "Find a wallet" is useless —
+    // open Solflare in-app browser instead (same path as connect fallback).
+    const mobile = new SolanaMobileWalletAdapter({
+      addressSelector: createDefaultAddressSelector(),
+      appIdentity: {
+        name: 'Pierron',
+        uri:
+          typeof window !== 'undefined'
+            ? `${window.location.protocol}//${window.location.host}`
+            : 'https://demo-pierron.vercel.app',
+      },
+      authorizationResultCache: createDefaultAuthorizationResultCache(),
+      cluster: 'devnet',
+      onWalletNotFound: async () => {
+        openCurrentPageInSolflare();
+      },
+    });
+    return [
+      mobile,
       new PhantomWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
       new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
-    ],
-    []
-  );
+    ];
+  }, []);
 
   const onWalletError = useCallback((error: WalletError) => {
     console.error('[pierron wallet]', error);
