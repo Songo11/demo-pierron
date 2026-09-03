@@ -1,5 +1,5 @@
-import { PROJECT_INFO_BODY } from '../../shared/content/projectInfoBodies/pl.ts';
-import { AUTHOR_WORD_BODY } from '../../shared/content/authorWordBodies/pl.ts';
+import { PROJECT_INFO_BODY } from '../../../shared/content/projectInfoBodies/pl.ts';
+import { AUTHOR_WORD_BODY } from '../../../shared/content/authorWordBodies/pl.ts';
 
 export const pl = {
     "common": {
@@ -471,6 +471,8 @@ export const pl = {
     "claimLotteryInProgress": "Przygotowanie odbioru nagrody — jedno zatwierdzenie w portfelu…",
     "claimLotteryPreparing": "Przygotowanie proof Light (Photon) — bez portfela…",
     "claimLotteryApproveSign": "Phantom — zatwierdź odbiór (jedno POTWIERDŹ)…",
+    "claimLotteryTapToSign": "Proof gotowy. Naciśnij przycisk ponownie — otworzy się portfel (Chrome wymaga świeżego kliknięcia).",
+    "claimLotteryTapToSignButton": "Zatwierdź w portfelu",
     "claimLotterySending": "Wysyłanie na devnet…",
     "claimLotteryNoHeliusKey": "Devnet wymaga RPC z Photon (Light). Domyślnie: Worker Pierron — w Ustawieniach → Dev Panel sprawdź RPC albo wyczyść pole (domyślny proxy).",
     "claimLotterySuccessTitle": "Nagroda loterii odebrana",

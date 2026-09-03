@@ -56,6 +56,12 @@ export default function EcosystemScreen() {
 
   const [lotteryClaiming, setLotteryClaiming] = useState(false);
   const [lotteryClaimStatus, setLotteryClaimStatus] = useState<string | null>(null);
+  // Mobile Chrome: Photon prepare kills the MWA user-gesture — second tap opens wallet.
+  const [lotteryPreparedClaim, setLotteryPreparedClaim] = useState<{
+    transactions: Transaction[];
+    payoutHint: bigint;
+    lotteryDrawEpoch: number;
+  } | null>(null);
   const [redistributionClaiming, setRedistributionClaiming] = useState(false);
   const [redistributionClaimStatus, setRedistributionClaimStatus] = useState<string | null>(
     null
@@ -127,6 +133,16 @@ export default function EcosystemScreen() {
     (snapshot.lotteryDrawn ||
       snapshot.hasPendingLotteryVoucher ||
       snapshot.lotteryClaimLatchActive);
+
+  useEffect(() => {
+    if (
+      lotteryPreparedClaim &&
+      lotteryPreparedClaim.lotteryDrawEpoch !== snapshot.lotteryDrawEpoch
+    ) {
+      setLotteryPreparedClaim(null);
+      setLotteryClaimStatus(null);
+    }
+  }, [lotteryPreparedClaim, snapshot.lotteryDrawEpoch]);
 
   const redistributionHasPayoutEstimate =
     snapshot.estimatedNetPayoutUi !== '—' && snapshot.estimatedNetPayoutUi !== '0';
@@ -355,7 +371,7 @@ export default function EcosystemScreen() {
   ]);
 
   const handleClaimLottery = useCallback(() => {
-    if (!lotteryClaimButtonEnabled) {
+    if (!lotteryClaimButtonEnabled && !lotteryPreparedClaim) {
       if (snapshot.showLotteryClaimButton && !snapshot.canExecuteLotteryClaim) {
         alert(
           mapLotteryClaimBlockReasonToMessage(
@@ -373,37 +389,78 @@ export default function EcosystemScreen() {
       return;
     }
 
+    const wallet = {
+      publicKey,
+      signTransaction: signTransaction as (tx: Transaction) => Promise<Transaction>,
+      signAllTransactions: signAllTransactions as
+        | ((txs: Transaction[]) => Promise<Transaction[]>)
+        | undefined,
+    };
+
     void (async () => {
       setLotteryClaiming(true);
-      setLotteryClaimStatus(t.ecosystem.claimLotteryPreparing);
       try {
-        const { runLotteryClaimWeb, mapLotteryClaimErrorMessage } = await import(
-          '../../lib/lotteryClaimWeb'
-        );
+        const {
+          prepareLotteryClaimWeb,
+          submitPreparedLotteryClaimWeb,
+          runLotteryClaimWeb,
+          mapLotteryClaimErrorMessage,
+          isMobileWebClaimGestureRequired,
+        } = await import('../../lib/lotteryClaimWeb');
+
+        const finishSuccess = async (signature: string) => {
+          setLotteryPreparedClaim(null);
+          alert(
+            formatMessage(t.ecosystem.claimLotterySuccessBody, {
+              amount: snapshot.lotteryPrizeUi,
+              signature: `${signature.slice(0, 8)}…`,
+            })
+          );
+          setLotteryClaimStatus(null);
+          await refresh();
+        };
+
+        // Second tap: wallet open must stay on this user gesture (Android Chrome MWA).
+        if (
+          lotteryPreparedClaim &&
+          lotteryPreparedClaim.lotteryDrawEpoch === snapshot.lotteryDrawEpoch
+        ) {
+          setLotteryClaimStatus(t.ecosystem.claimLotteryApproveSign);
+          const result = await submitPreparedLotteryClaimWeb({
+            connection,
+            wallet,
+            prepared: lotteryPreparedClaim,
+            onStage: setLotteryClaimStatus,
+          });
+          await finishSuccess(result.signature);
+          return;
+        }
+
+        if (isMobileWebClaimGestureRequired()) {
+          setLotteryClaimStatus(t.ecosystem.claimLotteryPreparing);
+          const prepared = await prepareLotteryClaimWeb({
+            connection,
+            wallet,
+            program,
+            participant,
+            lotteryDrawEpoch: snapshot.lotteryDrawEpoch,
+            onStage: setLotteryClaimStatus,
+          });
+          setLotteryPreparedClaim(prepared);
+          setLotteryClaimStatus(t.ecosystem.claimLotteryTapToSign);
+          return;
+        }
+
+        setLotteryClaimStatus(t.ecosystem.claimLotteryPreparing);
         const result = await runLotteryClaimWeb({
           connection,
-          wallet: {
-            publicKey,
-            signTransaction: signTransaction as (
-              tx: Transaction
-            ) => Promise<Transaction>,
-            signAllTransactions: signAllTransactions as
-              | ((txs: Transaction[]) => Promise<Transaction[]>)
-              | undefined,
-          },
+          wallet,
           program,
           participant,
           lotteryDrawEpoch: snapshot.lotteryDrawEpoch,
           onStage: setLotteryClaimStatus,
         });
-        alert(
-          formatMessage(t.ecosystem.claimLotterySuccessBody, {
-            amount: snapshot.lotteryPrizeUi,
-            signature: `${result.signature.slice(0, 8)}…`,
-          })
-        );
-        setLotteryClaimStatus(null);
-        await refresh();
+        await finishSuccess(result.signature);
       } catch (err) {
         let detail = err instanceof Error ? err.message : String(err);
         try {
@@ -414,6 +471,10 @@ export default function EcosystemScreen() {
         }
         alert(`${t.ecosystem.claimLotteryErrorTitle}\n\n${detail}`);
         setLotteryClaimStatus(null);
+        // Keep prepared txs only if sign failed after prepare (user can tap again).
+        if (!lotteryPreparedClaim) {
+          setLotteryPreparedClaim(null);
+        }
       } finally {
         setLotteryClaiming(false);
       }
@@ -421,6 +482,7 @@ export default function EcosystemScreen() {
   }, [
     connection,
     lotteryClaimButtonEnabled,
+    lotteryPreparedClaim,
     participant,
     program,
     publicKey,
@@ -941,32 +1003,40 @@ export default function EcosystemScreen() {
           <button
             type="button"
             className={`pierron-claim-btn ${
-              lotteryClaimButtonEnabled ? 'pierron-claim-btn-ready' : 'pierron-claim-btn-locked'
+              lotteryClaimButtonEnabled || lotteryPreparedClaim
+                ? 'pierron-claim-btn-ready'
+                : 'pierron-claim-btn-locked'
             }`}
             onClick={handleClaimLottery}
             disabled={
               lotteryClaiming ||
-              (!lotteryClaimButtonEnabled && !snapshot.showLotteryClaimButton)
+              (!lotteryClaimButtonEnabled &&
+                !lotteryPreparedClaim &&
+                !snapshot.showLotteryClaimButton)
             }
           >
             {lotteryClaiming
               ? lotteryClaimStatus ?? t.ecosystem.claimLotteryInProgress
-              : snapshot.hasPendingLotteryVoucher
-                ? t.ecosystem.claimLotteryFinish
-                : t.ecosystem.claimLottery}
+              : lotteryPreparedClaim
+                ? t.ecosystem.claimLotteryTapToSignButton
+                : snapshot.hasPendingLotteryVoucher
+                  ? t.ecosystem.claimLotteryFinish
+                  : t.ecosystem.claimLottery}
           </button>
           <p className="pierron-helper">
-            {lotteryClaiming && lotteryClaimStatus
-              ? lotteryClaimStatus
-              : lotteryClaimButtonEnabled
-                ? formatMessage(t.ecosystem.claimLotteryReadyAmount, {
-                    amount: snapshot.lotteryPrizeUi,
-                  })
-                : mapLotteryClaimBlockReasonToMessage(
-                    snapshot.lotteryClaimBlockReason,
-                    t.ecosystem,
-                    snapshot.lotteryPayoutDelayRemainingSecs
-                  )}
+            {lotteryPreparedClaim && !lotteryClaiming
+              ? t.ecosystem.claimLotteryTapToSign
+              : lotteryClaiming && lotteryClaimStatus
+                ? lotteryClaimStatus
+                : lotteryClaimButtonEnabled
+                  ? formatMessage(t.ecosystem.claimLotteryReadyAmount, {
+                      amount: snapshot.lotteryPrizeUi,
+                    })
+                  : mapLotteryClaimBlockReasonToMessage(
+                      snapshot.lotteryClaimBlockReason,
+                      t.ecosystem,
+                      snapshot.lotteryPayoutDelayRemainingSecs
+                    )}
           </p>
         </div>
       ) : null}

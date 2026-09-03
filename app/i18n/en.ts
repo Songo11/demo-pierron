@@ -1,6 +1,6 @@
 import type { Translations } from './pl';
-import { PROJECT_INFO_BODY } from '../../shared/content/projectInfoBodies/en.ts';
-import { AUTHOR_WORD_BODY } from '../../shared/content/authorWordBodies/en.ts';
+import { PROJECT_INFO_BODY } from '../../../shared/content/projectInfoBodies/en.ts';
+import { AUTHOR_WORD_BODY } from '../../../shared/content/authorWordBodies/en.ts';
 
 export const en: Translations = {
     "common": {
@@ -472,6 +472,8 @@ export const en: Translations = {
     "claimLotteryInProgress": "Preparing prize claim — one wallet approval…",
     "claimLotteryPreparing": "Building Light proof (Photon) — wallet not needed yet…",
     "claimLotteryApproveSign": "Phantom — approve claim (one confirmation)…",
+    "claimLotteryTapToSign": "Proof ready. Tap the button again — your wallet will open (Chrome needs a fresh tap).",
+    "claimLotteryTapToSignButton": "Approve in wallet",
     "claimLotterySending": "Sending to devnet…",
     "claimLotteryNoHeliusKey": "Devnet requires RPC with Photon (Light). By default: Pierron Worker — in Settings → Dev Panel check RPC or clear the field (default proxy).",
     "claimLotterySuccessTitle": "Lottery prize claimed",

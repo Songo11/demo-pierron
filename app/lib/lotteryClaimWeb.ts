@@ -96,6 +96,18 @@ function resolveLightRuntime(settings: AppSettings) {
   };
 }
 
+export type PreparedLotteryClaimWeb = {
+  transactions: Transaction[];
+  payoutHint: bigint;
+  lotteryDrawEpoch: number;
+};
+
+/** Android/iOS Chrome: MWA needs a fresh user gesture after long Photon prepare. */
+export function isMobileWebClaimGestureRequired(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
 async function signAndSendTransactions(params: {
   connection: Connection;
   wallet: LotteryClaimWallet;
@@ -106,6 +118,7 @@ async function signAndSendTransactions(params: {
   const total = txs.length;
   const confirmContexts: { blockhash: string; lastValidBlockHeight: number }[] = [];
 
+  // Refresh right before opening the wallet — prepare can take tens of seconds.
   for (const tx of txs) {
     tx.feePayer = wallet.publicKey;
     confirmContexts.push(await refreshTransactionBlockhash(connection, tx));
@@ -146,76 +159,8 @@ async function signAndSendTransactions(params: {
   return lastSig;
 }
 
-async function syncLightThenWait(params: {
-  connection: Connection;
-  wallet: LotteryClaimWallet;
-  cluster: 'devnet' | 'localnet';
-  pierronProgramId: PublicKey;
-  mint: PublicKey;
-  participant: TradeBookParticipantSnapshot | null;
-  lightRuntime: ReturnType<typeof resolveLightRuntime>['lightRuntime'];
-  onStage?: (message: string) => void;
-}): Promise<void> {
-  params.onStage?.('Przygotowanie sync Light…');
-  const syncPrepared = await buildSyncUserFromTradeBookTransaction({
-    connection: params.connection,
-    cluster: params.cluster,
-    pierronProgramId: params.pierronProgramId,
-    mint: params.mint,
-    user: params.wallet.publicKey,
-    participant: params.participant,
-    lightRuntime: params.lightRuntime,
-  });
-
-  params.onStage?.('Zatwierdź sync Light w portfelu…');
-  await signAndSendTransactions({
-    connection: params.connection,
-    wallet: params.wallet,
-    transactions: [syncPrepared.transaction],
-    onStage: params.onStage,
-  });
-
-  params.onStage?.('Photon indeksuje konto Light…');
-  await waitForPierronLightAccountsIndexed({
-    owner: params.wallet.publicKey,
-    pierronProgramId: params.pierronProgramId,
-    runtime: params.lightRuntime,
-    timeoutMs: 90_000,
-    pollMs: 2_500,
-    onProgress: (elapsedMs) => {
-      const secs = Math.max(1, Math.round(elapsedMs / 1000));
-      params.onStage?.(`Photon indeksuje konto Light… (${secs} s)`);
-    },
-  });
-}
-
-async function prepareClaim(params: {
-  connection: Connection;
-  cluster: 'devnet' | 'localnet';
-  pierronProgramId: PublicKey;
-  settlementProgramId: PublicKey;
-  mint: PublicKey;
-  user: PublicKey;
-  lotteryDrawEpoch: number;
-  participant: TradeBookParticipantSnapshot | null;
-  lightRuntime: ReturnType<typeof resolveLightRuntime>['lightRuntime'];
-  pendingVoucher?: PendingLotteryPayoutSnapshot | null;
-}): Promise<PreparedLotteryClaim> {
-  return buildLotteryClaimTransactions({
-    connection: params.connection,
-    cluster: params.cluster,
-    pierronProgramId: params.pierronProgramId,
-    settlementProgramId: params.settlementProgramId,
-    mint: params.mint,
-    user: params.user,
-    lotteryDrawEpoch: params.lotteryDrawEpoch,
-    participant: params.participant,
-    lightRuntime: params.lightRuntime,
-    pendingVoucher: params.pendingVoucher,
-  });
-}
-
-export async function runLotteryClaimWeb(params: {
+/** Build claim txs (Photon/Light) without opening the wallet. */
+export async function prepareLotteryClaimWeb(params: {
   connection: Connection;
   wallet: LotteryClaimWallet;
   program: LotteryClaimProgram;
@@ -223,7 +168,7 @@ export async function runLotteryClaimWeb(params: {
   lotteryDrawEpoch: number;
   pendingVoucher?: PendingLotteryPayoutSnapshot | null;
   onStage?: (message: string) => void;
-}): Promise<{ signature: TransactionSignature; payoutHint: bigint }> {
+}): Promise<PreparedLotteryClaimWeb> {
   await assertDevnetRpcConnection(params.connection);
 
   if (params.lotteryDrawEpoch < 0) {
@@ -299,14 +244,116 @@ export async function runLotteryClaimWeb(params: {
     });
   }
 
+  return {
+    transactions: prepared.transactions,
+    payoutHint: prepared.payoutHint,
+    lotteryDrawEpoch: params.lotteryDrawEpoch,
+  };
+}
+
+/** Sign+send after prepare — call from a fresh button tap on mobile Chrome. */
+export async function submitPreparedLotteryClaimWeb(params: {
+  connection: Connection;
+  wallet: LotteryClaimWallet;
+  prepared: PreparedLotteryClaimWeb;
+  onStage?: (message: string) => void;
+}): Promise<{ signature: TransactionSignature; payoutHint: bigint }> {
+  await assertDevnetRpcConnection(params.connection);
   const signature = await signAndSendTransactions({
     connection: params.connection,
     wallet: params.wallet,
-    transactions: prepared.transactions,
+    transactions: params.prepared.transactions,
+    onStage: params.onStage,
+  });
+  return { signature, payoutHint: params.prepared.payoutHint };
+}
+
+async function syncLightThenWait(params: {
+  connection: Connection;
+  wallet: LotteryClaimWallet;
+  cluster: 'devnet' | 'localnet';
+  pierronProgramId: PublicKey;
+  mint: PublicKey;
+  participant: TradeBookParticipantSnapshot | null;
+  lightRuntime: ReturnType<typeof resolveLightRuntime>['lightRuntime'];
+  onStage?: (message: string) => void;
+}): Promise<void> {
+  params.onStage?.('Przygotowanie sync Light…');
+  const syncPrepared = await buildSyncUserFromTradeBookTransaction({
+    connection: params.connection,
+    cluster: params.cluster,
+    pierronProgramId: params.pierronProgramId,
+    mint: params.mint,
+    user: params.wallet.publicKey,
+    participant: params.participant,
+    lightRuntime: params.lightRuntime,
+  });
+
+  params.onStage?.('Zatwierdź sync Light w portfelu…');
+  await signAndSendTransactions({
+    connection: params.connection,
+    wallet: params.wallet,
+    transactions: [syncPrepared.transaction],
     onStage: params.onStage,
   });
 
-  return { signature, payoutHint: prepared.payoutHint };
+  params.onStage?.('Photon indeksuje konto Light…');
+  await waitForPierronLightAccountsIndexed({
+    owner: params.wallet.publicKey,
+    pierronProgramId: params.pierronProgramId,
+    runtime: params.lightRuntime,
+    timeoutMs: 90_000,
+    pollMs: 2_500,
+    onProgress: (elapsedMs) => {
+      const secs = Math.max(1, Math.round(elapsedMs / 1000));
+      params.onStage?.(`Photon indeksuje konto Light… (${secs} s)`);
+    },
+  });
+}
+
+async function prepareClaim(params: {
+  connection: Connection;
+  cluster: 'devnet' | 'localnet';
+  pierronProgramId: PublicKey;
+  settlementProgramId: PublicKey;
+  mint: PublicKey;
+  user: PublicKey;
+  lotteryDrawEpoch: number;
+  participant: TradeBookParticipantSnapshot | null;
+  lightRuntime: ReturnType<typeof resolveLightRuntime>['lightRuntime'];
+  pendingVoucher?: PendingLotteryPayoutSnapshot | null;
+}): Promise<PreparedLotteryClaim> {
+  return buildLotteryClaimTransactions({
+    connection: params.connection,
+    cluster: params.cluster,
+    pierronProgramId: params.pierronProgramId,
+    settlementProgramId: params.settlementProgramId,
+    mint: params.mint,
+    user: params.user,
+    lotteryDrawEpoch: params.lotteryDrawEpoch,
+    participant: params.participant,
+    lightRuntime: params.lightRuntime,
+    pendingVoucher: params.pendingVoucher,
+  });
+}
+
+/** One-shot claim (desktop). Mobile Chrome should use prepare + submit with a second tap. */
+export async function runLotteryClaimWeb(params: {
+  connection: Connection;
+  wallet: LotteryClaimWallet;
+  program: LotteryClaimProgram;
+  participant: TradeBookParticipantSnapshot | null;
+  lotteryDrawEpoch: number;
+  pendingVoucher?: PendingLotteryPayoutSnapshot | null;
+  onStage?: (message: string) => void;
+}): Promise<{ signature: TransactionSignature; payoutHint: bigint }> {
+  const prepared = await prepareLotteryClaimWeb(params);
+  return submitPreparedLotteryClaimWeb({
+    connection: params.connection,
+    wallet: params.wallet,
+    prepared,
+    onStage: params.onStage,
+  });
 }
 
 export function mapLotteryClaimErrorMessage(
