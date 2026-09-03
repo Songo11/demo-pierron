@@ -146,6 +146,16 @@ export function humanizeSwapPolicyError(
     }
     return `Kwota przekracza ${limitHint} na jedną transakcję. Zmniejsz kwotę.`;
   }
+  if (
+    /memory allocation failed|out of memory|SBF program panicked|ProgramFailedToComplete/i.test(
+      detail
+    )
+  ) {
+    return (
+      "Swap wymaga więcej pamięci BPF (transfer hook). Odśwież stronę i spróbuj ponownie — " +
+      "transakcja powinna iść z requestHeapFrame albo w 2 krokach. Jeśli wraca, zmniejsz kwotę."
+    );
+  }
   if (detail.includes("EPOCH_SELL_CAP_EXCEEDED")) {
     const m = detail.match(
       /EPOCH_SELL_CAP_EXCEEDED:cap=(\d+) current=(\d+) gross=(\d+)/
