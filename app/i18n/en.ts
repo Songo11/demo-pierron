@@ -1,6 +1,6 @@
 import type { Translations } from './pl';
-import { PROJECT_INFO_BODY } from '../../../shared/content/projectInfoBodies/en.ts';
-import { AUTHOR_WORD_BODY } from '../../../shared/content/authorWordBodies/en.ts';
+import { PROJECT_INFO_BODY } from '../../shared/content/projectInfoBodies/en.ts';
+import { AUTHOR_WORD_BODY } from '../../shared/content/authorWordBodies/en.ts';
 
 export const en: Translations = {
     "common": {

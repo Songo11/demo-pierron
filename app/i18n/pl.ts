@@ -1,5 +1,5 @@
-import { PROJECT_INFO_BODY } from '../../../shared/content/projectInfoBodies/pl.ts';
-import { AUTHOR_WORD_BODY } from '../../../shared/content/authorWordBodies/pl.ts';
+import { PROJECT_INFO_BODY } from '../../shared/content/projectInfoBodies/pl.ts';
+import { AUTHOR_WORD_BODY } from '../../shared/content/authorWordBodies/pl.ts';
 
 export const pl = {
     "common": {
