@@ -162,11 +162,20 @@ async function assembleFittingLegacyTransaction(
     heapFrameBytes?: number;
     priorityMicroLamports?: number;
     recentBlockhash?: { blockhash: string; lastValidBlockHeight: number };
+    /**
+     * When false (default), never drop requestHeapFrame to fit 1232 B —
+     * transfer_hook OOM ("memory allocation failed") is worse than a 2-tx split.
+     * Set true only for non-hook txs that can safely run on the default 32 KiB heap.
+     */
+    allowDropHeap?: boolean;
   }
 ): Promise<Transaction | null> {
-  // Preferuj heap gdy mieści się w 1232 (lepsze CU dla hooka); inaczej bez heap.
+  // Heap is required for Meteora swap+ledger (Token-2022 hook). Dropping it to
+  // squeeze a single legacy packet causes SBF "out of memory" after wallet sign.
   const ordered: Array<{ heapFrameBytes?: number }> = options?.heapFrameBytes
-    ? [{ heapFrameBytes: options.heapFrameBytes }, {}]
+    ? options.allowDropHeap
+      ? [{ heapFrameBytes: options.heapFrameBytes }, {}]
+      : [{ heapFrameBytes: options.heapFrameBytes }]
     : [{}];
 
   for (const attempt of ordered) {
