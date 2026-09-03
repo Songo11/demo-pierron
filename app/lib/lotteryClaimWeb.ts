@@ -26,6 +26,7 @@ import { resolvePierronDevnetCompressionEndpoint } from '../../shared/solana/dev
 
 import { loadAppSettings } from './appSettings';
 import { pierronDevnet } from './pierronDevnet';
+import { signTransactionsForWallet } from './signTransactionsForWallet';
 
 export type LotteryClaimWallet = {
   publicKey: PublicKey;
@@ -116,23 +117,9 @@ async function signAndSendTransactions(params: {
       : 'Zatwierdź odbiór w portfelu…'
   );
 
-  let signedList: Transaction[];
-  if (total === 1) {
-    signedList = [await wallet.signTransaction(txs[0]!)];
-  } else if (typeof wallet.signAllTransactions === 'function') {
-    signedList = await wallet.signAllTransactions(txs);
-  } else {
-    signedList = [];
-    for (const tx of txs) {
-      signedList.push(await wallet.signTransaction(tx));
-    }
-  }
-
-  if (!Array.isArray(signedList) || signedList.length !== total) {
-    throw new Error(
-      `Portfel zwrócił ${signedList?.length ?? 0} podpisów, oczekiwano ${total}.`
-    );
-  }
+  const signedList = await signTransactionsForWallet(wallet, txs, {
+    requireBatchOnMobile: false,
+  });
 
   let lastSig: TransactionSignature = '';
   for (let i = 0; i < total; i++) {

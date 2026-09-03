@@ -29,6 +29,7 @@ import { REDISTRIBUTION_CYCLE_EPOCHS } from '../../shared/pierron/tokenomicsCons
 
 import { loadAppSettings } from './appSettings';
 import { pierronDevnet } from './pierronDevnet';
+import { signTransactionsForWallet } from './signTransactionsForWallet';
 
 export type RedistributionClaimWallet = {
   publicKey: PublicKey;
@@ -120,23 +121,9 @@ async function signAndSendTransactions(params: {
       : 'Zatwierdź odbiór w portfelu…'
   );
 
-  let signedList: Transaction[];
-  if (total === 1) {
-    signedList = [await wallet.signTransaction(txs[0]!)];
-  } else if (typeof wallet.signAllTransactions === 'function') {
-    signedList = await wallet.signAllTransactions(txs);
-  } else {
-    signedList = [];
-    for (const tx of txs) {
-      signedList.push(await wallet.signTransaction(tx));
-    }
-  }
-
-  if (!Array.isArray(signedList) || signedList.length !== total) {
-    throw new Error(
-      `Portfel zwrócił ${signedList?.length ?? 0} podpisów, oczekiwano ${total}.`
-    );
-  }
+  const signedList = await signTransactionsForWallet(wallet, txs, {
+    requireBatchOnMobile: false,
+  });
 
   let lastSig: TransactionSignature = '';
   for (let i = 0; i < total; i++) {
@@ -218,13 +205,15 @@ async function loadSettlementProgram(params: {
     params.connection,
     {
       publicKey: params.wallet.publicKey,
-      signTransaction: params.wallet.signTransaction,
-      signAllTransactions:
-        params.wallet.signAllTransactions ??
-        (async (txs: Transaction[]) => {
-          const out: Transaction[] = [];
-          for (const tx of txs) out.push(await params.wallet.signTransaction(tx));
-          return out;
+      signTransaction: async (tx: Transaction) => {
+        const [signed] = await signTransactionsForWallet(params.wallet, [tx], {
+          requireBatchOnMobile: false,
+        });
+        return signed!;
+      },
+      signAllTransactions: async (txs: Transaction[]) =>
+        signTransactionsForWallet(params.wallet, txs, {
+          requireBatchOnMobile: false,
         }),
     } as never,
     { commitment: 'confirmed' }
