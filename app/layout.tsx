@@ -21,7 +21,6 @@ import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
 import {
   RESUME_WALLET_NAME_KEY,
   isWalletUserDisconnected,
-  openCurrentPageInSolflare,
 } from './lib/openInMobileWalletBrowser';
 
 import ServerLayout from './layout-server';
@@ -78,7 +77,8 @@ export default function RootLayout({
       authorizationResultCache: createDefaultAuthorizationResultCache(),
       cluster: 'devnet',
       onWalletNotFound: async () => {
-        openCurrentPageInSolflare();
+        // Do not open Solflare browse here — that forces re-login in the wallet
+        // WebView. Prefer MWA approve-and-return like swap; UI handles the error.
       },
     });
     return [

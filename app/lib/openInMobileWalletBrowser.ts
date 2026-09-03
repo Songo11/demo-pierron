@@ -206,12 +206,9 @@ export function ensureAndroidWalletBrowserForSigning(): {
   };
 }
 
-/** When MWA association fails mid-sign, open Solflare browse and return a clear error. */
+/** When MWA cannot re-associate for sign — do not force Solflare browse (re-login). */
 export function handleMobileWalletNotFoundForSign(): Error {
-  if (isAndroidUserAgent() && !detectInjectedWalletBrowser()) {
-    openCurrentPageInSolflare();
-  }
   return new Error(
-    'Nie znaleziono portfela MWA. Otwórz dappkę w Solflare lub Phantom i wykonaj czynność stamtąd.'
+    'Portfel nie odpowiedział na podpis (MWA). Zostaw tę kartę w przeglądarce — gdy Solflare/Phantom poprosi o zatwierdzenie, potwierdź i wróć tutaj. Jeśli portfel w ogóle się nie otwiera (GrapheneOS/Vanadium), dopiero wtedy otwórz dappkę wewnątrz Solflare i powtórz odbiór.'
   );
 }

@@ -18,7 +18,6 @@ import { pierronMeteoraAgUrl } from '../../../shared/meteora/pierronPoolExplorer
 import { getPoolDlmm } from '../../lib/meteoraPoolConnection';
 import { useTranslations } from '../../context/LocaleContext';
 import { formatMessage } from '../../lib/formatMessage';
-import { ensureAndroidWalletBrowserForSigning } from '../../lib/openInMobileWalletBrowser';
 import { isTransactionCooldownError } from '../../../shared/pierron/epochTransactionCooldown.ts';
 import { quoteMeteoraDlmmSwap } from '../../../shared/meteora/meteoraDlmmSwapQuote.ts';
 import { netBaseUnitsForGrossSell } from '../../../shared/pierron/tradeTax.ts';
@@ -328,10 +327,6 @@ export default function SwapPage() {
           seconds: String(cooldownRemaining),
         })}`
       );
-    }
-    const browserGate = ensureAndroidWalletBrowserForSigning();
-    if (!browserGate.ok) {
-      return alert(`${t.common.blad}\n${browserGate.message ?? t.dapp.connectAndroidStayHint}`);
     }
     setSwapBusy(true);
     try {
