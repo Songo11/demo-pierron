@@ -1471,7 +1471,8 @@ export async function buildPierronDlmmSwapPlan(
             : core;
         if (ixs.length === 0) return null;
         const bh = await packBh();
-        let tx = await assembleFittingLegacyTransaction(
+        // Never fall back to a no-heap swap+ledger tx — Token-2022 hook OOMs at 32 KiB.
+        return assembleFittingLegacyTransaction(
           connection,
           params.user,
           ixs,
@@ -1481,16 +1482,6 @@ export async function buildPierronDlmmSwapPlan(
             recentBlockhash: bh,
           }
         );
-        if (!tx) {
-          tx = await assembleFittingLegacyTransaction(
-            connection,
-            params.user,
-            ixs,
-            prepared.computeUnits,
-            { recentBlockhash: bh }
-          );
-        }
-        return tx;
       };
 
       const tryPackBuySwapLedger = async (swapLead: TransactionInstruction[]) => {
@@ -1682,22 +1673,13 @@ export async function buildPierronDlmmSwapPlan(
     let deferredUnwrap = false;
     for (const ixs of sellCores) {
       if (ixs.length === 0) continue;
+      // Never assemble swap+ledger without requestHeapFrame (hook OOM).
       sellSwapLedger = await assembleFittingLegacyTransaction(
         connection,
         params.user,
         ixs,
         prepared.computeUnits,
         { heapFrameBytes: SWAP_LEDGER_HEAP_FRAME_BYTES }
-      );
-      if (sellSwapLedger) {
-        deferredUnwrap = coreOmitsWsolUnwrap(ixs, tail);
-        break;
-      }
-      sellSwapLedger = await assembleFittingLegacyTransaction(
-        connection,
-        params.user,
-        ixs,
-        prepared.computeUnits
       );
       if (sellSwapLedger) {
         deferredUnwrap = coreOmitsWsolUnwrap(ixs, tail);

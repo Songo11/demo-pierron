@@ -147,9 +147,7 @@ export function humanizeSwapPolicyError(
     return `Kwota przekracza ${limitHint} na jedną transakcję. Zmniejsz kwotę.`;
   }
   if (
-    /memory allocation failed|out of memory|SBF program panicked|ProgramFailedToComplete/i.test(
-      detail
-    )
+    /memory allocation failed|out of memory|SBF program panicked/i.test(detail)
   ) {
     return (
       "Swap wymaga więcej pamięci BPF (transfer hook). Odśwież stronę i spróbuj ponownie — " +
