@@ -48,20 +48,30 @@ export default function MobileWalletResume() {
       } catch {
         /* ignore */
       }
-      // Safari sessionStorage is NOT visible inside Phantom WebView.
+      // Safari storage is NOT visible inside wallet WebView — use injected provider.
       if (!name && injected) {
         name = injected === 'solflare' ? 'Solflare' : 'Phantom';
+      }
+      if (!name && injected) {
+        try {
+          const handoff = localStorage.getItem(IOS_WALLET_HANDOFF_KEY);
+          if (handoff === 'solflare') name = 'Solflare';
+          if (handoff === 'phantom') name = 'Phantom';
+        } catch {
+          /* ignore */
+        }
       }
       if (!name) return;
 
       triedRef.current = true;
       busyRef.current = true;
       try {
+        // Prefer direct injected connect first (avoids adapter re-triggering browse).
         if (injected) {
           await connectInjectedProviderDirect(injected);
         }
         select(name as WalletName);
-        await new Promise((r) => window.setTimeout(r, 150));
+        await new Promise((r) => window.setTimeout(r, 200));
         await connect();
         try {
           sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
