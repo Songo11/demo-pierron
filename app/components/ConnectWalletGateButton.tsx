@@ -10,7 +10,6 @@ import { useTranslations } from '../context/LocaleContext';
 import {
   IOS_WALLET_HANDOFF_KEY,
   RESUME_RETRY_EVENT,
-  buildPhantomBrowseHttpsUrl,
   clearWalletUserDisconnected,
   connectInjectedProviderDirect,
   detectInjectedWalletBrowser,
@@ -71,13 +70,9 @@ export default function ConnectWalletGateButton() {
       return;
     }
     const page = window.location.href.split('#')[0]!;
-    const origin = window.location.origin;
     // Prefer custom scheme on the <a href>: Safari often opens https://phantom.com
     // as a website (UL disabled). Scheme + real click opens the installed app.
-    // Keep https UL as fallback via rel alternate is not needed — scheme is enough.
-    setIosBrowseHref(buildPhantomBrowseSchemeUrl(page, origin));
-    // Warm the https URL builder so tree-shaking keeps the official helper.
-    void buildPhantomBrowseHttpsUrl(page, origin);
+    setIosBrowseHref(buildPhantomBrowseSchemeUrl(page, window.location.origin));
   }, []);
 
   useEffect(() => {
