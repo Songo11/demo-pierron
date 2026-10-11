@@ -17,6 +17,9 @@ import {
  * After MWA / Phantom / Solflare browse handoff, finish connect when a flag is
  * set (or when we land inside an injected wallet WebView). Never reconnect after
  * an explicit user disconnect.
+ *
+ * Inside Phantom after iOS Safari handoff the provider often injects late —
+ * poll for several seconds instead of a single attempt.
  */
 export default function MobileWalletResume() {
   const { connected, connecting, connect, select } = useWallet();
@@ -45,8 +48,7 @@ export default function MobileWalletResume() {
       } catch {
         /* ignore */
       }
-      // Inside Phantom/Solflare after iOS Safari universal-link handoff.
-      // sessionStorage from Safari is NOT visible here — use injected provider.
+      // Safari sessionStorage is NOT visible inside Phantom WebView.
       if (!name && injected) {
         name = injected === 'solflare' ? 'Solflare' : 'Phantom';
       }
@@ -59,7 +61,7 @@ export default function MobileWalletResume() {
           await connectInjectedProviderDirect(injected);
         }
         select(name as WalletName);
-        await new Promise((r) => window.setTimeout(r, 120));
+        await new Promise((r) => window.setTimeout(r, 150));
         await connect();
         try {
           sessionStorage.removeItem(RESUME_WALLET_NAME_KEY);
@@ -83,14 +85,20 @@ export default function MobileWalletResume() {
 
     window.addEventListener('pageshow', onShow);
     document.addEventListener('visibilitychange', onVisibility);
-    const t1 = window.setTimeout(onShow, 400);
-    const t2 = window.setTimeout(onShow, 1500);
+
+    // Provider injection inside Phantom can lag — retry over ~6s.
+    const delays = [200, 600, 1200, 2200, 3500, 5500];
+    const timers = delays.map((ms) => window.setTimeout(onShow, ms));
+    const poll = window.setInterval(() => {
+      if (connected || triedRef.current) return;
+      if (detectInjectedWalletBrowser()) onShow();
+    }, 400);
 
     return () => {
       window.removeEventListener('pageshow', onShow);
       document.removeEventListener('visibilitychange', onVisibility);
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
+      timers.forEach((id) => window.clearTimeout(id));
+      window.clearInterval(poll);
     };
   }, [connected, connecting, connect, select]);
 

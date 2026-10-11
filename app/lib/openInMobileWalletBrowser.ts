@@ -134,19 +134,27 @@ function markPendingBrowse(kind: 'phantom' | 'solflare'): void {
   }
 }
 
-/** Phantom browse — custom scheme + https + Android intent fallbacks. */
+/**
+ * Official Phantom browse Universal Link (phantom.com — not phantom.app).
+ * https://docs.phantom.com/phantom-deeplinks/other-methods/browse
+ */
+export function buildPhantomBrowseHttpsUrl(pageUrl: string, refUrl: string): string {
+  return `https://phantom.com/ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
+}
+
+/** Phantom browse — https UL (recommended) + custom scheme + Android intent. */
 export function buildPhantomBrowseUrls(pageUrl: string, refUrl: string): string[] {
   const path = `ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
-  const httpsUrl = `https://phantom.app/${path}`;
+  const httpsUrl = buildPhantomBrowseHttpsUrl(pageUrl, refUrl);
   const schemeUrl = `phantom://${path}`;
-  // iOS Safari: custom scheme first (opens installed Phantom), then Universal Link.
-  if (isIosUserAgent()) return [schemeUrl, httpsUrl];
+  // iOS: https Universal Link first (phantom.com). Custom scheme is fallback only.
+  if (isIosUserAgent()) return [httpsUrl, schemeUrl];
   if (!isAndroidUserAgent()) return [httpsUrl, schemeUrl];
   const fallback = encodeURIComponent(
     'https://play.google.com/store/apps/details?id=app.phantom'
   );
-  const intentUrl = `intent://${path}#Intent;scheme=https;host=phantom.app;package=app.phantom;S.browser_fallback_url=${fallback};end`;
-  return [schemeUrl, httpsUrl, intentUrl];
+  const intentUrl = `intent://ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}#Intent;scheme=https;host=phantom.com;package=app.phantom;S.browser_fallback_url=${fallback};end`;
+  return [httpsUrl, schemeUrl, intentUrl];
 }
 
 /** Solflare browse — custom scheme (sample app) + https + intent. */
