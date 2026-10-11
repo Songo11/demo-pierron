@@ -1,8 +1,10 @@
 import type { DevnetRpcSettings } from "./devnetRpcDefaults.ts";
 import {
   isBlockedDevnetRpcUrl,
+  resolvePierronDevnetDexRpcCandidates,
   resolvePierronDevnetRpcUrl,
 } from "./devnetRpcDefaults.ts";
+import { raceFirstReachableDexRpc } from "./resilientConnection.ts";
 import { isPublicSolanaClusterRpc } from "./rpcEndpoint.ts";
 
 type DexRpcCacheEntry = {
@@ -35,12 +37,13 @@ function writeDexRpcCache(url: string): void {
 
 /**
  * Devnet DEX RPC for mobile Meteora swap.
- * Sync pick only — health-probe (2× RPC per connect) saturated the Pierron Worker
- * when two phones share Wi-Fi. Real requests use createResilientConnection backoff.
+ * Parallel race (1× getAccountInfo / URL, 5s) — picks the live Worker first.
+ * Sync-only pick previously pinned a hung primary; UI withTimeout(18s) then aborted
+ * before sequential failover could run.
  */
 export async function resolveMobileDevnetDexRpcUrl(
   settings: DevnetRpcSettings,
-  _probeAccount: string
+  probeAccount: string
 ): Promise<string> {
   const cached = readDexRpcCache();
   if (cached && !isBlockedDevnetRpcUrl(cached) && !isPublicSolanaClusterRpc(cached)) {
@@ -50,9 +53,21 @@ export async function resolveMobileDevnetDexRpcUrl(
     invalidateDexRpcHealthCache();
   }
 
-  const url = resolvePierronDevnetRpcUrl(settings);
-  writeDexRpcCache(url);
-  return url;
+  const candidates = resolvePierronDevnetDexRpcCandidates(settings);
+  if (candidates.length === 0) {
+    throw new Error(
+      "DEX_RPC_PUBLIC: Brak RPC na devnet. Cloudflare Worker Pierron (domyślny) lub własny URL w ustawieniach."
+    );
+  }
+
+  try {
+    const url = await raceFirstReachableDexRpc(candidates, probeAccount, 5_000);
+    writeDexRpcCache(url);
+    return url;
+  } catch {
+    // Probe miss — NIE cache'uj (może to wiszący URL z ustawień). Failover w Connection.
+    return resolvePierronDevnetRpcUrl(settings);
+  }
 }
 
 /** Synchronous pick when probe is unnecessary (settings screen hints). */

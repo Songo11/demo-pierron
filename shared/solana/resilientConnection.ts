@@ -72,14 +72,14 @@ export async function fetchWithRpcRetry(
 ): Promise<Response> {
   const rpcUrl = rpcUrlFromInput(input);
   const bodyText = typeof init?.body === "string" ? init.body : "";
-  const isPierronWorker = /pierron-rpc-.*\.workers\.dev/i.test(rpcUrl);
+  const isPierronWorker = /pierron-.*\.workers\.dev/i.test(rpcUrl);
   let lastError: unknown;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       const result = await postSolanaRpcBody(rpcUrl, bodyText, {
         signal: init?.signal ?? undefined,
-        timeoutMs: init?.timeout ?? 60_000,
+        timeoutMs: init?.timeout ?? (isPierronWorker ? 8_000 : 60_000),
       });
       // Worker sometimes proxied upstream 403 — retry same URL a few times before failover.
       if (
@@ -168,11 +168,12 @@ export async function fetchWithRpcRetry(
   throw lastError instanceof Error ? lastError : new Error(String(lastError));
 }
 
-/** Probes getAccountInfo + getBalance — Tatum passes the former but blocks the latter on free tier. */
+/** Probes getAccountInfo (+ optional getBalance — Tatum passes the former but blocks the latter). */
 export async function probeDexRpcForPoolAccount(
   rpcUrl: string,
   probeAccount: string,
-  timeoutMs = 10_000
+  timeoutMs = 10_000,
+  options?: { skipBalance?: boolean }
 ): Promise<void> {
   const accountBody = JSON.stringify({
     jsonrpc: "2.0",
@@ -212,6 +213,10 @@ export async function probeDexRpcForPoolAccount(
     throw new Error("account not found");
   }
 
+  if (options?.skipBalance) {
+    return;
+  }
+
   const balanceBody = JSON.stringify({
     jsonrpc: "2.0",
     id: 2,
@@ -241,6 +246,48 @@ export async function probeDexRpcForPoolAccount(
   }
   if (balanceParsed.result?.value == null) {
     throw new Error("getBalance missing result");
+  }
+}
+
+/**
+ * Parallel race — first reachable Worker wins.
+ * Avoids pinning a hung primary while UI withTimeout(18s) aborts before sequential failover.
+ */
+export async function raceFirstReachableDexRpc(
+  candidates: string[],
+  probeAccount: string,
+  timeoutMs = 5_000
+): Promise<string> {
+  const urls = uniqueRpcUrls(candidates);
+  if (urls.length === 0) {
+    throw new Error("no rpc candidates");
+  }
+  if (urls.length === 1) {
+    await probeDexRpcForPoolAccount(urls[0]!, probeAccount, timeoutMs, {
+      skipBalance: true,
+    });
+    return urls[0]!;
+  }
+
+  let lastError: unknown;
+  const probes = urls.map(async (rpcUrl) => {
+    try {
+      await probeDexRpcForPoolAccount(rpcUrl, probeAccount, timeoutMs, {
+        skipBalance: true,
+      });
+      return rpcUrl;
+    } catch (error) {
+      lastError = error;
+      throw error;
+    }
+  });
+
+  try {
+    // Promise.any: first success; all reject → AggregateError
+    return await Promise.any(probes);
+  } catch (aggregate) {
+    if (lastError) throw lastError instanceof Error ? lastError : new Error(String(lastError));
+    throw aggregate;
   }
 }
 
@@ -294,6 +341,10 @@ function uniqueRpcUrls(urls: (string | undefined)[]): string[] {
   return out;
 }
 
+function isPierronWorkersDevUrl(rpcUrl: string): boolean {
+  return /pierron-.*\.workers\.dev/i.test(rpcUrl);
+}
+
 function createFailoverFetch(rpcUrls: string[]): typeof fetch {
   const urls = uniqueRpcUrls(rpcUrls);
 
@@ -301,10 +352,18 @@ function createFailoverFetch(rpcUrls: string[]): typeof fetch {
     let lastError: unknown;
     for (const rpcUrl of urls) {
       try {
-        // Worker: 0 lokalnych retry (od razu kolejny URL). Inne RPC: lekkie retry na 429.
-        const isPierronWorker = /pierron-rpc-.*\.workers\.dev/i.test(rpcUrl);
+        // Worker: 0 lokalnych retry + krótki timeout → failover zdąży przed UI 18s.
+        const isPierronWorker = isPierronWorkersDevUrl(rpcUrl);
         const maxRetriesPerUrl = isPierronWorker ? 0 : 2;
-        return await fetchWithRpcRetry(rpcUrl, init as FetchInit, maxRetriesPerUrl);
+        const baseInit = (init ?? {}) as FetchInit;
+        const timeout =
+          baseInit.timeout ??
+          (isPierronWorker ? 8_000 : 60_000);
+        return await fetchWithRpcRetry(
+          rpcUrl,
+          { ...baseInit, timeout },
+          maxRetriesPerUrl
+        );
       } catch (error) {
         lastError = error;
         const message = error instanceof Error ? error.message : String(error);
@@ -315,7 +374,8 @@ function createFailoverFetch(rpcUrls: string[]): typeof fetch {
           isRpcEndpointBlockedError(message) ||
           message.includes("DEX_RPC_BLOCKED") ||
           message.includes("DEX_RPC_BAD_ENDPOINT") ||
-          isTransientFetchError(error);
+          isTransientFetchError(error) ||
+          /timeout/i.test(message);
         if (!shouldFailover) {
           throw error;
         }

@@ -23,8 +23,9 @@ export type DevnetRpcSettings = Pick<
 >;
 
 const BLOCKED_DEVNET_RPC_MARKERS = [
-  "pierron-helius-devnet",
   "rpc.ankr.com",
+  // Public OnFinality: connection reset / Network request failed on many mobile nets.
+  "onfinality.io",
 ] as const;
 
 /** Współdzielony / wyczerpany proxy + publiczny Solana (403 na wielu sieciach mobilnych). */
@@ -131,15 +132,14 @@ export function resolvePierronDevnetDexRpcCandidates(
       .map((s) => s.trim())
       .filter(Boolean) ?? [];
 
-  // Szybki DEX: OnFinality / własne fallbacki NAJPIERW.
-  // Worker Pierron na końcu — standardowe getAccountInfo/getBalance często
-  // padają na all-exhausted i kosztują 3–8 s zanim resilientConnection przełączy.
-  // Stealth/Photon nadal bierze Worker przez resolveStealth* (osobna ścieżka).
+  // Workers FIRST — własny URL z ustawień na końcu (często wiszący OnFinality /
+  // stary proxy pinował connect i UI withTimeout(18s) padał przed failover).
   const candidates = [
-    dedicatedSettings,
-    ...envFallbacks,
-    ...PIERRON_DEVNET_RPC_FAILOVER_DEFAULTS,
+    PIERRON_DEVNET_HELIUS_PROXY_URL,
     envProxy,
+    ...PIERRON_DEVNET_RPC_FAILOVER_DEFAULTS,
+    ...envFallbacks,
+    dedicatedSettings,
   ];
   return [
     ...new Set(
