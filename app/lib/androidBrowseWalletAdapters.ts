@@ -10,55 +10,68 @@ import {
   detectInjectedWalletBrowser,
   isAndroidUserAgent,
   isIosUserAgent,
+  markWalletResumePending,
   openCurrentPageInPhantom,
   openCurrentPageInSolflare,
-  redirectIosSafariToWalletBrowse,
 } from './openInMobileWalletBrowser';
 
 /**
- * Phantom / Solflare adapters with mobile browse handoff:
- * - iOS Safari (outside wallet WebView): after user picks wallet in the modal,
- *   connect() redirects into the wallet in-app browser (browse deeplink).
- * - Android Loadable: same idea for Vanadium/GrapheneOS flakiness.
+ * Phantom / Solflare adapters:
+ * - iOS Safari: use https Universal Links only (never solflare:// / phantom:// —
+ *   custom schemes trigger Safari’s “Open in Solflare?” alert). Official Solflare
+ *   adapter already uses https://solflare.com/ul/v1/browse; Phantom is patched to
+ *   phantom.com (docs) instead of phantom.app.
+ * - Android Loadable: browse handoff for Vanadium/GrapheneOS.
  */
 export function createMobileBrowseWalletAdapters(network: WalletAdapterNetwork) {
   const solflare = new SolflareWalletAdapter({ network });
   const phantom = new PhantomWalletAdapter({ network });
 
-  const wrapMobileBrowse = <T extends SolflareWalletAdapter | PhantomWalletAdapter>(
-    adapter: T,
-    kind: 'phantom' | 'solflare',
-    openAndroidBrowse: () => void
-  ): T => {
-    const original = adapter.connect.bind(adapter);
-    adapter.connect = async () => {
-      if (typeof window === 'undefined') return original();
-
-      // Already inside Phantom/Solflare WebView — use injected provider path.
-      if (detectInjectedWalletBrowser()) {
-        return original();
-      }
-
-      // iOS Safari: user just picked this wallet in the standard modal.
-      if (isIosUserAgent()) {
-        redirectIosSafariToWalletBrowse(kind);
-        return;
-      }
-
-      if (isAndroidUserAgent() && adapter.readyState === WalletReadyState.Loadable) {
-        openAndroidBrowse();
-        return;
-      }
-
-      return original();
-    };
-    return adapter;
+  const solflareOriginal = solflare.connect.bind(solflare);
+  solflare.connect = async () => {
+    if (
+      typeof window !== 'undefined' &&
+      isAndroidUserAgent() &&
+      !detectInjectedWalletBrowser() &&
+      solflare.readyState === WalletReadyState.Loadable
+    ) {
+      openCurrentPageInSolflare();
+      return;
+    }
+    // iOS: stock adapter → https://solflare.com/ul/v1/browse (Universal Link, no scheme prompt)
+    return solflareOriginal();
   };
 
-  return [
-    wrapMobileBrowse(solflare, 'solflare', openCurrentPageInSolflare),
-    wrapMobileBrowse(phantom, 'phantom', openCurrentPageInPhantom),
-  ];
+  const phantomOriginal = phantom.connect.bind(phantom);
+  phantom.connect = async () => {
+    if (typeof window === 'undefined') return phantomOriginal();
+
+    if (
+      isAndroidUserAgent() &&
+      !detectInjectedWalletBrowser() &&
+      phantom.readyState === WalletReadyState.Loadable
+    ) {
+      openCurrentPageInPhantom();
+      return;
+    }
+
+    // iOS Safari Loadable: https UL on phantom.com (not phantom://, not phantom.app)
+    if (
+      isIosUserAgent() &&
+      !detectInjectedWalletBrowser() &&
+      phantom.readyState === WalletReadyState.Loadable
+    ) {
+      markWalletResumePending('Phantom');
+      const url = encodeURIComponent(window.location.href.split('#')[0]!);
+      const ref = encodeURIComponent(window.location.origin);
+      window.location.href = `https://phantom.com/ul/browse/${url}?ref=${ref}`;
+      return;
+    }
+
+    return phantomOriginal();
+  };
+
+  return [solflare, phantom];
 }
 
 /** @deprecated Use createMobileBrowseWalletAdapters */

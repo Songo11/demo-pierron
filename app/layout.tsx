@@ -6,6 +6,7 @@ import './lib/bufferBigIntPolyfill';
 import { WalletAdapterNetwork, type Adapter, type WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { WalletConnectWalletAdapter } from '@solana/wallet-adapter-walletconnect';
 import {
   createDefaultAddressSelector,
   createDefaultAuthorizationResultCache,
@@ -23,6 +24,11 @@ import {
   isAndroidUserAgent,
   isWalletUserDisconnected,
 } from './lib/openInMobileWalletBrowser';
+
+/** WalletConnect — iOS Safari can approve in Solflare/Phantom and return to Safari (MWA is Android-only). */
+const WALLETCONNECT_PROJECT_ID =
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID?.trim() ||
+  'e899c82be21d4acca2c8aec45e893598';
 
 import ServerLayout from './layout-server';
 
@@ -64,29 +70,44 @@ export default function RootLayout({
   }, []);
 
   const wallets = useMemo(() => {
-    // Phantom/Solflare adapters: on iOS Safari, official connect() redirects via
-    // universal link (one-tap, same idea as Android MWA). Android wrap only
-    // fixes Loadable flakiness on Chrome/Vanadium.
     const browseAdapters = createMobileBrowseWalletAdapters(WalletAdapterNetwork.Devnet);
 
-    // MWA is Android-only — never register it on iOS Safari.
-    if (typeof window === 'undefined' || !isAndroidUserAgent()) {
+    // Android: Mobile Wallet Adapter (approve in wallet → return to browser).
+    if (typeof window !== 'undefined' && isAndroidUserAgent()) {
+      const mobile = new SolanaMobileWalletAdapter({
+        addressSelector: createDefaultAddressSelector(),
+        appIdentity: {
+          name: 'Pierron',
+          uri: `${window.location.protocol}//${window.location.host}`,
+        },
+        authorizationResultCache: createDefaultAuthorizationResultCache(),
+        cluster: 'devnet',
+        onWalletNotFound: async () => {
+          // ConnectWalletGateButton falls back to Solflare browse.
+        },
+      });
+      return [mobile, ...browseAdapters];
+    }
+
+    // iOS Safari / desktop: WalletConnect keeps the session in Safari (closest to MWA).
+    // Phantom/Solflare still available via https Universal Link browse when preferred.
+    if (typeof window === 'undefined') {
       return browseAdapters;
     }
 
-    const mobile = new SolanaMobileWalletAdapter({
-      addressSelector: createDefaultAddressSelector(),
-      appIdentity: {
-        name: 'Pierron',
-        uri: `${window.location.protocol}//${window.location.host}`,
-      },
-      authorizationResultCache: createDefaultAuthorizationResultCache(),
-      cluster: 'devnet',
-      onWalletNotFound: async () => {
-        // ConnectWalletGateButton falls back to Solflare browse.
+    const walletConnect = new WalletConnectWalletAdapter({
+      network: WalletAdapterNetwork.Devnet,
+      options: {
+        projectId: WALLETCONNECT_PROJECT_ID,
+        metadata: {
+          name: 'Pierron',
+          description: 'Pierron dapp',
+          url: window.location.origin,
+          icons: [`${window.location.origin}/favicon.ico`],
+        },
       },
     });
-    return [mobile, ...browseAdapters];
+    return [walletConnect, ...browseAdapters];
   }, []);
 
   const onWalletError = useCallback((error: WalletError) => {

@@ -174,8 +174,8 @@ export function buildPhantomBrowseUrls(pageUrl: string, refUrl: string): string[
   const path = `ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
   const httpsUrl = buildPhantomBrowseHttpsUrl(pageUrl, refUrl);
   const schemeUrl = `phantom://${path}`;
-  // iOS: https Universal Link first (phantom.com). Custom scheme is fallback only.
-  if (isIosUserAgent()) return [httpsUrl, schemeUrl];
+  // iOS: https Universal Link only — custom schemes show Safari “Open in …?” alerts.
+  if (isIosUserAgent()) return [httpsUrl];
   if (!isAndroidUserAgent()) return [httpsUrl, schemeUrl];
   const fallback = encodeURIComponent(
     'https://play.google.com/store/apps/details?id=app.phantom'
@@ -189,8 +189,8 @@ export function buildSolflareBrowseUrls(pageUrl: string, refUrl: string): string
   const path = `ul/v1/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
   const httpsUrl = `https://solflare.com/${path}`;
   const schemeUrl = `solflare://${path}`;
-  // iOS Safari: custom scheme first, then Universal Link.
-  if (isIosUserAgent()) return [schemeUrl, httpsUrl];
+  // iOS: https Universal Link only — avoid solflare:// (“Open in Solflare?”).
+  if (isIosUserAgent()) return [httpsUrl];
   if (!isAndroidUserAgent()) return [httpsUrl, schemeUrl];
   const fallback = encodeURIComponent(
     'https://play.google.com/store/apps/details?id=com.solflare.mobile'
