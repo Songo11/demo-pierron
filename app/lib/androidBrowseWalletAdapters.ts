@@ -1,8 +1,10 @@
 'use client';
 
 import { WalletReadyState } from '@solana/wallet-adapter-base';
-import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import type { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+// Direct packages — never import @solana/wallet-adapter-wallets (barrel pulls Torus → build break).
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
+import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
 
 import {
   isAndroidUserAgent,
