@@ -424,6 +424,10 @@ body {
   width: 100% !important;
   cursor: pointer;
   box-sizing: border-box;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .pierron-connect-wallet-error {
