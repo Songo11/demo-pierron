@@ -193,16 +193,13 @@ function PayPageContent() {
       <StealthQrScannerModal
         open={scanOpen}
         title={t.pay.scanQr}
-        hintCamera={t.stealthUi?.scanQrHintCamera ?? t.pay.scanCameraAim}
-        hintScreen={
-          t.stealthUi?.scanQrHintScreen ??
-          'PC: wybierz okno lub ekran z widocznym QR.'
-        }
-        labelCamera={t.stealthUi?.scanQrCamera ?? t.pay.scanCameraAllow}
-        labelScreen={t.stealthUi?.scanQrScreen ?? 'Ekran PC'}
+        hintCamera={t.stealthUi.scanQrHintCamera}
+        hintScreen={t.stealthUi.scanQrHintScreen}
+        labelCamera={t.stealthUi.scanQrCamera}
+        labelScreen={t.stealthUi.scanQrScreen}
         labelCancel={t.common.anuluj}
-        labelScanning={t.stealthUi?.scanQrScanning ?? t.pay.scanCameraLoading}
-        labelPickSource={t.stealthUi?.scanQrPickSource ?? t.pay.scanCameraAim}
+        labelScanning={t.stealthUi.scanQrScanning}
+        labelPickSource={t.stealthUi.scanQrPickSource}
         onClose={() => setScanOpen(false)}
         onScanned={(raw) => {
           setScanOpen(false);

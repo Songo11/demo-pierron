@@ -7,6 +7,7 @@ import {
 
 import { en } from './en';
 import { pl, type Translations } from './pl';
+import { getStealthScanOverlay } from './stealthScanOverlays';
 
 export type { Translations };
 export { pl };
@@ -216,6 +217,10 @@ export async function loadTranslations(locale: AppLocale): Promise<Translations>
           } catch {
             // Keep English UI strings; info bodies still applied below.
           }
+        }
+        const scanOverlay = getStealthScanOverlay(locale);
+        if (scanOverlay) {
+          base = mergeTranslations(base, scanOverlay as unknown as Record<string, unknown>);
         }
       }
 
