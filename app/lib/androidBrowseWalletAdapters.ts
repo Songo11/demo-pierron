@@ -11,11 +11,13 @@ import {
 } from './openInMobileWalletBrowser';
 
 /**
- * On Android (outside wallet WebView), Solflare/Phantom adapters are Loadable and
- * try iframe/deeplink connect that returns to Vanadium still disconnected.
- * Mirror iOS behavior: redirect into the wallet in-app browser instead.
+ * Android-only: outside wallet WebView, Loadable Solflare/Phantom connect is flaky
+ * (Vanadium/GrapheneOS). Open the dapp inside the wallet browser instead.
+ *
+ * iOS Safari: do NOT wrap — official adapters already redirect via universal links
+ * on user-initiated connect() (same one-tap idea as Android MWA).
  */
-export function createAndroidAwareWalletAdapters(network: WalletAdapterNetwork) {
+export function createMobileBrowseWalletAdapters(network: WalletAdapterNetwork) {
   const solflare = new SolflareWalletAdapter({ network });
   const phantom = new PhantomWalletAdapter({ network });
 
@@ -31,7 +33,6 @@ export function createAndroidAwareWalletAdapters(network: WalletAdapterNetwork) 
         adapter.readyState === WalletReadyState.Loadable
       ) {
         openBrowse();
-        // Stay pending — real connect happens after page loads inside the wallet browser.
         return;
       }
       return original();
@@ -44,3 +45,6 @@ export function createAndroidAwareWalletAdapters(network: WalletAdapterNetwork) 
     wrapBrowseOnAndroid(phantom, openCurrentPageInPhantom),
   ];
 }
+
+/** @deprecated Use createMobileBrowseWalletAdapters */
+export const createAndroidAwareWalletAdapters = createMobileBrowseWalletAdapters;

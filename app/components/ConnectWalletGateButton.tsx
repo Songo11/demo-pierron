@@ -8,20 +8,55 @@ import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapt
 
 import { useTranslations } from '../context/LocaleContext';
 import {
+  IOS_WALLET_HANDOFF_KEY,
   RESUME_RETRY_EVENT,
   clearWalletUserDisconnected,
   connectInjectedProviderDirect,
   detectInjectedWalletBrowser,
   isAndroidUserAgent,
+  isIosUserAgent,
   isMwaWalletNotFoundMessage,
   markWalletResumePending,
   openCurrentPageInSolflare,
 } from '../lib/openInMobileWalletBrowser';
 
+const PHANTOM_NAME = 'Phantom' as WalletName;
+const SOLFLARE_NAME = 'Solflare' as WalletName;
+
+/**
+ * iOS Safari: redirect MUST stay synchronous with the tap.
+ * Any await/setTimeout/setState before navigation kills the user-gesture —
+ * Safari then opens phantom.app as a website instead of the installed app.
+ *
+ * Prefer phantom:// (custom scheme) — JS-triggered https Universal Links are
+ * unreliable on iOS Safari. Fall back to https UL only if still visible.
+ */
+function redirectIosSafariToPhantomSync(): void {
+  clearWalletUserDisconnected();
+  markWalletResumePending(PHANTOM_NAME);
+  try {
+    localStorage.setItem(IOS_WALLET_HANDOFF_KEY, 'phantom');
+  } catch {
+    /* ignore */
+  }
+  const page = window.location.href.split('#')[0]!;
+  const url = encodeURIComponent(page);
+  const ref = encodeURIComponent(window.location.origin);
+  const path = `ul/browse/${url}?ref=${ref}`;
+  // Custom scheme first — opens installed Phantom from the tap gesture.
+  window.location.href = `phantom://${path}`;
+  // If Phantom is missing, Safari stays here; try Universal Link once (still ok if app caught scheme).
+  window.setTimeout(() => {
+    if (document.visibilityState !== 'visible') return;
+    window.location.href = `https://phantom.app/${path}`;
+  }, 700);
+}
+
 /**
  * Start screen connect:
  * - Desktop: wallet modal → connect after select
- * - Android: Mobile Wallet Adapter (opens Solflare/Phantom) in one tap
+ * - Android: one-tap Mobile Wallet Adapter
+ * - iOS Safari: one-tap sync Phantom universal link (same idea as MWA)
  * - In-wallet browser: connect injected provider
  */
 export default function ConnectWalletGateButton() {
@@ -38,6 +73,11 @@ export default function ConnectWalletGateButton() {
     setError(null);
     setBusy(false);
     pendingConnectRef.current = false;
+    try {
+      localStorage.removeItem(IOS_WALLET_HANDOFF_KEY);
+    } catch {
+      /* ignore */
+    }
   }, [connected]);
 
   const runConnect = useCallback(
@@ -54,14 +94,9 @@ export default function ConnectWalletGateButton() {
         if (gen !== connectGenRef.current) return;
         const msg = e instanceof Error ? e.message : String(e);
         const rejected = /reject|denied|cancel/i.test(msg);
-        // Keep resume flag for app-switch; still show real wallet-not-found errors.
         if (/abort|navigat/i.test(msg) && !rejected) return;
         if (isMwaWalletNotFoundMessage(msg) && isAndroidUserAgent()) {
           openCurrentPageInSolflare();
-          setError(
-            t.dapp.connectAndroidStayHint ??
-              'Brak MWA — otwieram dappkę w Solflare. Zostań w Solflare i zatwierdź połączenie.'
-          );
           return;
         }
         setError(
@@ -74,10 +109,9 @@ export default function ConnectWalletGateButton() {
         if (gen === connectGenRef.current) setBusy(false);
       }
     },
-    [connect, wallet, t.dapp.connectAndroidStayHint, t.dapp.connectRejectedHint]
+    [connect, wallet, t.dapp.connectRejectedHint]
   );
 
-  // After modal select — do NOT depend on `connecting` (that cancels in-flight connect).
   useEffect(() => {
     if (!pendingConnectRef.current || !wallet || connected) return;
     pendingConnectRef.current = false;
@@ -85,6 +119,13 @@ export default function ConnectWalletGateButton() {
   }, [wallet, connected, runConnect]);
 
   const onPrimaryClick = useCallback(() => {
+    // iOS Safari: redirect BEFORE any setState — React state updates can break
+    // the user-gesture chain and leave the user on phantom.app in Safari.
+    if (!detectInjectedWalletBrowser() && isIosUserAgent()) {
+      redirectIosSafariToPhantomSync();
+      return;
+    }
+
     setError(null);
     clearWalletUserDisconnected();
     try {
@@ -99,7 +140,7 @@ export default function ConnectWalletGateButton() {
         setBusy(true);
         try {
           await connectInjectedProviderDirect(injected);
-          const name = (injected === 'solflare' ? 'Solflare' : 'Phantom') as WalletName;
+          const name = injected === 'solflare' ? SOLFLARE_NAME : PHANTOM_NAME;
           markWalletResumePending(name);
           select(name);
           await new Promise((r) => window.setTimeout(r, 100));
@@ -115,7 +156,6 @@ export default function ConnectWalletGateButton() {
     }
 
     if (isAndroidUserAgent()) {
-      // One tap: Mobile Wallet Adapter → installed wallet (Solflare/Phantom).
       void (async () => {
         setBusy(true);
         setError(null);
@@ -128,10 +168,6 @@ export default function ConnectWalletGateButton() {
           const msg = e instanceof Error ? e.message : String(e);
           if (isMwaWalletNotFoundMessage(msg)) {
             openCurrentPageInSolflare();
-            setError(
-              t.dapp.connectAndroidStayHint ??
-                'Otwieram w Solflare — zostań w aplikacji portfela i zatwierdź.'
-            );
           } else if (!/abort|navigat/i.test(msg)) {
             setError(msg);
           }
@@ -144,7 +180,7 @@ export default function ConnectWalletGateButton() {
 
     pendingConnectRef.current = true;
     setVisible(true);
-  }, [connect, select, setVisible, t.dapp.connectAndroidStayHint]);
+  }, [connect, select, setVisible]);
 
   const label = connected
     ? publicKey

@@ -6,7 +6,6 @@ import './lib/bufferBigIntPolyfill';
 import { WalletAdapterNetwork, type Adapter, type WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import {
   createDefaultAddressSelector,
   createDefaultAuthorizationResultCache,
@@ -17,9 +16,11 @@ import { useCallback, useMemo } from 'react';
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 import { fetchWithRpcRetry } from '../shared/solana/resilientConnection.ts';
+import { createMobileBrowseWalletAdapters } from './lib/androidBrowseWalletAdapters';
 import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
 import {
   RESUME_WALLET_NAME_KEY,
+  isAndroidUserAgent,
   isWalletUserDisconnected,
 } from './lib/openInMobileWalletBrowser';
 
@@ -63,29 +64,29 @@ export default function RootLayout({
   }, []);
 
   const wallets = useMemo(() => {
-    // Custom MWA: on GrapheneOS/Vanadium, default "Find a wallet" is useless —
-    // open Solflare in-app browser instead (same path as connect fallback).
+    // Phantom/Solflare adapters: on iOS Safari, official connect() redirects via
+    // universal link (one-tap, same idea as Android MWA). Android wrap only
+    // fixes Loadable flakiness on Chrome/Vanadium.
+    const browseAdapters = createMobileBrowseWalletAdapters(WalletAdapterNetwork.Devnet);
+
+    // MWA is Android-only — never register it on iOS Safari.
+    if (typeof window === 'undefined' || !isAndroidUserAgent()) {
+      return browseAdapters;
+    }
+
     const mobile = new SolanaMobileWalletAdapter({
       addressSelector: createDefaultAddressSelector(),
       appIdentity: {
         name: 'Pierron',
-        uri:
-          typeof window !== 'undefined'
-            ? `${window.location.protocol}//${window.location.host}`
-            : 'https://demo-pierron.vercel.app',
+        uri: `${window.location.protocol}//${window.location.host}`,
       },
       authorizationResultCache: createDefaultAuthorizationResultCache(),
       cluster: 'devnet',
       onWalletNotFound: async () => {
-        // Do not open Solflare browse here — that forces re-login in the wallet
-        // WebView. Prefer MWA approve-and-return like swap; UI handles the error.
+        // ConnectWalletGateButton falls back to Solflare browse.
       },
     });
-    return [
-      mobile,
-      new PhantomWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
-      new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
-    ];
+    return [mobile, ...browseAdapters];
   }, []);
 
   const onWalletError = useCallback((error: WalletError) => {

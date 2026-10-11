@@ -13,6 +13,8 @@ export const RESUME_WALLET_NAME_KEY = 'pierron-resume-wallet-name';
 export const WALLET_USER_DISCONNECTED_KEY = 'pierron-wallet-user-disconnected';
 /** Dispatched when user taps connect — resets MobileWalletResume tried flag. */
 export const RESUME_RETRY_EVENT = 'pierron-wallet-resume-retry';
+/** iOS Safari → Phantom/Solflare browse handoff (localStorage; survives app switch). */
+export const IOS_WALLET_HANDOFF_KEY = 'pierron-ios-wallet-handoff';
 
 export function markWalletUserDisconnected(): void {
   if (typeof window === 'undefined') return;
@@ -57,6 +59,21 @@ export function isAndroidUserAgent(
   ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
 ): boolean {
   return /android/i.test(ua);
+}
+
+export function isIosUserAgent(
+  ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+): boolean {
+  return /iPhone|iPad|iPod/i.test(ua) || (typeof navigator !== 'undefined' && navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+/** Phone/tablet browser that is NOT already inside Phantom/Solflare WebView. */
+export function isMobileOutsideWalletBrowser(
+  ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+): boolean {
+  if (typeof window === 'undefined') return false;
+  if (detectInjectedWalletBrowser()) return false;
+  return isAndroidUserAgent(ua) || isIosUserAgent(ua);
 }
 
 export type InjectedWalletKind = 'phantom' | 'solflare' | null;
@@ -122,7 +139,9 @@ export function buildPhantomBrowseUrls(pageUrl: string, refUrl: string): string[
   const path = `ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
   const httpsUrl = `https://phantom.app/${path}`;
   const schemeUrl = `phantom://${path}`;
-  if (!isAndroidUserAgent()) return [httpsUrl];
+  // iOS Safari: custom scheme first (opens installed Phantom), then Universal Link.
+  if (isIosUserAgent()) return [schemeUrl, httpsUrl];
+  if (!isAndroidUserAgent()) return [httpsUrl, schemeUrl];
   const fallback = encodeURIComponent(
     'https://play.google.com/store/apps/details?id=app.phantom'
   );
@@ -135,7 +154,9 @@ export function buildSolflareBrowseUrls(pageUrl: string, refUrl: string): string
   const path = `ul/v1/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
   const httpsUrl = `https://solflare.com/${path}`;
   const schemeUrl = `solflare://${path}`;
-  if (!isAndroidUserAgent()) return [httpsUrl];
+  // iOS Safari: custom scheme first, then Universal Link.
+  if (isIosUserAgent()) return [schemeUrl, httpsUrl];
+  if (!isAndroidUserAgent()) return [httpsUrl, schemeUrl];
   const fallback = encodeURIComponent(
     'https://play.google.com/store/apps/details?id=com.solflare.mobile'
   );
