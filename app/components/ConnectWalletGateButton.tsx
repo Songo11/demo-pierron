@@ -14,6 +14,7 @@ import {
   connectInjectedProviderDirect,
   detectInjectedWalletBrowser,
   isAndroidUserAgent,
+  isIosUserAgent,
   isMwaWalletNotFoundMessage,
   markWalletResumePending,
   openCurrentPageInSolflare,
@@ -21,12 +22,13 @@ import {
 
 const PHANTOM_NAME = 'Phantom' as WalletName;
 const SOLFLARE_NAME = 'Solflare' as WalletName;
+const WALLETCONNECT_NAME = 'WalletConnect' as WalletName;
 
 /**
  * Start screen connect:
- * - Desktop / iOS Safari: one "Connect wallet" button → standard wallet modal
- *   (pick Phantom / Solflare). On iOS, adapter connect() then opens that wallet’s
- *   in-app browser via browse deeplink.
+ * - iOS Safari: open WalletConnect AppKit (many wallets incl. Solflare) — approve
+ *   in the wallet app, session returns to Safari (no browse handoff).
+ * - Desktop: wallet modal (WalletConnect + injected Phantom/Solflare).
  * - Android: one-tap Mobile Wallet Adapter
  * - In-wallet browser: connect injected provider
  */
@@ -142,7 +144,29 @@ export default function ConnectWalletGateButton() {
       return;
     }
 
-    // Desktop + iOS Safari: same UX — open wallet picker, then connect / browse.
+    // iOS Safari: open WalletConnect AppKit directly (Solflare/Phantom via WC UL).
+    if (isIosUserAgent()) {
+      void (async () => {
+        setBusy(true);
+        setError(null);
+        try {
+          markWalletResumePending(WALLETCONNECT_NAME);
+          select(WALLETCONNECT_NAME);
+          await new Promise((r) => window.setTimeout(r, 120));
+          await connect();
+        } catch (e) {
+          const msg = e instanceof Error ? e.message : String(e);
+          if (!/abort|navigat|closed|reject|denied|cancel/i.test(msg)) {
+            setError(msg);
+          }
+        } finally {
+          setBusy(false);
+        }
+      })();
+      return;
+    }
+
+    // Desktop: wallet adapter modal (WalletConnect + Phantom/Solflare extensions).
     pendingConnectRef.current = true;
     setVisible(true);
   }, [connect, select, setVisible]);

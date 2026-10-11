@@ -15,9 +15,10 @@ import { useCallback, useMemo } from 'react';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
-import { fetchWithRpcRetry } from '../shared/solana/resilientConnection.ts';
+import { fetchWithRpcRetry } from '../../shared/solana/resilientConnection.ts';
 import { createMobileBrowseWalletAdapters } from './lib/androidBrowseWalletAdapters';
 import { resolveBrowserSolanaRpcEndpoint } from './lib/browserSolanaRpc';
+import { createPierronWalletConnectAdapter } from './lib/walletConnectSolana';
 import {
   RESUME_WALLET_NAME_KEY,
   isAndroidUserAgent,
@@ -64,29 +65,33 @@ export default function RootLayout({
   }, []);
 
   const wallets = useMemo(() => {
-    // Solflare first — primary mobile wallet. On iOS Safari, adapter opens the dapp
-    // inside Solflare via https Universal Link (WalletConnect cannot deep-link Solflare
-    // on iOS: solflare://wc?uri=… is unsupported by the Solflare app).
     const browseAdapters = createMobileBrowseWalletAdapters(WalletAdapterNetwork.Devnet);
 
-    // MWA is Android-only.
-    if (typeof window === 'undefined' || !isAndroidUserAgent()) {
+    // Android: MWA first (approve in wallet → return to browser).
+    if (typeof window !== 'undefined' && isAndroidUserAgent()) {
+      const mobile = new SolanaMobileWalletAdapter({
+        addressSelector: createDefaultAddressSelector(),
+        appIdentity: {
+          name: 'Pierron',
+          uri: `${window.location.protocol}//${window.location.host}`,
+        },
+        authorizationResultCache: createDefaultAuthorizationResultCache(),
+        cluster: 'devnet',
+        onWalletNotFound: async () => {
+          /* UI fallback */
+        },
+      });
+      return [mobile, ...browseAdapters];
+    }
+
+    // iOS Safari / desktop: WalletConnect modal (many wallets). Solflare/Phantom are
+    // patched with https://…/ul/v1/wc?uri=… so they open for approval and return to Safari.
+    if (typeof window === 'undefined') {
       return browseAdapters;
     }
 
-    const mobile = new SolanaMobileWalletAdapter({
-      addressSelector: createDefaultAddressSelector(),
-      appIdentity: {
-        name: 'Pierron',
-        uri: `${window.location.protocol}//${window.location.host}`,
-      },
-      authorizationResultCache: createDefaultAuthorizationResultCache(),
-      cluster: 'devnet',
-      onWalletNotFound: async () => {
-        // ConnectWalletGateButton falls back to Solflare browse.
-      },
-    });
-    return [mobile, ...browseAdapters];
+    const walletConnect = createPierronWalletConnectAdapter(WalletAdapterNetwork.Devnet);
+    return [walletConnect, ...browseAdapters];
   }, []);
 
   const onWalletError = useCallback((error: WalletError) => {
