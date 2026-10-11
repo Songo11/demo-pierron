@@ -20,21 +20,25 @@ import {
   openCurrentPageInSolflare,
 } from '../lib/openInMobileWalletBrowser';
 
-/** Custom-scheme browse — opens installed Phantom from a real <a> tap even when
- *  Safari has disabled Universal Links for phantom.com (common after visiting the site). */
+const PHANTOM_NAME = 'Phantom' as WalletName;
+const SOLFLARE_NAME = 'Solflare' as WalletName;
+
+/** Real <a href> custom schemes — Safari user-gesture opens the installed app. */
 function buildPhantomBrowseSchemeUrl(pageUrl: string, refUrl: string): string {
   const path = `ul/browse/${encodeURIComponent(pageUrl)}?ref=${encodeURIComponent(refUrl)}`;
   return `phantom://${path}`;
 }
 
-const PHANTOM_NAME = 'Phantom' as WalletName;
-const SOLFLARE_NAME = 'Solflare' as WalletName;
+function buildSolflareBrowseSchemeUrl(pageUrl: string, refUrl: string): string {
+  const path = `ul/v1/browse/${encodeURIComponent(pageUrl)}?ref=${encodeURIComponent(refUrl)}`;
+  return `solflare://${path}`;
+}
 
-function markIosPhantomHandoff(): void {
+function markIosWalletHandoff(kind: 'phantom' | 'solflare'): void {
   clearWalletUserDisconnected();
-  markWalletResumePending(PHANTOM_NAME);
+  markWalletResumePending(kind === 'solflare' ? SOLFLARE_NAME : PHANTOM_NAME);
   try {
-    localStorage.setItem(IOS_WALLET_HANDOFF_KEY, 'phantom');
+    localStorage.setItem(IOS_WALLET_HANDOFF_KEY, kind);
   } catch {
     /* ignore */
   }
@@ -44,8 +48,7 @@ function markIosPhantomHandoff(): void {
  * Start screen connect:
  * - Desktop: wallet modal → connect after select
  * - Android: one-tap Mobile Wallet Adapter
- * - iOS Safari: real <a href> to phantom.com Universal Link (required by Phantom;
- *   JS location.href / phantom.app often opens the website instead of the app)
+ * - iOS Safari: choose Phantom or Solflare via real <a> browse deeplink
  * - In-wallet browser: connect injected provider
  */
 export default function ConnectWalletGateButton() {
@@ -54,25 +57,28 @@ export default function ConnectWalletGateButton() {
   const { setVisible } = useWalletModal();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [iosBrowseHref, setIosBrowseHref] = useState<string | null>(null);
+  const [iosLinks, setIosLinks] = useState<{ phantom: string; solflare: string } | null>(
+    null
+  );
   const pendingConnectRef = useRef(false);
   const connectGenRef = useRef(0);
 
-  // Build Phantom browse href on the client so Universal Link targets this exact page.
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (detectInjectedWalletBrowser()) {
-      setIosBrowseHref(null);
+      setIosLinks(null);
       return;
     }
     if (!isIosUserAgent()) {
-      setIosBrowseHref(null);
+      setIosLinks(null);
       return;
     }
     const page = window.location.href.split('#')[0]!;
-    // Prefer custom scheme on the <a href>: Safari often opens https://phantom.com
-    // as a website (UL disabled). Scheme + real click opens the installed app.
-    setIosBrowseHref(buildPhantomBrowseSchemeUrl(page, window.location.origin));
+    const origin = window.location.origin;
+    setIosLinks({
+      phantom: buildPhantomBrowseSchemeUrl(page, origin),
+      solflare: buildSolflareBrowseSchemeUrl(page, origin),
+    });
   }, []);
 
   useEffect(() => {
@@ -182,49 +188,53 @@ export default function ConnectWalletGateButton() {
     setVisible(true);
   }, [connect, select, setVisible]);
 
-  const onIosBrowseClick = useCallback(() => {
-    // Sync with the native <a> navigation — do not preventDefault.
-    markIosPhantomHandoff();
-  }, []);
-
-  const label = connected
+  const connectedLabel = connected
     ? publicKey
       ? `${publicKey.toBase58().slice(0, 4)}…${publicKey.toBase58().slice(-4)}`
       : t.wallet.portfelPodlaczony
-    : busy || connecting
-      ? t.dapp.connectHintConnecting
-      : t.wallet.polaczPortfel;
+    : null;
 
   const btnClass = useMemo(
     () => 'wallet-adapter-button wallet-adapter-button-trigger pierron-connect-wallet-btn',
     []
   );
 
-  // iOS Safari outside wallet: real anchor → Phantom Universal Link (phantom.com).
-  // Docs: browse deeplinks must be clicked by the end user — not JS location.href.
-  if (iosBrowseHref && !connected && !detectInjectedWalletBrowser()) {
+  // iOS Safari: choose Phantom or Solflare — real <a> taps open the wallet app.
+  if (iosLinks && !connected && !detectInjectedWalletBrowser()) {
+    const phantomLabel = t.dapp.openInPhantom ?? 'Phantom';
+    const solflareLabel = t.dapp.openInSolflare ?? 'Solflare';
     return (
       <div className="pierron-connect-wallet-wrap">
-        <a
-          href={iosBrowseHref}
-          className={btnClass}
-          onClick={onIosBrowseClick}
-          rel="noopener"
-        >
-          {label}
-        </a>
+        <div className="pierron-connect-browse-row">
+          <a
+            href={iosLinks.phantom}
+            className={`${btnClass} pierron-connect-browse-btn`}
+            onClick={() => markIosWalletHandoff('phantom')}
+            rel="noopener"
+          >
+            {phantomLabel}
+          </a>
+          <a
+            href={iosLinks.solflare}
+            className={`${btnClass} pierron-connect-browse-btn`}
+            onClick={() => markIosWalletHandoff('solflare')}
+            rel="noopener"
+          >
+            {solflareLabel}
+          </a>
+        </div>
         {error ? <p className="pierron-connect-wallet-error">{error}</p> : null}
       </div>
     );
   }
 
+  const label =
+    connectedLabel ??
+    (busy || connecting ? t.dapp.connectHintConnecting : t.wallet.polaczPortfel);
+
   return (
     <div className="pierron-connect-wallet-wrap">
-      <button
-        type="button"
-        className={btnClass}
-        onClick={onPrimaryClick}
-      >
+      <button type="button" className={btnClass} onClick={onPrimaryClick}>
         {label}
       </button>
       {error ? <p className="pierron-connect-wallet-error">{error}</p> : null}
