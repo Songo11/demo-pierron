@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { WalletName } from '@solana/wallet-adapter-base';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
@@ -14,7 +14,6 @@ import {
   connectInjectedProviderDirect,
   detectInjectedWalletBrowser,
   isAndroidUserAgent,
-  isIosUserAgent,
   isMwaWalletNotFoundMessage,
   markWalletResumePending,
   openCurrentPageInSolflare,
@@ -23,32 +22,12 @@ import {
 const PHANTOM_NAME = 'Phantom' as WalletName;
 const SOLFLARE_NAME = 'Solflare' as WalletName;
 
-/** Real <a href> custom schemes — Safari user-gesture opens the installed app. */
-function buildPhantomBrowseSchemeUrl(pageUrl: string, refUrl: string): string {
-  const path = `ul/browse/${encodeURIComponent(pageUrl)}?ref=${encodeURIComponent(refUrl)}`;
-  return `phantom://${path}`;
-}
-
-function buildSolflareBrowseSchemeUrl(pageUrl: string, refUrl: string): string {
-  const path = `ul/v1/browse/${encodeURIComponent(pageUrl)}?ref=${encodeURIComponent(refUrl)}`;
-  return `solflare://${path}`;
-}
-
-function markIosWalletHandoff(kind: 'phantom' | 'solflare'): void {
-  clearWalletUserDisconnected();
-  markWalletResumePending(kind === 'solflare' ? SOLFLARE_NAME : PHANTOM_NAME);
-  try {
-    localStorage.setItem(IOS_WALLET_HANDOFF_KEY, kind);
-  } catch {
-    /* ignore */
-  }
-}
-
 /**
  * Start screen connect:
- * - Desktop: wallet modal → connect after select
+ * - Desktop / iOS Safari: one "Connect wallet" button → standard wallet modal
+ *   (pick Phantom / Solflare). On iOS, adapter connect() then opens that wallet’s
+ *   in-app browser via browse deeplink.
  * - Android: one-tap Mobile Wallet Adapter
- * - iOS Safari: choose Phantom or Solflare via real <a> browse deeplink
  * - In-wallet browser: connect injected provider
  */
 export default function ConnectWalletGateButton() {
@@ -57,29 +36,8 @@ export default function ConnectWalletGateButton() {
   const { setVisible } = useWalletModal();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [iosLinks, setIosLinks] = useState<{ phantom: string; solflare: string } | null>(
-    null
-  );
   const pendingConnectRef = useRef(false);
   const connectGenRef = useRef(0);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (detectInjectedWalletBrowser()) {
-      setIosLinks(null);
-      return;
-    }
-    if (!isIosUserAgent()) {
-      setIosLinks(null);
-      return;
-    }
-    const page = window.location.href.split('#')[0]!;
-    const origin = window.location.origin;
-    setIosLinks({
-      phantom: buildPhantomBrowseSchemeUrl(page, origin),
-      solflare: buildSolflareBrowseSchemeUrl(page, origin),
-    });
-  }, []);
 
   useEffect(() => {
     if (!connected) return;
@@ -184,57 +142,26 @@ export default function ConnectWalletGateButton() {
       return;
     }
 
+    // Desktop + iOS Safari: same UX — open wallet picker, then connect / browse.
     pendingConnectRef.current = true;
     setVisible(true);
   }, [connect, select, setVisible]);
 
-  const connectedLabel = connected
+  const label = connected
     ? publicKey
       ? `${publicKey.toBase58().slice(0, 4)}…${publicKey.toBase58().slice(-4)}`
       : t.wallet.portfelPodlaczony
-    : null;
-
-  const btnClass = useMemo(
-    () => 'wallet-adapter-button wallet-adapter-button-trigger pierron-connect-wallet-btn',
-    []
-  );
-
-  // iOS Safari: choose Phantom or Solflare — real <a> taps open the wallet app.
-  if (iosLinks && !connected && !detectInjectedWalletBrowser()) {
-    const phantomLabel = t.dapp.openInPhantom ?? 'Phantom';
-    const solflareLabel = t.dapp.openInSolflare ?? 'Solflare';
-    return (
-      <div className="pierron-connect-wallet-wrap">
-        <div className="pierron-connect-browse-row">
-          <a
-            href={iosLinks.phantom}
-            className={`${btnClass} pierron-connect-browse-btn`}
-            onClick={() => markIosWalletHandoff('phantom')}
-            rel="noopener"
-          >
-            {phantomLabel}
-          </a>
-          <a
-            href={iosLinks.solflare}
-            className={`${btnClass} pierron-connect-browse-btn`}
-            onClick={() => markIosWalletHandoff('solflare')}
-            rel="noopener"
-          >
-            {solflareLabel}
-          </a>
-        </div>
-        {error ? <p className="pierron-connect-wallet-error">{error}</p> : null}
-      </div>
-    );
-  }
-
-  const label =
-    connectedLabel ??
-    (busy || connecting ? t.dapp.connectHintConnecting : t.wallet.polaczPortfel);
+    : busy || connecting
+      ? t.dapp.connectHintConnecting
+      : t.wallet.polaczPortfel;
 
   return (
     <div className="pierron-connect-wallet-wrap">
-      <button type="button" className={btnClass} onClick={onPrimaryClick}>
+      <button
+        type="button"
+        className="wallet-adapter-button wallet-adapter-button-trigger pierron-connect-wallet-btn"
+        onClick={onPrimaryClick}
+      >
         {label}
       </button>
       {error ? <p className="pierron-connect-wallet-error">{error}</p> : null}

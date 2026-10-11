@@ -7,44 +7,57 @@ import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
 import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
 
 import {
+  detectInjectedWalletBrowser,
   isAndroidUserAgent,
+  isIosUserAgent,
   openCurrentPageInPhantom,
   openCurrentPageInSolflare,
+  redirectIosSafariToWalletBrowse,
 } from './openInMobileWalletBrowser';
 
 /**
- * Android-only: outside wallet WebView, Loadable Solflare/Phantom connect is flaky
- * (Vanadium/GrapheneOS). Open the dapp inside the wallet browser instead.
- *
- * iOS Safari: do NOT wrap — official adapters already redirect via universal links
- * on user-initiated connect() (same one-tap idea as Android MWA).
+ * Phantom / Solflare adapters with mobile browse handoff:
+ * - iOS Safari (outside wallet WebView): after user picks wallet in the modal,
+ *   connect() redirects into the wallet in-app browser (browse deeplink).
+ * - Android Loadable: same idea for Vanadium/GrapheneOS flakiness.
  */
 export function createMobileBrowseWalletAdapters(network: WalletAdapterNetwork) {
   const solflare = new SolflareWalletAdapter({ network });
   const phantom = new PhantomWalletAdapter({ network });
 
-  const wrapBrowseOnAndroid = <T extends SolflareWalletAdapter | PhantomWalletAdapter>(
+  const wrapMobileBrowse = <T extends SolflareWalletAdapter | PhantomWalletAdapter>(
     adapter: T,
-    openBrowse: () => void
+    kind: 'phantom' | 'solflare',
+    openAndroidBrowse: () => void
   ): T => {
     const original = adapter.connect.bind(adapter);
     adapter.connect = async () => {
-      if (
-        typeof window !== 'undefined' &&
-        isAndroidUserAgent() &&
-        adapter.readyState === WalletReadyState.Loadable
-      ) {
-        openBrowse();
+      if (typeof window === 'undefined') return original();
+
+      // Already inside Phantom/Solflare WebView — use injected provider path.
+      if (detectInjectedWalletBrowser()) {
+        return original();
+      }
+
+      // iOS Safari: user just picked this wallet in the standard modal.
+      if (isIosUserAgent()) {
+        redirectIosSafariToWalletBrowse(kind);
         return;
       }
+
+      if (isAndroidUserAgent() && adapter.readyState === WalletReadyState.Loadable) {
+        openAndroidBrowse();
+        return;
+      }
+
       return original();
     };
     return adapter;
   };
 
   return [
-    wrapBrowseOnAndroid(solflare, openCurrentPageInSolflare),
-    wrapBrowseOnAndroid(phantom, openCurrentPageInPhantom),
+    wrapMobileBrowse(solflare, 'solflare', openCurrentPageInSolflare),
+    wrapMobileBrowse(phantom, 'phantom', openCurrentPageInPhantom),
   ];
 }
 

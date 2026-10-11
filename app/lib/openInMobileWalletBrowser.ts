@@ -142,6 +142,33 @@ export function buildPhantomBrowseHttpsUrl(pageUrl: string, refUrl: string): str
   return `https://phantom.com/ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
 }
 
+/** iOS Safari: custom-scheme browse (opens installed app more reliably than https UL). */
+export function buildPhantomBrowseSchemeUrl(pageUrl: string, refUrl: string): string {
+  return `phantom://ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
+}
+
+export function buildSolflareBrowseSchemeUrl(pageUrl: string, refUrl: string): string {
+  return `solflare://ul/v1/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
+}
+
+/** Sync redirect into Phantom/Solflare in-app browser (iOS Safari handoff). */
+export function redirectIosSafariToWalletBrowse(kind: 'phantom' | 'solflare'): void {
+  if (typeof window === 'undefined') return;
+  clearWalletUserDisconnected();
+  markWalletResumePending(kind === 'solflare' ? 'Solflare' : 'Phantom');
+  try {
+    localStorage.setItem(IOS_WALLET_HANDOFF_KEY, kind);
+  } catch {
+    /* ignore */
+  }
+  const page = window.location.href.split('#')[0]!;
+  const ref = window.location.origin;
+  window.location.href =
+    kind === 'solflare'
+      ? buildSolflareBrowseSchemeUrl(page, ref)
+      : buildPhantomBrowseSchemeUrl(page, ref);
+}
+
 /** Phantom browse — https UL (recommended) + custom scheme + Android intent. */
 export function buildPhantomBrowseUrls(pageUrl: string, refUrl: string): string[] {
   const path = `ul/browse/${encodeBrowseTarget(pageUrl)}?ref=${encodeBrowseTarget(refUrl)}`;
