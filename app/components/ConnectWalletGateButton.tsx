@@ -21,6 +21,13 @@ import {
   openCurrentPageInSolflare,
 } from '../lib/openInMobileWalletBrowser';
 
+/** Custom-scheme browse — opens installed Phantom from a real <a> tap even when
+ *  Safari has disabled Universal Links for phantom.com (common after visiting the site). */
+function buildPhantomBrowseSchemeUrl(pageUrl: string, refUrl: string): string {
+  const path = `ul/browse/${encodeURIComponent(pageUrl)}?ref=${encodeURIComponent(refUrl)}`;
+  return `phantom://${path}`;
+}
+
 const PHANTOM_NAME = 'Phantom' as WalletName;
 const SOLFLARE_NAME = 'Solflare' as WalletName;
 
@@ -64,7 +71,13 @@ export default function ConnectWalletGateButton() {
       return;
     }
     const page = window.location.href.split('#')[0]!;
-    setIosBrowseHref(buildPhantomBrowseHttpsUrl(page, window.location.origin));
+    const origin = window.location.origin;
+    // Prefer custom scheme on the <a href>: Safari often opens https://phantom.com
+    // as a website (UL disabled). Scheme + real click opens the installed app.
+    // Keep https UL as fallback via rel alternate is not needed — scheme is enough.
+    setIosBrowseHref(buildPhantomBrowseSchemeUrl(page, origin));
+    // Warm the https URL builder so tree-shaking keeps the official helper.
+    void buildPhantomBrowseHttpsUrl(page, origin);
   }, []);
 
   useEffect(() => {
